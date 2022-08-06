@@ -89,7 +89,6 @@ ingress:
       ssl on;
       ssl_verify_client optional_no_ca;
       ssl_verify_depth 10;
-    nginx.ingress.kubernetes.io/ssl-prefer-server-ciphers: "on"
 
   hosts:
     - domain: cern.ch
