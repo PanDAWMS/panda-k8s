@@ -148,8 +148,6 @@ ingress:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: 'true'
     nginx.ingress.kubernetes.io/auth-tls-verify-client: 'optional'
-    # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
   hosts:
     - domain: cern.ch
       hostOverride: ""

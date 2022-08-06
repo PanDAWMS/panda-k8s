@@ -9,15 +9,15 @@ main:
     enabled: true
     hosts:
       - domain: slac.stanford.edu
-        hostOverride: panda-iam-dev.slac.stanford.edu
+        hostOverride: rubin-panda-iam-dev.slac.stanford.edu
         paths:
           - path: /
             pathType: Prefix
     tls:
-      - secretName: ""
+      - secretName: "default"
         hosts:
           - domain: slac.stanford.edu
-            hostOverride: panda-iam-dev.slac.stanford.edu
+            hostOverride: rubin-panda-iam-dev.slac.stanford.edu
 
 mariadb:
   persistentvolume:

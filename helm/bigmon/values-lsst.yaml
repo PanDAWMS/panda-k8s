@@ -12,11 +12,12 @@ main:
     enabled: true
     hosts:
       - domain: slac.stanford.edu
-        # hostOverride: panda-k8s-dev-jedi.cern.ch
+        hostOverride: rubin-panda-bigmon-dev.slac.stanford.edu
         paths:
           - path: /
             pathType: Prefix
     tls:
-      - secretName: ""
+      - secretName: "default"
         hosts:
           - domain: slac.stanford.edu
+            hostOverride: rubin-panda-bigmon-dev.slac.stanford.edu

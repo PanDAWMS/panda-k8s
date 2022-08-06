@@ -29,21 +29,15 @@ server:
     enabled: true
     hosts:
       - domain: slac.stanford.edu
-        hostOverride: panda-dev.slac.stanford.edu
+        hostOverride: rubin-panda-server-dev.slac.stanford.edu
         paths:
           - path: /
             pathType: Prefix
     tls:
-      - secretName: panda-k8s-dev-jedi-tls-cert
+      - secretName: default
         hosts:
           - domain: slac.stanford.edu
-            hostOverride: panda-dev.slac.stanford.edu
-
-  # ID token of the PanDA service account
-  authIdToken: "FIXME"
-
-  # VO (. role) of the ID token
-  authVO: "panda_dev.production"
+            hostOverride: rubin-panda-server-dev.slac.stanford.edu
 
 postgres:
   persistentvolume:
