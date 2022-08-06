@@ -2,6 +2,9 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+global:
+  secret: "panda-secrets"
+
 main:
   enabled: true
 
@@ -14,8 +17,6 @@ main:
   #  create: false         
   #  path: "/mnt/panda-bigmon-logs"
   #  size: 5Gi
-  hostcerts:
-    enabled: false
 
   # hostname for external access
   hostName: "FIXME"

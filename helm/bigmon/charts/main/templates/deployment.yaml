@@ -93,11 +93,11 @@ spec:
                 mountPath: /data/bigmon/logs
               - name: {{ include "main.fullname" . }}-configmap
                 mountPath: /data/bigmon/configmap
-              {{- if .Values.hostcerts.enabled }}
               - name: {{ include "main.fullname" . }}-certs
                 mountPath: /opt/bigmon/etc/cert
-              {{- end }}
           envFrom:
+            - secretRef:
+                name: {{ .Values.global.secret }}-bigmon-envs
             - configMapRef:
                 name: {{ include "main.fullname" . }}-env
       {{- with .Values.nodeSelector }}
@@ -119,8 +119,6 @@ spec:
         - name: {{ include "main.fullname" . }}-configmap
           configMap:
               name: {{ include "main.fullname" . }}-configmap
-        {{- if .Values.hostcerts.enabled }}
         - name: {{ include "main.fullname" . }}-certs
-          configMap:
-              name: {{ include "main.fullname" . }}-certs
-        {{- end }}
+          secret:
+              secretName: {{ .Values.global.secret }}-bigmon-certs

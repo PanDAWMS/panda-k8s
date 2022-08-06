@@ -9,22 +9,6 @@ binaryData:
     {{ $.Files.Get $path | b64enc }}
   {{- end }}
 
-{{- if .Values.hostcerts.enabled }}
----
-# host cert and key
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ include "main.fullname" . }}-certs
-binaryData:
-  hostcert.pem: |-
-    {{ .Files.Get "cert/hostcert.pem" | b64enc }}
-  hostkey.pem: |-
-    {{ .Files.Get "cert/hostkey.pem" | b64enc }}
-  chain.pem: |-
-    {{ .Files.Get "cert/chain.pem" | b64enc }}
-{{- end }}
-
 ---
 # env variables
 apiVersion: v1
