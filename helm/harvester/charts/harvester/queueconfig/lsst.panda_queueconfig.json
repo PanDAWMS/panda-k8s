@@ -287,6 +287,7 @@
       "nQueueLimitWorker":10000,
 
       "submitter": {
+	  "ceQueueName": "rubin",
           "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot_slac.sdf"
       }
   },
@@ -350,6 +351,121 @@
           "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot.sdf",
           "x509UserProxy": "/data/harvester/run/x509up_u25606"
       }
+  },
+
+  "DOMA_LSST_GOOGLE_TEST_HIMEM": {
+    "queueStatus": "online",
+    "maxWorkers": 4050,
+    "nQueueLimitWorkerMin": 1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitWorker":30,
+    "maxNewWorkersPerCycle":50,
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production_k8s.pull",
+    "common": {
+      "k8s_yaml_file": "/opt/harvester/etc/k8s/kube_job.yaml",
+      "k8s_config_file": "/data/idds/gcloud_config_rubin/kube_high_mem",
+      "k8s_namespace": "default"
+    }
+  },
+
+  "DOMA_LSST_GOOGLE_TEST_HIMEM_NON_PREEMPT": {
+    "queueStatus": "online",
+    "maxWorkers": 2000,
+    "nQueueLimitJobMax":2000,
+    "nQueueLimitJob": 500,
+    "nQueueLimitWorker":5,
+    "nQueueLimitWorkerMin": 1,
+    "nQueueLimitWorkerMax": 20,
+    "maxNewWorkersPerCycle":50,
+    "mapType":"OneToOne",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production_k8s.pull",
+    "common": {
+      "k8s_yaml_file": "/opt/harvester/etc/k8s/kube_job_non_preempt.yaml",
+      "k8s_config_file": "/data/idds/gcloud_config_rubin/kube_high_mem_non_preempt",
+      "k8s_namespace": "default"
+    }
+  },
+
+  "DOMA_LSST_GOOGLE_TEST_EXTRA_HIMEM": {
+    "maxWorkers": 200,
+    "maxNewWorkersPerCycle":1,
+    "nQueueLimitWorkerMax": 1,
+    "queueStatus": "online",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production_k8s.pull",
+    "common": {
+      "k8s_yaml_file": "/opt/harvester/etc/k8s/kube_job.yaml",
+      "k8s_config_file": "/data/idds/gcloud_config_rubin/kube_extra_large_mem",
+      "k8s_namespace": "default"
+    }
+  },
+
+  "DOMA_LSST_GOOGLE_TEST_EXTRA_HIMEM_NON_PREEMPT": {
+    "maxWorkers": 50,
+    "nQueueLimitJob": 10,
+    "nQueueLimitWorkerMin": 1,
+    "nQueueLimitWorkerMax": 2,
+    "maxNewWorkersPerCycle":1,
+    "queueStatus": "online",
+    "mapType":"OneToOne",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production_k8s.pull",
+    "common": {
+      "k8s_yaml_file": "/opt/harvester/etc/k8s/kube_job_non_preempt.yaml",
+      "k8s_config_file": "/data/idds/gcloud_config_rubin/kube_extra_large_mem_non_preempt",
+      "k8s_namespace": "default"
+    }
+  },
+
+  "DOMA_LSST_GOOGLE_MERGE": {
+    "queueStatus": "online",
+    "maxWorkers": 20,
+    "nQueueLimitWorkerMin": 1,
+    "nQueueLimitWorkerMax": 5,
+    "maxNewWorkersPerCycle":5,
+    "queueStatus": "online",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production_k8s.pull",
+    "common": {
+      "k8s_yaml_file": "/opt/harvester/etc/k8s/kube_job.yaml",
+      "k8s_config_file": "/data/idds/gcloud_config_rubin/kube_merge",
+      "k8s_namespace": "default"
+    }
+  },
+
+  "DOMA_LSST_GOOGLE_TEST": {
+  "queueStatus": "online",
+  "nQueueLimitWorker":5000,
+  "maxNewWorkersPerCycle":200,
+  "nQueueLimitWorkerMax": 200,
+  "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+  "templateQueueName": "production_k8s.pull",
+  "common": {
+    "k8s_yaml_file": "/opt/harvester/etc/k8s/kube_job_moderate.yaml",
+    "k8s_config_file": "/data/idds/gcloud_config_rubin/kube_moderate_mem",
+    "k8s_namespace": "default"
+    }
+  },
+
+  "DOMA_LSST_DEV": {
+  "queueStatus": "offline",
+  "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+  "nQueueLimitJobMax":5,
+  "nQueueLimitJob": 5,
+  "nQueueLimitWorker":5,
+  "maxWorkers":3,
+  "maxNewWorkersPerCycle":2,
+  "mapType":"NoJob",
+  "truePilot":true,
+  "maxSubmissionAttempts":3,
+  "templateQueueName": "production_k8s.pull",
+  "common": {
+    "k8s_yaml_file": "/opt/harvester/etc/k8s/job_dev-prmon.yaml",
+    "k8s_config_file": "/data/idds/gcloud_config_rubin/kube_dev-gcs",
+    "k8s_namespace": "default"
+    }
   }
 
 }

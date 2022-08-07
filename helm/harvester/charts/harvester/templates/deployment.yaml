@@ -112,6 +112,8 @@ spec:
               mountPath: /opt/harvester/sandbox
             - name: {{ include "harvester.fullname" . }}-certs
               mountPath: /opt/harvester/etc/cert
+            - name: {{ include "harvester.fullname" . }}-auth
+              mountPath: /opt/harvester/etc/auth
           envFrom:
             - configMapRef:
                 name: {{ include "harvester.fullname" . }}-env
@@ -145,3 +147,6 @@ spec:
         - name: {{ include "harvester.fullname" . }}-certs
           secret:
               secretName: {{ .Values.global.secret }}-harvester-certs
+        - name: {{ include "harvester.fullname" . }}-auth
+          secret:
+              secretName: {{ .Values.global.secret }}-harvester-auth
