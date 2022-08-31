@@ -98,8 +98,6 @@ spec:
           envFrom:
             - secretRef:
                 name: {{ .Values.global.secret }}-bigmon-envs
-            - configMapRef:
-                name: {{ include "main.fullname" . }}-env
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
