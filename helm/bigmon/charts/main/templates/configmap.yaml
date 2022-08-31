@@ -1,4 +1,4 @@
-# JEDI and server configuration
+# BigMon configuration
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -7,31 +7,4 @@ binaryData:
   {{- range $path, $_ := .Files.Glob "sandbox/*" }}
   {{ base $path }}: |-
     {{ $.Files.Get $path | b64enc }}
-  {{- end }}
-
----
-# env variables
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ include "main.fullname" . }}-env
-data:
-  # HTTP proxy
-  {{- if .Values.httpProxy }}
-  http_proxy: "{{ .Values.httpProxy }}"
-  {{- if .Values.noProxy }}
-  no_proxy: "{{ .Values.noProxy }}"
-  {{- else }}
-  no_proxy: "localhost"
-  {{- end }}
-  {{- if .Values.httpsProxy }}
-  https_proxy: "{{ .Values.httpProxy }}"
-  {{- end }}
-  {{- else if .Values.httpsProxy }}
-  https_proxy: "{{ .Values.httpsProxy }}"
-  {{- if .Values.noProxy }}
-  no_proxy: "{{ .Values.noProxy }}"
-  {{- else }}
-  no_proxy: "localhost"
-  {{- end }}
   {{- end }}
