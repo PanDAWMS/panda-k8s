@@ -16,54 +16,6 @@ kind: ConfigMap
 metadata:
   name: {{ include "main.fullname" . }}-env
 data:
-  # bigmon
-  BIGMON_HOST: "{{ .Values.hostName }}"
-  BIGMON_NUM_WSGI_PROC: "{{ .Values.httpd.numWSGI }}"
-  BIGMON_SECRET_KEY: "{{ .Values.secretKey }}"
-  BIGMON_VO: "{{ .Values.vo }}"
-  BIGMON_DEPLOYMENT: "{{ .Values.deployment }}"
-  {{- if .Values.debugMode }}
-  BIGMON_DEBUG: "True"
-  {{- else }}
-  BIGMON_DEBUG: "False"
-  {{- end }}
-  # Auth
-  {{- if .Values.auth.providers }}
-  BIGMON_AUTH_PROVIDER_LIST: {{ join "," .Values.auth.providers }}
-  {{- end }}
-  SOCIAL_AUTH_GOOGLE_OAUTH2_KEY: "{{ .Values.auth.google.key }}"
-  SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET: "{{ .Values.auth.google.secret }}"
-  SOCIAL_AUTH_CERNOIDC_KEY: "{{ .Values.auth.cern.key }}"
-  SOCIAL_AUTH_CERNOIDC_SECRET: "{{ .Values.auth.cern.secret }}"
-  SOCIAL_AUTH_GITHUB_KEY: "{{ .Values.auth.github.key }}"
-  SOCIAL_AUTH_GITHUB_SECRET: "{{ .Values.auth.github.secret }}"
-  SOCIAL_AUTH_INDIGOIAMOIDC_KEY: "{{ .Values.auth.indigoiam.key }}"
-  SOCIAL_AUTH_INDIGOIAMOIDC_SECRET: "{{ .Values.auth.indigoiam.secret }}"
-  SOCIAL_AUTH_INDIGOIAMOIDC_BASEPATH: "{{ .Values.auth.indigoiam.basePath }}"
-  # PandaDB
-  PANDA_DB_NAME: "{{ .Values.panda.databaseName }}"
-  PANDA_DB_HOST: "{{ .Values.panda.hostName }}"
-  PANDA_DB_PORT: "{{ .Values.panda.port }}"
-  PANDA_DB_USER: "{{ .Values.panda.userName }}"
-  PANDA_DB_PASSWORD: "{{ .Values.panda.password }}"
-  # iDDSDB
-  IDDS_DB_NAME: "{{ .Values.idds.databaseName }}"
-  IDDS_DB_HOST: "{{ .Values.idds.hostName }}"
-  IDDS_DB_PORT: "{{ .Values.idds.port }}"
-  IDDS_DB_USER: "{{ .Values.idds.userName }}"
-  IDDS_DB_PASSWORD: "{{ .Values.idds.password }}"
-  # Rucio
-  RUCIO_SERVER_HOST: "{{ .Values.rucio.rucioHost }}"
-  RUCIO_AUTH_HOST: "{{ .Values.rucio.authHost }}"
-  RUCIO_ACCOUNT: "{{ .Values.rucio.account }}"
-  # CRIC
-  CRIC_API_URL: "{{ .Values.cric.apiUrl }}"
-  # iDDS
-  IDDS_HOST: "{{ .Values.idds.host }}"
-  # AWS
-  AWS_ACCESS_KEY_ATLAS: "{{ .Values.aws.accessKey }}"
-  AWS_SECRET_KEY_ATLAS: "{{ .Values.aws.secretKey }}"
-
   # HTTP proxy
   {{- if .Values.httpProxy }}
   http_proxy: "{{ .Values.httpProxy }}"
