@@ -163,6 +163,8 @@ spec:
               mountPath: /opt/harvester/sandbox
             - name: {{ include "harvester.fullname" . }}-auth
               mountPath: /opt/harvester/etc/auth
+            - name: {{ include "server.fullname" . }}-cric-jsons-volume
+               mountPath: /var/cric
           envFrom:
             - configMapRef:
                 name: {{ include "harvester.fullname" . }}-env
@@ -203,6 +205,10 @@ spec:
         - name: {{ include "harvester.fullname" . }}-condor-logs
           persistentVolumeClaim:
             claimName: {{ include "harvester.fullname" . }}-condor-logs
+        - name: {{ include "server.fullname" . }}-cric-jsons-volume
+          secret:
+              secretName: {{ .Values.global.secret }}-cric-jsons
+              optional: true
   {{- if .Values.persistentvolume.create }}
         - name: {{ include "harvester.fullname" . }}-logs
           persistentVolumeClaim:
