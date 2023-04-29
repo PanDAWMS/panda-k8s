@@ -298,7 +298,7 @@
     "prodSourceLabel": "managed",
     "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
     "templateQueueName": "production.pull",
-    "maxWorkers": 3000,
+    "maxWorkers": 6000,
     "maxNewWorkersPerCycle":50,
     "nQueueLimitWorkerMin":3,
     "nQueueLimitWorkerMax": 200,
