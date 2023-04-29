@@ -103,3 +103,4 @@ OC_TOKEN = "${OC_TOKEN}"
 OC_ENDPOINT = "openshift.cern.ch"
 OC_NAMESPACE = "bigpanda-mlflow"
 
+VERIFY_SSL = "/etc/grid-security/certificates"
