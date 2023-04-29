@@ -164,7 +164,7 @@ spec:
             - name: {{ include "harvester.fullname" . }}-auth
               mountPath: /opt/harvester/etc/auth
             - name: {{ include "harvester.fullname" . }}-cric-jsons-volume
-               mountPath: /var/cric
+              mountPath: /var/cric
           envFrom:
             - configMapRef:
                 name: {{ include "harvester.fullname" . }}-env
