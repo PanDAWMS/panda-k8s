@@ -1,0 +1,38 @@
+# Default values for idds.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+rest:
+  replicaCount: 2
+  iddsServer: usdf-panda-idds.slac.stanford.edu
+
+  # PV: For use cases that users are not allowed to create PV,
+  # please update class to corresponding storageclass and update create to false.
+  persistentvolume:
+    class: wekafs--sdf-k8s01
+    create: false
+    size: 50Gi
+
+  ingress:
+    enabled: true
+    hosts:
+      - domain: slac.stanford.edu
+        hostOverride: usdf-panda-idds.slac.stanford.edu
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: "default"
+        hosts:
+          - domain: slac.stanford.edu
+            hostOverride: usdf-panda-idds.slac.stanford.edu
+
+postgres:
+  enabled: false
+
+  # PV: For use cases that users are not allowed to create PV,
+  # please update class to corresponding storageclass and update create to false.
+  persistentvolume:
+    class: wekafs--sdf-k8s01
+    create: false
+    size: 50Gi

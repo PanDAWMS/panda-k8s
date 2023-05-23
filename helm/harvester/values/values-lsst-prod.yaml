@@ -1,0 +1,25 @@
+# Default values for harvester.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+harvester:
+  replicaCount: 3
+
+  persistentvolume:
+    class: wekafs--sdf-k8s01
+    create: false
+    selector: false
+    size: 300Gi
+
+  experiment: "lsst"
+  panda:
+    host: "panda-prod-server:443"
+  pilotcerts:
+    enabled: true
+
+mariadb:
+  persistentvolume:
+    class: wekafs--sdf-k8s01
+    create: false
+    selector: false
+    size: 50Gi
