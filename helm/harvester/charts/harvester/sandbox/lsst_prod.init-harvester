@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# copy certs and set permission
+# cp /opt/harvester/sandbox/*.pem /data/harvester/
+# chmod 600 /data/harvester/*.pem
+mkdir -p /data/harvester/run
+chmod 777 /data/harvester/run
+bash /opt/harvester/sandbox/lsst.vomsproxy-renew
+
+cd /data/harvester
+
+# gcloud config
+cp /opt/harvester/etc/auth/gcloud_config.tar.gz /data/harvester
+tar xzf gcloud_config.tar.gz
+chmod 777 -R /data/harvester/gcloud_config
+
+# k8s config
+cp /opt/harvester/etc/auth/k8s.tar.gz /data/harvester
+tar xzf k8s.tar.gz
+chmod 777 -R /data/harvester/k8s
+
+export CLOUDSDK_CONFIG=/data/harvester/gcloud_config
+export KUBECONFIG=/data/harvester/gcloud_config/.kube
+
+mkdir -p /data/harvester/gcloud_config_rubin/
+for queue in moderatemem highmem extra-highmem merge highmem-non-preempt developmentcluster extra-highmem-non-preempt
+do
+    export KUBECONFIG=/data/harvester/gcloud_config_rubin/$queue
+    gcloud container clusters get-credentials --region=us-central1 $queue
+    chmod og+rw $KUBECONFIG
+done
+
+export KUBECONFIG=/data/harvester/gcloud_config/.kube
+
