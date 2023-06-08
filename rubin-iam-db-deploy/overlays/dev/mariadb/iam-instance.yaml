@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: StatefulSet
+
+metadata:
+  name: mariadb-server
+  labels:
+    app.kubernetes.io/name: mariadb
+    app.kubernetes.io/component: server
+
+spec:
+  replicas: 1
+  serviceName: mariadb-server
+  podManagementPolicy: Parallel
+
+  updateStrategy:
+    type: RollingUpdate
+
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: mariadb
+      app.kubernetes.io/component: server
+
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: mariadb
+        app.kubernetes.io/component: server
+
+    spec:
+      enableServiceLinks: false
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 60
+
+      containers:
+        - name: server
+          image: mariadb:10.11
+          imagePullPolicy: IfNotPresent
+
+          env:
+            - name: MARIADB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-admin
+                  key: password
+            - name: MARIADB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-user
+                  key: username
+            - name: MARIADB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mariadb-user
+                  key: password
+
+          envFrom:
+            - configMapRef:
+                name: mariadb-server
+
+          ports:
+            - name: mysql
+              containerPort: 3306
+
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - -e
+                - exec mysqladmin status -uroot -p${MARIADB_ROOT_PASSWORD}
+
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - -e
+                - exec mysqladmin status -uroot -p${MARIADB_ROOT_PASSWORD}
+
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/mysql
+            - name: init
+              mountPath: /docker-entrypoint-initdb.d
+            - name: config
+              mountPath: /etc/mysql/conf.d
+
+      volumes:
+        - name: init
+          configMap:
+            name: mariadb-init
+            defaultMode: 0755
+        - name: config
+          configMap:
+            name: mariadb-config
+            defaultMode: 0755
+
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 50Gi

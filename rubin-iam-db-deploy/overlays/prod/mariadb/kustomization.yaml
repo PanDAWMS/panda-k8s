@@ -1,0 +1,65 @@
+namespace: panda-db
+
+resources:
+  - ns.yaml
+  # - service.yaml
+  #- iam-instance.yaml
+  - iam-mariadb.yaml
+  - iam-database.yaml
+  - iam-grant.yaml
+  - iam-user.yaml
+  - mariadb-cm.yaml
+
+configMapGenerator:
+  - name: mariadb-config
+    options:
+      labels:
+        app.kubernetes.io/name: mariadb
+        app.kubernetes.io/component: server
+    literals: []
+  - name: mariadb-init
+    options:
+      labels:
+        app.kubernetes.io/name: mariadb
+        app.kubernetes.io/component: server
+    literals: []
+  - name: mariadb-server
+    options:
+      labels:
+        app.kubernetes.io/name: mariadb
+        app.kubernetes.io/component: server
+    literals:
+      - MARIADB_DATABASE=iam
+  - name: mariadb-metrics
+    options:
+      labels:
+        app.kubernetes.io/name: mariadb
+        app.kubernetes.io/component: server
+    literals: []
+
+secretGenerator:
+  - name: mariadb-admin
+    options:
+      disableNameSuffixHash: true
+      labels:
+        app.kubernetes.io/name: mariadb
+        app.kubernetes.io/component: server
+    files:
+    - password=etc/.secrets/iamdb-root-password
+  - name: mariadb-user
+    options:
+      disableNameSuffixHash: true
+      labels:
+        app.kubernetes.io/name: mariadb
+        app.kubernetes.io/component: server
+    files:
+    - password=etc/.secrets/iamdb-iam-password
+    - username=etc/.secrets/iamdb-iam-username
+
+#images:
+#  - name: mariadb-server
+#    newName: library/mariadb
+#    newTag: "10.11.2"
+#  - name: mariadb-metrics
+#    newName: prom/mysqld-exporter
+#    newTag: "v0.14.0"
