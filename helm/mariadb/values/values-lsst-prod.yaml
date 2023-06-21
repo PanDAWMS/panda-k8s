@@ -1,6 +1,3 @@
-global:
-  secret: "panda-secrets-prod"
-  sub_secret_name: "iam-mariadb"
 
 main:
 
