@@ -10,8 +10,10 @@ main:
   enabled: true
 
   image:
-    repository: ghcr.io/wguanicedew/panda-k8s-mariadb
-    tag: "0.0.5"
+    # repository: ghcr.io/wguanicedew/panda-k8s-mariadb
+    # tag: "0.0.5"
+    repository: ghcr.io/wguanicedew/panda-k8s-pandawms-mariadb
+    tag: "0.1.5"
 
   database:
     name: "test-db"
