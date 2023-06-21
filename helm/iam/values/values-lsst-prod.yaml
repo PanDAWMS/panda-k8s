@@ -1,3 +1,6 @@
+global:
+  secret: "panda-secrets-prod"
+
 main:
   image:
       repository: ghcr.io/wguanicedew/iam-login-service
