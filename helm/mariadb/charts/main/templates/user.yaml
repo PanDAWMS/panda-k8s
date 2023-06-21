@@ -1,0 +1,51 @@
+
+{{- $secretName := printf "%s-%s" .Values.global.secret .Values.global.sub_secret_name -}}
+{{- $secret := (lookup "v1" "Secret" .Release.Namespace $secretName) -}}
+{{- $secretData := $secret.data -}}
+
+
+apiVersion: mariadb.mmontes.io/v1alpha1
+kind: User
+metadata:
+  name: {{ include "mariadb.fullname" . }}
+spec:
+  # If you want the user to be created with a different name than the resource name
+  # name: user-custom
+  mariaDbRef:
+    name: {{ include "mariadb.fullname" . }}
+
+  {{- if and $secretData ((hasKey $secretData "user_name")) }}
+  name: {{ index $secretData "user_name" | b64dec }}
+  {{- else }}
+  name: {{ .Values.database.user }}
+  {{- end }}
+
+  passwordSecretKeyRef:
+    name: {{ $secretName }}
+    key: user_password
+
+  # This field is immutable and defaults to 10
+  maxUserConnections: 20
+---
+apiVersion: mariadb.mmontes.io/v1alpha1
+kind: Grant
+metadata:
+  name: {{ include "mariadb.fullname" . }}
+spec:
+  mariaDbRef:
+    name: {{ include "mariadb.fullname" . }}
+  privileges:
+    # - "SELECT"
+    # - "INSERT"
+    # - "UPDATE"
+    - "ALL privileges"
+  database: "*"
+  table: "*"
+
+  {{- if and $secretData ((hasKey $secretData "user_name")) }}
+  username: {{ index $secretData "user_name" | b64dec }}
+  {{- else }}
+  username: {{ .Values.database.user }}
+  {{- end }}
+
+  grantOption: true
