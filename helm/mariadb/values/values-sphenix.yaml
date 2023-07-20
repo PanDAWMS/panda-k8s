@@ -1,6 +1,0 @@
-main:
-  # PV: For use cases that users are not allowed to create PV,
-  # please update class to corresponding storageclass and update create to false.
-  persistentvolume:
-    class: nas
-    create: false

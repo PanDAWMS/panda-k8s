@@ -1,9 +1,0 @@
-apiVersion: mariadb.mmontes.io/v1alpha1
-kind: Database
-metadata:
-  name: {{ .Values.database.name }}
-spec:
-  mariaDbRef:
-    name: {{ include "mariadb.fullname" . }}
-  characterSet: utf8
-  collate: utf8_general_ci
