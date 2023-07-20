@@ -4,7 +4,7 @@
 
 global:
   secret: "panda-secrets"
-  sub_secret_name: "iam-db"
+  sub_secret_name: "harvester-db"
 
 main:
   enabled: true
@@ -16,5 +16,5 @@ main:
     tag: "0.1.5"
 
   database:
-    name: "iam_db"
+    name: "test-db"
 

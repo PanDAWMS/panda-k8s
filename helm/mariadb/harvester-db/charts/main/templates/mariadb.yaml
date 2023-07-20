@@ -1,0 +1,120 @@
+
+{{- $secretName := printf "%s-%s" .Values.global.secret .Values.global.sub_secret_name -}}
+{{- $secret := (lookup "v1" "Secret" .Release.Namespace $secretName) -}}
+{{- $secretData := $secret.data -}}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "harvester-db.fullname" . }}
+data:
+  UMASK: "0660"
+  UMASK_DIR: "0750"
+
+  BACKUP_PATH: {{ .Values.backup.path }}
+
+---
+apiVersion: mariadb.mmontes.io/v1alpha1
+kind: MariaDB
+metadata:
+  name: {{ include "harvester-db.fullname" . }}
+  labels:
+      {{- include "harvester-db.labels" . | nindent 4 }}
+spec:
+  rootPasswordSecretKeyRef:
+    name: {{ $secretName }}
+    key: root_password
+
+  {{- if and $secretData ((hasKey $secretData "database_name")) }}
+  database: {{ index $secretData "database_name" | b64dec }}
+  {{- else }}
+  database: {{ .Values.database.name }}
+  {{- end }}
+
+  {{- if and $secretData ((hasKey $secretData "user_name")) }}
+  username: {{ index $secretData "user_name" | b64dec }}
+  {{- else }}
+  username: {{ .Values.database.user }}
+  {{- end }}
+
+  passwordSecretKeyRef:
+    name: {{ $secretName }}
+    key: user_password
+
+  image:
+    repository: {{ .Values.image.repository }}
+    tag: "{{ .Values.image.tag }}"
+    pullPolicy: {{ .Values.image.pullPolicy }}
+
+  port: 3306
+
+  replicas:  {{ .Values.replicaCount }}
+
+  volumeClaimTemplate:
+    resources:
+      requests:
+        storage: {{ .Values.persistentvolume.size }}
+    storageClassName: {{ .Values.persistentvolume.class }}
+    accessModes:
+      - ReadWriteOnce
+  volumes: 
+    - name: tmp
+      emptyDir: {}
+    - name: {{ include "harvester-db.fullname" . }}-id-rsa
+      secret:
+        secretName: {{ .Values.global.secret }}-{{ .Values.global.sub_secret_name }}-id-rsa
+  volumeMounts: 
+    - name: tmp
+      mountPath: /tmp
+    - name: {{ include "harvester-db.fullname" . }}-id-rsa
+      mountPath: /opt/conf/
+
+  myCnf: |
+    [mysqld]
+    bind-address=0.0.0.0
+    default_storage_engine=InnoDB
+    binlog_format=row
+    innodb_autoinc_lock_mode=2
+    max_allowed_packet=256M
+
+  # resources:
+  #   requests:
+  #     cpu: 100m
+  #     memory: 128Mi
+  #   limits:
+  #     cpu: 300m
+  #     memory: 512Mi
+
+  env:
+    - name: TZ
+      value: SYSTEM
+
+  envFrom:
+    - configMapRef:
+        name: {{ include "harvester-db.fullname" . }}
+
+  podSecurityContext:
+    runAsUser: 0
+
+  securityContext:
+    allowPrivilegeEscalation: false
+
+  livenessProbe:
+    exec:
+      command:
+        - bash
+        - -c
+        - mysql -u root -p"${MARIADB_ROOT_PASSWORD}" -e "SELECT 1;"
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
+
+  readinessProbe:
+    exec:
+      command:
+        - bash
+        - -c
+        - mysql -u root -p"${MARIADB_ROOT_PASSWORD}" -e "SELECT 1;"
+    initialDelaySeconds: 20
+    periodSeconds: 10
+    timeoutSeconds: 5
