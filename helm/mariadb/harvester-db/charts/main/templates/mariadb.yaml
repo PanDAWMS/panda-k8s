@@ -28,7 +28,11 @@ spec:
   {{- if and $secretData ((hasKey $secretData "database_name")) }}
   database: {{ index $secretData "database_name" | b64dec }}
   {{- else }}
+  {{- if .Values.database.name }}
+  database: {{ include "harvester-db.fullname" . }}  
+  {{- else }}
   database: {{ .Values.database.name }}
+  {{- end }}
   {{- end }}
 
   {{- if and $secretData ((hasKey $secretData "user_name")) }}
