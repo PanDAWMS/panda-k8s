@@ -1,6 +1,11 @@
-mariadb:
+
+main:
+
+  backup:
+    path: "lsstsvc1@sdfrome001.sdf.slac.stanford.edu:/sdf/data/rubin/panda_jobs/panda_backup/"
+
+  # PV: For use cases that users are not allowed to create PV,
+  # please update class to corresponding storageclass and update create to false.
   persistentvolume:
     class: wekafs--sdf-k8s01
-    create: false
-    selector: false
     size: 50Gi
