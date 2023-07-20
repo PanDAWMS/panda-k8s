@@ -130,7 +130,8 @@ spec:
           {{- if .Values.autoStart }}
           command: ["/bin/sh", "-c"]
           args:
-            - if [ ${HARVESTER_DB_HOST} != "localhost" ]; then while ! mysqladmin ping -h ${HARVESTER_DB_HOST} -p${MARIADB_PASSWORD} --silent; do sleep 1; done; fi;
+            - if [ ${HARVESTER_DB_HOST_ADD_INDEX} == "true" ]; then if [[ ${HARVESTER_DB_HOST} == *"."* ]]; then my_hostname="$( cut -d '.' -f 1 <<< "${HARVESTER_DB_HOST}" )"; my_domain="$( cut -d '.' -f 2- <<< "${HARVESTER_DB_HOST}" )"; export HARVESTER_DB_HOST=${my_hostname}-${HOSTNAME##*-}.${my_domain}; export MARIADB_DATABASE=${my_hostname}-${HOSTNAME##*-}; else if [ ${HARVESTER_DB_HOST} != "localhost" ]; then export HARVESTER_DB_HOST=${HARVESTER_DB_HOST}-${HOSTNAME##*-}; export MARIADB_DATABASE=${HARVESTER_DB_HOST}; fi; fi;  fi;
+              if [ ${HARVESTER_DB_HOST} != "localhost" ]; then while ! mysqladmin ping -h ${HARVESTER_DB_HOST} -p${MARIADB_PASSWORD} --silent; do sleep 1; done; fi;
               cp /opt/harvester/sandbox/* /data/harvester/;
               chmod +x /data/harvester/init-harvester;
               chmod +x /data/harvester/run-harvester-crons;
