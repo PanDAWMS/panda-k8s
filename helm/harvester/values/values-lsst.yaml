@@ -18,6 +18,7 @@ harvester:
     enabled: true
 
 mariadb:
+  enabled: false
   persistentvolume:
     class: wekafs--sdf-k8s01
     create: false
