@@ -1,7 +1,20 @@
+{{- $secretName := printf "%s-%s" .Values.global.secret .Values.global.sub_secret_name -}}
+{{- $secret := (lookup "v1" "Secret" .Release.Namespace $secretName) -}}
+{{- $secretData := $secret.data -}}
+
+
 apiVersion: mariadb.mmontes.io/v1alpha1
 kind: Database
 metadata:
+  {{- if and $secretData ((hasKey $secretData "database_name")) }}
+  name: {{ index $secretData "database_name" | b64dec }}
+  {{- else }}
+  {{- if .Values.database.name }}
   name: {{ .Values.database.name }}
+  {{- else }}
+  name: {{ include "harvester-db.fullname" . }}
+  {{- end }}
+  {{- end }}
 spec:
   mariaDbRef:
     name: {{ include "harvester-db.fullname" . }}

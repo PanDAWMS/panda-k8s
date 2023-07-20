@@ -25,16 +25,6 @@ spec:
     name: {{ $secretName }}
     key: root_password
 
-  {{- if and $secretData ((hasKey $secretData "database_name")) }}
-  database: {{ index $secretData "database_name" | b64dec }}
-  {{- else }}
-  {{- if .Values.database.name }}
-  database: {{ .Values.database.name }}
-  {{- else }}
-  database: {{ include "harvester-db.fullname" . }}  
-  {{- end }}
-  {{- end }}
-
   {{- if and $secretData ((hasKey $secretData "user_name")) }}
   username: {{ index $secretData "user_name" | b64dec }}
   {{- else }}
