@@ -21,5 +21,5 @@ helm install -n mariadb iam-db-dev helm/mariadb/iam-db/ -f helm/mariadb/iam-db/v
 ## install the harvester-db
 
 ```bash
-
+helm install -n mariadb harvester-db-dev-0 helm/mariadb/harvester-db/ -f helm/mariadb/harvester-db/values.yaml  -f helm/mariadb/harvester-db/values/values-lsst.yaml
 ```
