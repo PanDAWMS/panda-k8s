@@ -137,6 +137,7 @@ spec:
               cp /opt/harvester/sandbox/* /data/harvester/;
               chmod +x /data/harvester/init-harvester;
               chmod +x /data/harvester/run-harvester-crons;
+              echo "starting harvester service";
               {{- if .Values.noRoot }}
               /opt/harvester/etc/rc.d/init.d/run-harvester-services;
               {{- else }}
@@ -145,6 +146,7 @@ spec:
               ln -s /var/log/condor_logs /var/www/html/;
               runuser -u atlpan -g zp -- /opt/harvester/etc/rc.d/init.d/run-harvester-services;
               {{- end }}
+              echo "done";
               sleep infinity & wait
           {{- end }}
           ports:
