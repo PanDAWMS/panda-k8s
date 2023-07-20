@@ -3,7 +3,7 @@
     "engine": "mariadb",
     "useMySQLdb": true,
     "syncMaxWorkerID": true,
-    "schema": "harvester",
+    "schema": "${MARIADB_DATABASE}",
     "host": "${HARVESTER_DB_HOST}",
     "password": "${MARIADB_PASSWORD}",
     "verbose": true
