@@ -6,7 +6,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "mariadb.fullname" . }}
+  name: {{ include "iam-db.fullname" . }}
 data:
   UMASK: "0660"
   UMASK_DIR: "0750"
@@ -17,9 +17,9 @@ data:
 apiVersion: mariadb.mmontes.io/v1alpha1
 kind: MariaDB
 metadata:
-  name: {{ include "mariadb.fullname" . }}
+  name: {{ include "iam-db.fullname" . }}
   labels:
-      {{- include "mariadb.labels" . | nindent 4 }}
+      {{- include "iam-db.labels" . | nindent 4 }}
 spec:
   rootPasswordSecretKeyRef:
     name: {{ $secretName }}
@@ -58,13 +58,13 @@ spec:
   volumes: 
     - name: tmp
       emptyDir: {}
-    - name: {{ include "mariadb.fullname" . }}-id-rsa
+    - name: {{ include "iam-db.fullname" . }}-id-rsa
       secret:
         secretName: {{ .Values.global.secret }}-{{ .Values.global.sub_secret_name }}-id-rsa
   volumeMounts: 
     - name: tmp
       mountPath: /tmp
-    - name: {{ include "mariadb.fullname" . }}-id-rsa
+    - name: {{ include "iam-db.fullname" . }}-id-rsa
       mountPath: /opt/conf/
 
   myCnf: |
@@ -89,7 +89,7 @@ spec:
 
   envFrom:
     - configMapRef:
-        name: {{ include "mariadb.fullname" . }}
+        name: {{ include "iam-db.fullname" . }}
 
   podSecurityContext:
     runAsUser: 0

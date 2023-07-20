@@ -7,12 +7,12 @@
 apiVersion: mariadb.mmontes.io/v1alpha1
 kind: User
 metadata:
-  name: {{ include "mariadb.fullname" . }}
+  name: {{ include "iam-db.fullname" . }}
 spec:
   # If you want the user to be created with a different name than the resource name
   # name: user-custom
   mariaDbRef:
-    name: {{ include "mariadb.fullname" . }}
+    name: {{ include "iam-db.fullname" . }}
 
   {{- if and $secretData ((hasKey $secretData "user_name")) }}
   name: {{ index $secretData "user_name" | b64dec }}
@@ -30,10 +30,10 @@ spec:
 apiVersion: mariadb.mmontes.io/v1alpha1
 kind: Grant
 metadata:
-  name: {{ include "mariadb.fullname" . }}
+  name: {{ include "iam-db.fullname" . }}
 spec:
   mariaDbRef:
-    name: {{ include "mariadb.fullname" . }}
+    name: {{ include "iam-db.fullname" . }}
   privileges:
     # - "SELECT"
     # - "INSERT"
