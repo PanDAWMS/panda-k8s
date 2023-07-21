@@ -138,11 +138,13 @@ spec:
               chmod +x /data/harvester/run-harvester-crons;
               echo "starting harvester service";
               {{- if .Values.noRoot }}
+              echo "source /data/harvester/setup-harvester" >> ~/.bash_profile
               /opt/harvester/etc/rc.d/init.d/run-harvester-services;
               {{- else }}
               chmod -R 777 /var/log/panda;
               chmod -R 777 /var/log/condor_logs;
               ln -s /var/log/condor_logs /var/www/html/;
+              echo "source /data/harvester/setup-harvester" >>/home/atlpan/.bash_profile
               runuser -u atlpan -g zp -- /opt/harvester/etc/rc.d/init.d/run-harvester-services;
               {{- end }}
               echo "done";
