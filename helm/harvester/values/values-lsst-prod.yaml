@@ -12,9 +12,9 @@ harvester:
     selector: false
     size: 300Gi
 
-  experiment: "lsst"
+  experiment: "lsst_prod"
   panda:
-    host: "panda-prod-server:443"
+    host: "panda-server:443"
   pilotcerts:
     enabled: true
 

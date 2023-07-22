@@ -22,11 +22,11 @@
       "useSpool": false,
       "useAtlasGridCE": false,
       "useAtlasAGIS": true,
-      "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot.sdf",
+      "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot.sdf",
       "executableFile": "/opt/harvester/sandbox/lsst.runpilot2-wrapper.sh",
       "x509UserProxy": "/data/harvester/run/x509up_u25606",
       "logDir": "/var/log/condor_logs/${hostname}",
-      "logBaseURL": "https://rubin-panda-bigmon-dev.slac.stanford.edu:8443/condor_logs/${hostname}",
+      "logBaseURL": "https://usdf-panda-bigmon.slac.stanford.edu:8443/condor_logs/${hostname}",
       "condorPool": "${hostname}",
       "nProcesses": 8
     },
@@ -87,11 +87,11 @@
       "useSpool": false,
       "useAtlasGridCE": false,
       "useAtlasAGIS": true,
-      "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot.sdf",
+      "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot.sdf",
       "executableFile": "/opt/harvester/sandbox/lsst.runpilot2-wrapper.sh",
       "x509UserProxy": "/data/harvester/run/x509up_u25606",
       "logDir": "/var/log/condor_logs/$hostname",
-      "logBaseURL": "https://rubin-panda-bigmon-dev.slac.stanford.edu:8443/condor_logs/$hostname",
+      "logBaseURL": "https://usdf-panda-bigmon.slac.stanford.edu:8443/condor_logs/$hostname",
       "condorPool": "${hostname}",
       "nProcesses": 8
     },
@@ -173,7 +173,7 @@
           "x509UserProxy": "/data/harvester/run/x509up_u25606",    
           "proxySecretPath": "/data/harvester/run/x509up_u25606",
           "logDir": "/var/log/condor_logs/$hostname",
-          "logBaseURL": "https://rubin-panda-bigmon-dev.slac.stanford.edu:8443/condor_logs/$hostname",
+          "logBaseURL": "https://usdf-panda-bigmon.slac.stanford.edu:8443/condor_logs/$hostname",
           "cpuAdjustRatio": 90,
           "memoryAdjustRatio": 100,
           "nProcesses": 4
@@ -224,7 +224,7 @@
           "x509UserProxy": "/data/harvester/run/x509up_u25606",
           "proxySecretPath": "/data/harvester/run/x509up_u25606",
           "logDir": "/var/log/condor_logs/$hostname",
-          "logBaseURL": "https://rubin-panda-bigmon-dev.slac.stanford.edu:8443/condor_logs/$hostname",
+          "logBaseURL": "https://usdf-panda-bigmon.slac.stanford.edu:8443/condor_logs/$hostname",
           "cpuAdjustRatio": 90,
           "memoryAdjustRatio": 100,
           "nProcesses": 4
@@ -292,7 +292,7 @@
 	  "ceARCGridType": "arc",
 	  "ceHostname": "sdfarcce001.slac.stanford.edu",
 	  "ceEndpoint": "https://sdfarcce001.slac.stanford.edu:9443/arex/rest/1.0",
-          "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot_pull.sdf"
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull.sdf"
       }
   },
 
@@ -319,7 +319,7 @@
 	  "ceHostname": ["sdfarcce001.slac.stanford.edu", "sdfarcce001.slac.stanford.edu"],
           "ceEndpoint": ["https://sdfarcce001.slac.stanford.edu:9443/arex/rest/1.0",
 		         "https://sdfarcce001.slac.stanford.edu:9444/arex/rest/1.0"],
-          "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot_pull.sdf"
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull.sdf"
       }
   },
 
@@ -346,7 +346,7 @@
 	  "ceHostname": ["sdfarcce001.slac.stanford.edu", "sdfarcce001.slac.stanford.edu"],
           "ceEndpoint": ["https://sdfarcce001.slac.stanford.edu:9443/arex/rest/1.0",
                          "https://sdfarcce001.slac.stanford.edu:9444/arex/rest/1.0"],
-          "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot_pull.sdf"
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull.sdf"
       }
   },
 
@@ -373,7 +373,7 @@
 	  "ceHostname": ["sdfarcce001.slac.stanford.edu", "sdfarcce001.slac.stanford.edu"],
           "ceEndpoint": ["https://sdfarcce001.slac.stanford.edu:9443/arex/rest/1.0",
                          "https://sdfarcce001.slac.stanford.edu:9444/arex/rest/1.0"],
-          "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot_pull.sdf"
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull.sdf"
       }
   },
 
@@ -400,7 +400,7 @@
 	  "ceHostname": ["sdfarcce001.slac.stanford.edu", "sdfarcce001.slac.stanford.edu"],
           "ceEndpoint": ["https://sdfarcce001.slac.stanford.edu:9443/arex/rest/1.0",
                          "https://sdfarcce001.slac.stanford.edu:9444/arex/rest/1.0"],
-          "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot_push_96.sdf"
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_push_96.sdf"
       }
   },
 
@@ -427,7 +427,7 @@
 	  "ceHostname": ["sdfarcce001.slac.stanford.edu", "sdfarcce001.slac.stanford.edu"],
           "ceEndpoint": ["https://sdfarcce001.slac.stanford.edu:9443/arex/rest/1.0",
                          "https://sdfarcce001.slac.stanford.edu:9444/arex/rest/1.0"],
-          "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot_push.sdf"
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_push.sdf"
       }
   },
 
@@ -450,7 +450,7 @@
           "ceARCGridType": "arc",
 	  "ceHostname": "sdfarcce001.slac.stanford.edu",
           "ceEndpoint": "https://arcce1.slac.stanford.edu:9443/arex/rest/1.0",
-          "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot_pull.sdf"
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull.sdf"
       }
   },
 
@@ -473,7 +473,7 @@
           "ceARCGridType": "arc",
 	  "ceHostname": "sdfarcce001.slac.stanford.edu",
           "ceEndpoint": "https://arcce1.slac.stanford.edu:9443/arex/rest/1.0",
-          "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot_push.sdf"
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_push.sdf"
       }
   },
 
@@ -496,7 +496,7 @@
           "ceARCGridType": "arc",
 	  "ceHostname": "sdfarcce001.slac.stanford.edu",
           "ceEndpoint": "https://ccarccelsst01.in2p3.fr:9443/arex/rest/1.0",
-          "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot_pull.sdf"
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull.sdf"
       }
   },
 
@@ -519,7 +519,7 @@
           "ceARCGridType": "arc",
           "ceHostname": "grendel.hec.lancs.ac.uk",
           "ceEndpoint": "https://grendel.hec.lancs.ac.uk:443/arex/rest/1.0",
-          "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot_pull.sdf"
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull.sdf"
       }
   },
 
@@ -538,7 +538,7 @@
 
       "submitter": {
           "useAtlasGridCE": true,
-          "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot.sdf"
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot.sdf"
       }
   },
 

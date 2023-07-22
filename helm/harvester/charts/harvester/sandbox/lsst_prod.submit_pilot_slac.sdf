@@ -28,8 +28,8 @@ grid_resource = arc https://arcce1.slac.stanford.edu:9443/arex/rest/1.0
 nordugrid_rsl = (queue = rubin)(runtimeenvironment = ENV/PROXY)(jobname = arc_pilot)(count = {nCoreTotal})(countpernode = {nCoreTotal})(memory = {requestRamPerCore})(walltime = {requestWalltime})(cputime = {requestCputime})(environment = (PANDA_JSID harvester-{harvesterID})(HARVESTER_ID {harvesterID})(HARVESTER_WORKER_ID {workerID})(GTAG {gtag})(APFMON http://apfmon.lancs.ac.uk/api)(APFFID {harvesterID})(APFCID $(Cluster).$(Process)))
 
 arc_resources = <SlotRequirement>  \
-                <NumberOfSlots>1</NumberOfSlots> \
-                    <SlotsPerHost>1</SlotsPerHost> \
+                <NumberOfSlots>{nCoreTotal}</NumberOfSlots> \
+                    <SlotsPerHost>{nCoreTotal}</SlotsPerHost> \
                 </SlotRequirement> \
                 <QueueName>rubin</QueueName> \
                 <IndividualPhysicalMemory>{requestRamBytes}</IndividualPhysicalMemory>

@@ -31,8 +31,8 @@ grid_resource = arc {ceEndpoint}
 nordugrid_rsl = (queue = {ceQueueName})(runtimeenvironment = ENV/PROXY)(jobname = arc_pilot)(count = {nCoreTotal})(countpernode = {nCoreTotal})(memory = {requestRamPerCore})(walltime = {requestWalltime})(cputime = {requestCputime})(environment = (PANDA_JSID harvester-{harvesterID})(HARVESTER_ID {harvesterID})(HARVESTER_WORKER_ID {workerID})(GTAG {gtag})(APFMON http://apfmon.lancs.ac.uk/api)(APFFID {harvesterID})(APFCID $(Cluster).$(Process)))
 
 arc_resources = <SlotRequirement>  \
-                <NumberOfSlots>1</NumberOfSlots> \
-                    <SlotsPerHost>1</SlotsPerHost> \
+                <NumberOfSlots>{nCoreTotal}</NumberOfSlots> \
+                    <SlotsPerHost>{nCoreTotal}</SlotsPerHost> \
                 </SlotRequirement> \
                 <QueueName>{ceQueueName}</QueueName> \
                 <IndividualPhysicalMemory>{requestRamBytes}</IndividualPhysicalMemory> \
