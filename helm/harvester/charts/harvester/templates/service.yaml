@@ -4,6 +4,8 @@ metadata:
   name: {{ include "harvester.fullname" . }}
   labels:
     {{- include "harvester.labels" . | nindent 4 }}
+  annotations:
+    nginx.ingress.kubernetes.io/secure-backends: "false"
 spec:
   type: {{ .Values.service.type }}
   ports:
