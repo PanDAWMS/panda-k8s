@@ -36,6 +36,43 @@ spec:
       {{- include "harvester.selectorLabels" . | nindent 6 }}
   {{- end }}
 ---
+# harvester wdirs
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: {{ include "harvester.fullname" . }}-wdirs
+  labels:
+      {{- include "harvester.labels-wdirs" . | nindent 4 }}
+spec:
+  storageClassName: {{ .Values.persistentvolume.class }}
+  capacity:
+    storage: {{ .Values.persistentvolume.size }}
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: {{ .Values.persistentvolume.path }}
+---
+# pv claim
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "harvester.fullname" . }}-wdirs
+  labels:
+    {{- include "harvester.labels-wdirs" . | nindent 4 }}
+spec:
+  storageClassName: {{ .Values.persistentvolume.class }}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.persistentvolume.size }}
+  {{- if .Values.persistentvolume.selector }}
+  selector:
+    matchLabels:
+      {{- include "harvester.selectorLabels-wdirs" . | nindent 6 }}
+  {{- end }}
+---
 {{- end }}
 # pv for condor logs
 {{- if .Values.persistentvolume.create }}
@@ -157,6 +194,8 @@ spec:
           volumeMounts:
             - name: {{ include "harvester.fullname" . }}-logs
               mountPath: /var/log/panda/
+            - name: {{ include "harvester.fullname" . }}-wdirs
+              mountPath: /var/log/harvester_wdirs/
             - name: {{ include "harvester.fullname" . }}-condor-logs
               mountPath: /var/log/condor_logs/
             - name: {{ include "harvester.fullname" . }}-configjson
@@ -217,10 +256,22 @@ spec:
         - name: {{ include "harvester.fullname" . }}-logs
           persistentVolumeClaim:
             claimName: {{ include "harvester.fullname" . }}
+        - name: {{ include "harvester.fullname" . }}-wdirs
+          persistentVolumeClaim:
+            claimName: {{ include "harvester.fullname" . }}-wdirs
   {{- else }}
   volumeClaimTemplates:
     - metadata:
         name: {{ include "harvester.fullname" . }}-logs
+      spec:
+        storageClassName: {{ .Values.persistentvolume.class }}
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: {{ .Values.persistentvolume.size }}
+    - metadata:
+        name: {{ include "harvester.fullname" . }}-wdirs
       spec:
         storageClassName: {{ .Values.persistentvolume.class }}
         accessModes:
