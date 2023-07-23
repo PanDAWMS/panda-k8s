@@ -46,7 +46,7 @@
       "name": "SharedFileMessenger",
       "module": "pandaharvester.harvestermessenger.shared_file_messenger",
       "jobSpecFileFormat": "cgi",
-      "accessPoint": "/var/log/panda/harvester_wdirs/${harvesterID}/${_workerID_3.2}/${_workerID_1.0}/${workerID}"
+      "accessPoint": "/var/log/harvester_wdirs/${harvesterID}/${_workerID_3.2}/${_workerID_1.0}/${workerID}"
     },
     "stager": {
       "name": "DummyStager",
@@ -112,7 +112,7 @@
       "name": "SharedFileMessenger",
       "module": "pandaharvester.harvestermessenger.shared_file_messenger",
       "jobSpecFileFormat": "cgi",
-      "accessPoint": "/var/log/panda/harvester_wdirs/${harvesterID}/${_workerID_3.2}/${_workerID_1.0}/${workerID}"
+      "accessPoint": "/var/log/harvester_wdirs/${harvesterID}/${_workerID_3.2}/${_workerID_1.0}/${workerID}"
     },
     "stager": {
       "name": "DummyStager",
@@ -161,7 +161,7 @@
           "name":"SharedFileMessenger",
           "module":"pandaharvester.harvestermessenger.shared_file_messenger",
           "jobSpecFileFormat":"cgi",
-          "accessPoint":"/var/log/panda/harvester_wdirs/${harvesterID}/${_workerID_3.2}/${_workerID_1.0}/${workerID}"
+          "accessPoint":"/var/log/harvester_wdirs/${harvesterID}/${_workerID_3.2}/${_workerID_1.0}/${workerID}"
       },
       "stager":{
           "name":"DummyStager",
@@ -240,7 +240,7 @@
           "name":"SharedFileMessenger",
           "module":"pandaharvester.harvestermessenger.shared_file_messenger",
           "jobSpecFileFormat":"cgi",
-          "accessPoint":"/var/log/panda/harvester_wdirs/${harvesterID}/${_workerID_3.2}/${_workerID_1.0}/${workerID}"
+          "accessPoint":"/var/log/harvester_wdirs/${harvesterID}/${_workerID_3.2}/${_workerID_1.0}/${workerID}"
       },
       "stager":{
           "name":"DummyStager",
