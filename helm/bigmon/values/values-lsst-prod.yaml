@@ -19,7 +19,7 @@ main:
         paths:
           - path: /condor_logs
             pathType: Prefix
-            serviceName: harvester-dev
+            serviceName: harvester
             servicePort: 443
           - path: /
             pathType: Prefix
