@@ -20,7 +20,7 @@ main:
           - path: /condor_logs
             pathType: Prefix
             serviceName: harvester-dev
-            servicePort: 80
+            servicePort: 443
           - path: /
             pathType: Prefix
     tls:
