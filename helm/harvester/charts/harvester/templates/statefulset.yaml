@@ -190,6 +190,9 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+            - name: http
+              containerPort: 8443
+              protocol: TCP
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
@@ -209,6 +212,8 @@ spec:
               mountPath: /opt/harvester/etc/auth
             - name: {{ include "harvester.fullname" . }}-cric-jsons-volume
               mountPath: /var/cric
+            - name: {{ include "harvester.fullname" . }}-certs
+              mountPath: /opt/harvester/etc/certs
           envFrom:
             - configMapRef:
                 name: {{ include "harvester.fullname" . }}-env
@@ -253,6 +258,9 @@ spec:
           secret:
               secretName: {{ .Values.global.secret }}-cric-jsons
               optional: true
+        - name: {{ include "harvester.fullname" . }}-certs
+          secret:
+              secretName: {{ .Values.global.secret }}-harvester-certs
   {{- if .Values.persistentvolume.create }}
         - name: {{ include "harvester.fullname" . }}-logs
           persistentVolumeClaim:
