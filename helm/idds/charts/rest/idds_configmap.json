@@ -22,7 +22,8 @@
                                                       "destination": "${IDDS_RECEIVER_DESTINATION}",
                                                       "username": "${IDDS_RECEIVER_USERNAME}",
                                                       "password": "${IDDS_RECEIVER_PASSWORD}",
-                                                      "broker_timeout": 600}}
+                                                      "broker_timeout": 600}},
+	     "domapandawork.poll_panda_jobs_chunk_size": 2000
 	    },
          "conductor":
             {"threshold_to_release_messages": 1000,
