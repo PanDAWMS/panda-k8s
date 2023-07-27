@@ -4,7 +4,8 @@
     "isTemplateQueue": true,
     "prodSourceLabel": "managed",
     "nQueueLimitWorkerMin": 100,
-    "nQueueLimitWorkerMax": 10000,
+    "nQueueLimitWorker": 200,
+    "nQueueLimitWorkerMax": 200,
     "maxWorkers": 10,
     "maxNewWorkersPerCycle": 100,
     "mapType": "NoJob",
@@ -66,7 +67,9 @@
   "production.push": {
     "isTemplateQueue": true,
     "prodSourceLabel": "managed",
-    "nQueueLimitWorker": 10000,
+    "nQueueLimitWorkerMin": 100,
+    "nQueueLimitWorker": 200,
+    "nQueueLimitWorkerMax": 200,
     "nQueueLimitJobRatio":5000,
     "nQueueLimitJobMax": 1000,
     "nQueueLimitJobMin":3,
@@ -206,7 +209,9 @@
       "prodSourceLabel":"managed",
       "nQueueLimitJobMax":10000,
       "nQueueLimitJob": 10000,
-      "nQueueLimitWorker":10000,
+      "nQueueLimitWorkerMin": 100,
+      "nQueueLimitWorker": 200,
+      "nQueueLimitWorkerMax": 200,
       "maxWorkers":50000,
       "maxNewWorkersPerCycle":500,
       "mapType":"OneToOne",
@@ -278,11 +283,11 @@
       "maxWorkers": 3000,
       "maxNewWorkersPerCycle":50,
       "nQueueLimitWorkerMin":3,
-      "nQueueLimitWorkerMax": 100,
+      "nQueueLimitWorkerMax": 200,
       "nQueueLimitJobMax":3500,
       "nQueueLimitJobMin":1000,
       "nQueueLimitJob": 3500,
-      "nQueueLimitWorker":10000,
+      "nQueueLimitWorker": 200,
 
       "submitter": {
 	  "nCore": 1,
@@ -308,7 +313,7 @@
     "nQueueLimitJobMax":4500,
     "nQueueLimitJobMin":1200,
     "nQueueLimitJob": 4500,
-    "nQueueLimitWorker":100000,
+    "nQueueLimitWorker":200,
 
     "submitter": {
 	  "nCore": 1,
@@ -331,11 +336,11 @@
     "maxWorkers": 3000,
     "maxNewWorkersPerCycle":50,
     "nQueueLimitWorkerMin":3,
-    "nQueueLimitWorkerMax": 100,
+    "nQueueLimitWorkerMax": 200,
     "nQueueLimitJobMax":3500,
     "nQueueLimitJobMin":1200,
     "nQueueLimitJob": 3500,
-    "nQueueLimitWorker":10000,
+    "nQueueLimitWorker":200,
 
     "submitter": {
 	  "nCore": 1,
@@ -358,11 +363,11 @@
     "maxWorkers": 2500,
     "maxNewWorkersPerCycle":50,
     "nQueueLimitWorkerMin":3,
-    "nQueueLimitWorkerMax": 60,
+    "nQueueLimitWorkerMax": 200,
     "nQueueLimitJobMax":3000,
     "nQueueLimitJobMin":1200,
     "nQueueLimitJob": 3000,
-    "nQueueLimitWorker":10000,
+    "nQueueLimitWorker":200,
 
     "submitter": {
 	  "nCore": 1,
@@ -385,11 +390,11 @@
     "maxWorkers": 1500,
     "maxNewWorkersPerCycle":50,
     "nQueueLimitWorkerMin":3,
-    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitWorkerMax": 200,
     "nQueueLimitJobMax":2000,
     "nQueueLimitJobMin":600,
     "nQueueLimitJob": 2000,
-    "nQueueLimitWorker":10000,
+    "nQueueLimitWorker":200,
 
     "submitter": {
 	  "nCore": 1,
@@ -412,11 +417,11 @@
     "maxWorkers": 200,
     "maxNewWorkersPerCycle":50,
     "nQueueLimitWorkerMin":3,
-    "nQueueLimitWorkerMax": 100,
+    "nQueueLimitWorkerMax": 200,
     "nQueueLimitJobMax":300,
     "nQueueLimitJobMin":1200,
     "nQueueLimitJob": 300,
-    "nQueueLimitWorker":10000,
+    "nQueueLimitWorker":200,
 
     "submitter": {
 	  "nCore": 1,
@@ -439,10 +444,10 @@
     "maxWorkers": 700,
     "maxNewWorkersPerCycle":20,
     "nQueueLimitWorkerMin":3,
-    "nQueueLimitWorkerMax": 20,
-    "nQueueLimitJobMax":10000,
+    "nQueueLimitWorkerMax": 200,
+    "nQueueLimitJobMax":1200,
     "nQueueLimitJobMin":1200,
-    "nQueueLimitJob": 10000,
+    "nQueueLimitJob": 1000,
     "nQueueLimitWorker":50,
 
     "submitter": {
@@ -462,11 +467,11 @@
     "maxWorkers": 500,
     "maxNewWorkersPerCycle":10,
     "nQueueLimitWorkerMin":3,
-    "nQueueLimitWorkerMax": 20,
-    "nQueueLimitJobMax":10000,
+    "nQueueLimitWorkerMax": 200,
+    "nQueueLimitJobMax":700,
     "nQueueLimitJobMin":1200,
-    "nQueueLimitJob": 10000,
-    "nQueueLimitWorker":50,
+    "nQueueLimitJob": 700,
+    "nQueueLimitWorker":200,
 
     "submitter": {
           "ceQueueName": "rubin_himem",
@@ -485,11 +490,11 @@
       "maxWorkers": 3000,
       "maxNewWorkersPerCycle":20,
       "nQueueLimitWorkerMin":3,
-      "nQueueLimitWorkerMax": 100,
-      "nQueueLimitJobMax":10000,
+      "nQueueLimitWorkerMax": 200,
+      "nQueueLimitJobMax":3500,
       "nQueueLimitJobMin":1000,
-      "nQueueLimitJob": 10000,
-      "nQueueLimitWorker":10000,
+      "nQueueLimitJob": 3500,
+      "nQueueLimitWorker":200,
 
       "submitter": {
           "ceQueueName": "htc",
@@ -508,11 +513,11 @@
       "maxWorkers": 1000,
       "maxNewWorkersPerCycle":20,
       "nQueueLimitWorkerMin":3,
-      "nQueueLimitWorkerMax": 100,
-      "nQueueLimitJobMax":10000,
+      "nQueueLimitWorkerMax": 200,
+      "nQueueLimitJobMax":1200,
       "nQueueLimitJobMin":100,
-      "nQueueLimitJob": 10000,
-      "nQueueLimitWorker":10000,
+      "nQueueLimitJob": 1200,
+      "nQueueLimitWorker":200,
 
       "submitter": {
 	  "ceQueueName": "grid7",
@@ -530,11 +535,11 @@
       "templateQueueName": "production.push",
       "maxWorkers": 1,
       "nQueueLimitWorkerMin":100,
-      "nQueueLimitWorkerMax": 500,
-      "nQueueLimitJobMax":10000,
+      "nQueueLimitWorkerMax": 200,
+      "nQueueLimitJobMax":1000,
       "nQueueLimitJobMin":100,
-      "nQueueLimitJob": 10000,
-      "nQueueLimitWorker":10000,
+      "nQueueLimitJob": 1000,
+      "nQueueLimitWorker":200,
 
       "submitter": {
           "useAtlasGridCE": true,
