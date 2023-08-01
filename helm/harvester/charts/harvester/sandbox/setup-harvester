@@ -12,6 +12,10 @@ if [ ${HARVESTER_DB_HOST_ADD_INDEX} == "true" ]; then
     fi
 fi
 
-export HARVESTER_ID=${HARVESTER_ID}-${HOSTNAME##*-}
+if [[ -z "${ORIG_HARVESTER_ID}" ]]; then
+    export ORIG_HARVESTER_ID=${HARVESTER_ID}
+fi
+
+export HARVESTER_ID=${ORIG_HARVESTER_ID}-${HOSTNAME##*-}
 export CLOUDSDK_CONFIG=/data/harvester/gcloud_config
 export KUBECONFIG=/data/harvester/gcloud_config/.kube
