@@ -158,11 +158,14 @@ function get_piloturl() {
   # pilottar=file:///sdf/group/rubin/sandbox/panda_env_pilot/pilot3-3.6.0.48.tar.gz
 
   # pilottar=file:///sdf/data/rubin/panda_jobs/panda_env_pilot/pilot3-3.6.0.103_add_wait.tar.gz
-  pilottar_local=/sdf/data/rubin/panda_jobs/panda_env_pilot/pilot3-3.4.1.36-add_wait.tar.gz
+  pilottar_local=/sdf/data/rubin/panda_jobs/panda_env_pilot/pilot3-3.4.1.36-add_wait_s3.tar.gz
   # pilottar=file:///sdf/data/rubin/panda_jobs/panda_env_pilot/pilot3-3.6.0.106_add_wait.tar.gz
   if [[ -f ${pilottar_local} ]]; then
+      log "${pilottar_local} exist. Use it"
       pilottar="file://"${pilottar_local}
+      log "pilottar=${pilottar}"
   fi
+  log "pilottar=${pilottar}"
   echo ${pilottar}
 }
 
@@ -393,7 +396,7 @@ function main() {
   check_cvmfs
   pandaenvdir=$(get_pandaenvdir_local)
   log "local pandaenvdir: ${pandaenvdir}"
-  if [[ ! -f ${pandaenvdir} ]]; then
+  if [[ ! -d ${pandaenvdir} ]]; then
     pandaenvdir=$(get_pandaenvdir)
     log "pandaenvdir: ${pandaenvdir}"
   fi
