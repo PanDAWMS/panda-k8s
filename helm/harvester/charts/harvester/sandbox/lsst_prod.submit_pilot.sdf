@@ -1,4 +1,6 @@
-executable = /opt/harvester/sandbox/lsst_prod.runpilot2-wrapper.sh
+# executable = /opt/harvester/sandbox/lsst.runpilot2-wrapper.sh
+executable = /opt/harvester/sandbox/lsst_prod.rubin-wrapper.sh
+
 #arguments = -s {computingSite} -r {computingSite} -q {pandaQueueName} -j {prodSourceLabel} -i {pilotType} -t -w generic --pilot-user generic --url https://sphenix-pandaserver.apps.rcf.bnl.gov -p 443 -d --harvester-submit-mode PUSH --allow-same-user=False --input-destination-dir /sphenix/lustre01/sphnxpro/rucio --job-type={jobType} {pilotResourceTypeOption} {pilotUrlOption} --pilotversion {pilotVersion} {pilotPythonOption}
 
 # arguments = "-s {computingSite} -r {computingSite} -q {pandaQueueName} -j {prodSourceLabel} -i {pilotType} -w generic --pilot-user rubin --url https://pandaserver-doma.cern.ch -d --harvester-submit-mode PUSH {pilotResourceTypeOption} --queuedata-url http://pandaserver-doma.cern.ch:25080/cache/schedconfig/{computingSite}.all.json --storagedata-url https://datalake-cric.cern.ch/api/atlas/ddmendpoint/query/?json --pilotversion 3  --pythonversion 3 --localpy"

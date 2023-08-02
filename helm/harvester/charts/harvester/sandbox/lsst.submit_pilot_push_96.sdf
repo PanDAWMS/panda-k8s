@@ -1,4 +1,5 @@
-executable = /opt/harvester/sandbox/rubin-wrapper.sh
+# executable = /opt/harvester/sandbox/lsst.runpilot2-wrapper.sh
+executable = /opt/harvester/sandbox/lsst.rubin-wrapper.sh
 
 #arguments = -s {computingSite} -r {computingSite} -q {pandaQueueName} -j {prodSourceLabel} -i {pilotType} -t -w generic --pilot-user generic --url https://sphenix-pandaserver.apps.rcf.bnl.gov -p 443 -d --harvester-submit-mode PUSH --allow-same-user=False --input-destination-dir /sphenix/lustre01/sphnxpro/rucio --job-type={jobType} {pilotResourceTypeOption} {pilotUrlOption} --pilotversion {pilotVersion} {pilotPythonOption}
 
