@@ -161,11 +161,11 @@ function get_piloturl() {
   pilottar_local=/sdf/data/rubin/panda_jobs/panda_env_pilot/pilot3-3.4.1.36-add_wait.tar.gz
   # pilottar=file:///sdf/data/rubin/panda_jobs/panda_env_pilot/pilot3-3.6.0.106_add_wait.tar.gz
   if [[ -f ${pilottar_local} ]]; then
-      log "${pilottar_local} exist. Use it"
+      # log "${pilottar_local} exist. Use it"
       pilottar="file://"${pilottar_local}
-      log "pilottar=${pilottar}"
+      # log "pilottar=${pilottar}"
   fi
-  log "pilottar=${pilottar}"
+  # log "pilottar=${pilottar}"
   echo ${pilottar}
 }
 
