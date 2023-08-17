@@ -8,3 +8,11 @@ activemq:
     path: "/mnt/activemq-data"
     size: 50Gi
     selector: false
+
+  resources:
+    limits:
+      cpu: 4000m
+      memory: 32Gi
+    requests:
+      cpu: 4000m
+      memory: 32Gi
