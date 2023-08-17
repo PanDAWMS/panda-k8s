@@ -73,6 +73,7 @@ spec:
           command: [ "/bin/sh", "-c" ]
           args:
             - python3 /opt/activemq/sandbox/install_conf.py;
+              export ACTIVEMQ_OPTS_MEMORY="-Xms64M -Xmx16G";
               {{- if .Values.noRoot }}
               /opt/activemq/bin/run-activemq-services;
               {{- else }}
