@@ -299,7 +299,7 @@
 	  "ceARCGridType": "arc",
 	  "ceHostname": "sdfarcce001.slac.stanford.edu",
 	  "ceEndpoint": "https://sdfarcce001.slac.stanford.edu:9443/arex/rest/1.0",
-          "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot_pull.sdf"
+          "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot_slac.sdf"
       }
   },
 
