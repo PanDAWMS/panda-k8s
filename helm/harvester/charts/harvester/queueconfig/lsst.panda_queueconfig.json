@@ -70,7 +70,6 @@
     "nQueueLimitWorkerMin": 100,
     "nQueueLimitWorker": 200,
     "nQueueLimitWorkerMax": 200,
-    "nQueueLimitJobRatio":5000,
     "nQueueLimitJobMax": 1000,
     "nQueueLimitJobMin":3,
     "maxWorkers": 10,
@@ -286,9 +285,9 @@
       "maxNewWorkersPerCycle":50,
       "nQueueLimitWorkerMin":3,
       "nQueueLimitWorkerMax": 200,
-      "nQueueLimitJobMax":3500,
-      "nQueueLimitJobMin":1000,
-      "nQueueLimitJob": 3500,
+      "nQueueLimitJobMax":200,
+      "nQueueLimitJobMin":100,
+      "nQueueLimitJob": 200,
       "nQueueLimitWorker": 200,
 
       "submitter": {
@@ -312,9 +311,9 @@
     "maxNewWorkersPerCycle":50,
     "nQueueLimitWorkerMin":3,
     "nQueueLimitWorkerMax": 200,
-    "nQueueLimitJobMax":4500,
-    "nQueueLimitJobMin":1200,
-    "nQueueLimitJob": 4500,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
     "nQueueLimitWorker":200,
 
     "submitter": {
@@ -339,9 +338,9 @@
     "maxNewWorkersPerCycle":50,
     "nQueueLimitWorkerMin":3,
     "nQueueLimitWorkerMax": 200,
-    "nQueueLimitJobMax":3500,
-    "nQueueLimitJobMin":1200,
-    "nQueueLimitJob": 3500,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
     "nQueueLimitWorker":200,
 
     "submitter": {
@@ -366,9 +365,9 @@
     "maxNewWorkersPerCycle":50,
     "nQueueLimitWorkerMin":3,
     "nQueueLimitWorkerMax": 200,
-    "nQueueLimitJobMax":3000,
-    "nQueueLimitJobMin":1200,
-    "nQueueLimitJob": 3000,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
     "nQueueLimitWorker":200,
 
     "submitter": {
@@ -393,9 +392,9 @@
     "maxNewWorkersPerCycle":50,
     "nQueueLimitWorkerMin":3,
     "nQueueLimitWorkerMax": 200,
-    "nQueueLimitJobMax":2000,
-    "nQueueLimitJobMin":600,
-    "nQueueLimitJob": 2000,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
     "nQueueLimitWorker": 200,
 
     "submitter": {
@@ -420,9 +419,9 @@
     "maxNewWorkersPerCycle":50,
     "nQueueLimitWorkerMin":3,
     "nQueueLimitWorkerMax": 200,
-    "nQueueLimitJobMax":300,
-    "nQueueLimitJobMin":1200,
-    "nQueueLimitJob": 300,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
     "nQueueLimitWorker": 200,
 
     "submitter": {
@@ -447,9 +446,9 @@
     "maxNewWorkersPerCycle":20,
     "nQueueLimitWorkerMin":3,
     "nQueueLimitWorkerMax": 20,
-    "nQueueLimitJobMax":10000,
-    "nQueueLimitJobMin":1200,
-    "nQueueLimitJob": 10000,
+    "nQueueLimitJobMax":100,
+    "nQueueLimitJobMin":1000,
+    "nQueueLimitJob": 100,
     "nQueueLimitWorker":50,
 
     "submitter": {
@@ -470,9 +469,9 @@
     "maxNewWorkersPerCycle":10,
     "nQueueLimitWorkerMin":3,
     "nQueueLimitWorkerMax": 20,
-    "nQueueLimitJobMax":10000,
-    "nQueueLimitJobMin":1200,
-    "nQueueLimitJob": 10000,
+    "nQueueLimitJobMax":100,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 100,
     "nQueueLimitWorker":50,
 
     "submitter": {
@@ -490,12 +489,12 @@
       "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
       "templateQueueName": "production.pull",
       "maxWorkers": 3000,
-      "maxNewWorkersPerCycle":20,
+      "maxNewWorkersPerCycle":50,
       "nQueueLimitWorkerMin":3,
       "nQueueLimitWorkerMax": 200,
-      "nQueueLimitJobMax":3500,
-      "nQueueLimitJobMin":1000,
-      "nQueueLimitJob": 3500,
+      "nQueueLimitJobMax":200,
+      "nQueueLimitJobMin":100,
+      "nQueueLimitJob": 200,
       "nQueueLimitWorker": 200,
 
       "submitter": {
@@ -513,12 +512,12 @@
       "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
       "templateQueueName": "production.pull",
       "maxWorkers": 3000,
-      "maxNewWorkersPerCycle":20,
+      "maxNewWorkersPerCycle":50,
       "nQueueLimitWorkerMin":3,
       "nQueueLimitWorkerMax": 200,
-      "nQueueLimitJobMax":3500,
-      "nQueueLimitJobMin":1000,
-      "nQueueLimitJob": 3500,
+      "nQueueLimitJobMax":200,
+      "nQueueLimitJobMin":100,
+      "nQueueLimitJob": 200,
       "nQueueLimitWorker": 200,
 
       "submitter": {
@@ -542,9 +541,9 @@
     "maxNewWorkersPerCycle":50,
     "nQueueLimitWorkerMin":3,
     "nQueueLimitWorkerMax": 200,
-    "nQueueLimitJobMax":3500,
-    "nQueueLimitJobMin":1200,
-    "nQueueLimitJob": 3500,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
     "nQueueLimitWorker":200,
 
     "submitter": {
@@ -568,9 +567,9 @@
     "maxNewWorkersPerCycle":50,
     "nQueueLimitWorkerMin":3,
     "nQueueLimitWorkerMax": 200,
-    "nQueueLimitJobMax":3000,
-    "nQueueLimitJobMin":1200,
-    "nQueueLimitJob": 3000,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
     "nQueueLimitWorker":200,
 
     "submitter": {
@@ -594,9 +593,9 @@
     "maxNewWorkersPerCycle":50,
     "nQueueLimitWorkerMin":3,
     "nQueueLimitWorkerMax": 200,
-    "nQueueLimitJobMax":2000,
-    "nQueueLimitJobMin":600,
-    "nQueueLimitJob": 2000,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
     "nQueueLimitWorker": 200,
 
     "submitter": {
@@ -620,9 +619,9 @@
     "maxNewWorkersPerCycle":50,
     "nQueueLimitWorkerMin":3,
     "nQueueLimitWorkerMax": 200,
-    "nQueueLimitJobMax":300,
-    "nQueueLimitJobMin":1200,
-    "nQueueLimitJob": 300,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
     "nQueueLimitWorker": 200,
 
     "submitter": {
@@ -643,12 +642,12 @@
       "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
       "templateQueueName": "production.pull",
       "maxWorkers": 1000,
-      "maxNewWorkersPerCycle":20,
+      "maxNewWorkersPerCycle":50,
       "nQueueLimitWorkerMin":3,
       "nQueueLimitWorkerMax": 200,
-      "nQueueLimitJobMax":1500,
+      "nQueueLimitJobMax":200,
       "nQueueLimitJobMin":100,
-      "nQueueLimitJob": 1500,
+      "nQueueLimitJob": 200,
       "nQueueLimitWorker":200,
 
       "submitter": {
@@ -666,12 +665,12 @@
       "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
       "templateQueueName": "production.pull",
       "maxWorkers": 1000,
-      "maxNewWorkersPerCycle":20,
+      "maxNewWorkersPerCycle":50,
       "nQueueLimitWorkerMin":3,
       "nQueueLimitWorkerMax": 200,
-      "nQueueLimitJobMax":1500,
+      "nQueueLimitJobMax":200,
       "nQueueLimitJobMin":100,
-      "nQueueLimitJob": 1500,
+      "nQueueLimitJob": 200,
       "nQueueLimitWorker":200,
 
       "submitter": {
@@ -695,9 +694,9 @@
     "maxNewWorkersPerCycle":50,
     "nQueueLimitWorkerMin":3,
     "nQueueLimitWorkerMax": 200,
-    "nQueueLimitJobMax":3500,
-    "nQueueLimitJobMin":1200,
-    "nQueueLimitJob": 3500,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
     "nQueueLimitWorker":200,
 
     "submitter": {
@@ -721,9 +720,9 @@
     "maxNewWorkersPerCycle":50,
     "nQueueLimitWorkerMin":3,
     "nQueueLimitWorkerMax": 200,
-    "nQueueLimitJobMax":3000,
-    "nQueueLimitJobMin":1200,
-    "nQueueLimitJob": 3000,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
     "nQueueLimitWorker":200,
 
     "submitter": {
@@ -747,9 +746,9 @@
     "maxNewWorkersPerCycle":50,
     "nQueueLimitWorkerMin":3,
     "nQueueLimitWorkerMax": 200,
-    "nQueueLimitJobMax":2000,
-    "nQueueLimitJobMin":600,
-    "nQueueLimitJob": 2000,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
     "nQueueLimitWorker": 200,
 
     "submitter": {
@@ -773,9 +772,9 @@
     "maxNewWorkersPerCycle":50,
     "nQueueLimitWorkerMin":3,
     "nQueueLimitWorkerMax": 200,
-    "nQueueLimitJobMax":300,
-    "nQueueLimitJobMin":1200,
-    "nQueueLimitJob": 300,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
     "nQueueLimitWorker": 200,
 
     "submitter": {
@@ -828,8 +827,8 @@
   "DOMA_LSST_GOOGLE_TEST_HIMEM_NON_PREEMPT": {
     "queueStatus": "offline",
     "maxWorkers": 2000,
-    "nQueueLimitJobMax":2000,
-    "nQueueLimitJob": 500,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJob": 200,
     "nQueueLimitWorker":5,
     "nQueueLimitWorkerMin": 1,
     "nQueueLimitWorkerMax": 20,
@@ -893,7 +892,7 @@
 
   "DOMA_LSST_GOOGLE_TEST": {
   "queueStatus": "offline",
-  "nQueueLimitWorker":5000,
+  "nQueueLimitWorker":200,
   "nQueueLimitWorkerMin":3,
   "maxNewWorkersPerCycle":200,
   "nQueueLimitWorkerMax": 200,
