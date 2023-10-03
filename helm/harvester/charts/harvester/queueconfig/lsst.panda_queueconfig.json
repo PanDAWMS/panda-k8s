@@ -653,8 +653,8 @@
       "submitter": {
 	  "ceQueueName": "grid",
           "ceARCGridType": "arc",
-          "ceHostname": "grendel.hec.lancs.ac.uk",
-          "ceEndpoint": "https://grendel.hec.lancs.ac.uk:443/arex/rest/1.0",
+          "ceHostname": "grendel2.hec.lancs.ac.uk",
+          "ceEndpoint": "https://grendel2.hec.lancs.ac.uk:443/arex/rest/1.0",
           "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot_pull.sdf"
       }
   },
@@ -679,8 +679,8 @@
           "submitMode": "PULL",
           "ceQueueName": "grid",
           "ceARCGridType": "arc",
-          "ceHostname": "grendel.hec.lancs.ac.uk",
-          "ceEndpoint": "https://grendel.hec.lancs.ac.uk:443/arex/rest/1.0",
+          "ceHostname": "grendel2.hec.lancs.ac.uk",
+          "ceEndpoint": "https://grendel2.hec.lancs.ac.uk:443/arex/rest/1.0",
           "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot_pull.sdf"
       }
   },
@@ -705,8 +705,8 @@
           "submitMode": "PULL",
           "ceQueueName": "grid",
           "ceARCGridType": "arc",
-          "ceHostname": "grendel.hec.lancs.ac.uk",
-          "ceEndpoint": "https://grendel.hec.lancs.ac.uk:443/arex/rest/1.0",
+          "ceHostname": "grendel2.hec.lancs.ac.uk",
+          "ceEndpoint": "https://grendel2.hec.lancs.ac.uk:443/arex/rest/1.0",
 	  "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot_pull.sdf"
       }
   },
@@ -731,8 +731,8 @@
           "submitMode": "PULL",
           "ceQueueName": "grid",
           "ceARCGridType": "arc",
-	  "ceHostname": "grendel.hec.lancs.ac.uk",
-          "ceEndpoint": "https://grendel.hec.lancs.ac.uk:443/arex/rest/1.0",
+	  "ceHostname": "grendel2.hec.lancs.ac.uk",
+          "ceEndpoint": "https://grendel2.hec.lancs.ac.uk:443/arex/rest/1.0",
           "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot_pull.sdf"
       }
   },
@@ -757,8 +757,8 @@
           "submitMode": "PUSH",
           "ceQueueName": "grid",
           "ceARCGridType": "arc",
-	  "ceHostname": "grendel.hec.lancs.ac.uk",
-          "ceEndpoint": "https://grendel.hec.lancs.ac.uk:443/arex/rest/1.0",
+	  "ceHostname": "grendel2.hec.lancs.ac.uk",
+          "ceEndpoint": "https://grendel2.hec.lancs.ac.uk:443/arex/rest/1.0",
           "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot_push_96.sdf"
       }
   },
@@ -783,8 +783,8 @@
           "submitMode": "PUSH",
           "ceQueueName": "grid",
           "ceARCGridType": "arc",
-	  "ceHostname": "grendel.hec.lancs.ac.uk",
-          "ceEndpoint": "https://grendel.hec.lancs.ac.uk:443/arex/rest/1.0",
+	  "ceHostname": "grendel2.hec.lancs.ac.uk",
+          "ceEndpoint": "https://grendel2.hec.lancs.ac.uk:443/arex/rest/1.0",
           "templateFile": "/opt/harvester/sandbox/lsst.submit_pilot_push.sdf"
       }
   },
