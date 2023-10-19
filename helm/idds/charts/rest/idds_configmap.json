@@ -11,7 +11,8 @@
              "pool_reset_on_return": "rollback"
             },
 	 "carrier":
-	    {"plugin.receiver": "idds.agents.common.plugins.messaging.MessagingReceiver",
+	    {"receiver_num_threads": 16,
+	     "plugin.receiver": "idds.agents.common.plugins.messaging.MessagingReceiver",
              "plugin.receiver.brokers": "${IDDS_RECEIVER_BROKERS}",
              "plugin.receiver.port": "${IDDS_RECEIVER_PORT}",
              "plugin.receiver.destination": "${IDDS_RECEIVER_DESTINATION}",
