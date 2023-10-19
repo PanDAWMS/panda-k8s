@@ -42,6 +42,7 @@
             "module": "pandajedi.jedimsgprocessor.atlas_idds_msg_processor",
             "name": "AtlasIddsMsgProcPlugin",
             "in_queue": "idds",
+	    "n_threads": 8,
             "verbose": true
         },
         "push_task_status": {
