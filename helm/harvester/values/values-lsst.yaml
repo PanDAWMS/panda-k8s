@@ -11,6 +11,12 @@ harvester:
     selector: false
     size: 300Gi
 
+  persistentvolumecondor:
+    class: wekafs--sdf-k8s01
+    create: false
+    selector: false
+    size: 3000Gi
+
   experiment: "lsst"
   panda:
     host: "panda-dev-server:443"

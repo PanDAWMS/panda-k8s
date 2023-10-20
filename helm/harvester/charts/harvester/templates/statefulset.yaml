@@ -75,7 +75,7 @@ spec:
 ---
 {{- end }}
 # pv for condor logs
-{{- if .Values.persistentvolume.create }}
+{{- if .Values.persistentvolumecondor.create }}
 kind: PersistentVolume
 apiVersion: v1
 metadata:
@@ -83,14 +83,14 @@ metadata:
   labels:
       {{- include "harvester.labels-condor-logs" . | nindent 4 }}
 spec:
-  storageClassName: {{ .Values.persistentvolume.class }}
+  storageClassName: {{ .Values.persistentvolumecondor.class }}
   capacity:
-    storage: {{ .Values.persistentvolume.size }}
+    storage: {{ .Values.persistentvolumecondor.size }}
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   hostPath:
-    path: {{ .Values.persistentvolume.path }}
+    path: {{ .Values.persistentvolumecondor.path }}
 ---
 {{- end }}
 # pv claim for condor logs
@@ -101,13 +101,13 @@ metadata:
   labels:
     {{- include "harvester.labels-condor-logs" . | nindent 4 }}
 spec:
-  storageClassName: {{ .Values.persistentvolume.class }}
+  storageClassName: {{ .Values.persistentvolumecondor.class }}
   accessModes:
     - ReadWriteMany
   resources:
     requests:
-      storage: {{ .Values.persistentvolume.size }}
-  {{- if .Values.persistentvolume.selector }}
+      storage: {{ .Values.persistentvolumecondor.size }}
+  {{- if .Values.persistentvolumecondor.selector }}
   selector:
     matchLabels:
       {{- include "harvester.selectorLabels-condor-logs" . | nindent 6 }}
