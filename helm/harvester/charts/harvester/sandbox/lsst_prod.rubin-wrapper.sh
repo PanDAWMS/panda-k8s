@@ -394,7 +394,8 @@ function main() {
 
   echo "---- Check cvmfs area ----"
   check_cvmfs
-  pandaenvdir=$(get_pandaenvdir_local)
+  # pandaenvdir=$(get_pandaenvdir_local)
+  pandaenvdir=$(get_pandaenvdir)
   log "local pandaenvdir: ${pandaenvdir}"
   if [[ ! -d ${pandaenvdir} ]]; then
     pandaenvdir=$(get_pandaenvdir)
