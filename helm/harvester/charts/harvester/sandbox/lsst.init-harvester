@@ -7,6 +7,15 @@ mkdir -p /data/harvester/run
 chmod 777 /data/harvester/run
 bash /opt/harvester/sandbox/lsst.vomsproxy-renew
 
+# fix lsst voms
+mkdir /data/harvester/lsst_voms
+cp /data/harvester/rubin-voms.config.tar /data/harvester/lsst_voms/
+cd /data/harvester/lsst_voms
+tar xf rubin-voms.config.tar
+mv /etc/vomses /etc/vomses.old
+yes|cp -fr etc/vomses /etc/vomses
+yes|cp -fr etc/grid-security/vomsdir/lsst/* /etc/grid-security/vomsdir/lsst/*
+
 cd /data/harvester
 
 # gcloud config
