@@ -14,7 +14,7 @@ cd /data/harvester/lsst_voms
 tar xf rubin-voms.config.tar
 mv /etc/vomses /etc/vomses.old
 yes|cp -fr etc/vomses /etc/vomses
-yes|cp -fr etc/grid-security/vomsdir/lsst/* /etc/grid-security/vomsdir/lsst/*
+yes|cp -fr etc/grid-security/vomsdir/lsst/* /etc/grid-security/vomsdir/lsst/
 
 cd /data/harvester
 
