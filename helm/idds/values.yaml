@@ -8,7 +8,7 @@ global:
 rest:
   enabled: true
   image:
-    tag: "1.3.28"
+    tag: "1.3.29"
 
 postgres:
   enabled: true
