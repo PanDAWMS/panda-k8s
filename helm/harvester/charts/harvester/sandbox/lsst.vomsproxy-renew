@@ -16,10 +16,10 @@ new_proxy_key=${new_proxy_path}/pilot_userkey.pem
 chmod 600 $new_proxy_cert
 chmod 600 $new_proxy_key
 
-voms-proxy-init2 -valid 96:00 -rfc -voms lsst -q -cert $new_proxy_cert -key $new_proxy_key -out $proxy 
+voms-proxy-init3 -valid 96:00 -rfc -voms lsst -q -cert $new_proxy_cert -key $new_proxy_key -out $proxy 
 
 #check lifetime of certificate
-voms-proxy-info2 -exists -hours 11 -file $proxy
+voms-proxy-info3 -exists -hours 11 -file $proxy
 
 if [ $? -ne 0 ]; then
   echo $proxy expires in 11 hours on `hostname`, Please check| mail -s "[VOMS_PROXY]WARNING : Grid proxy for Rubin k8s expires soon on `hostname`" atlas-adc-idds-k8s@cern.ch

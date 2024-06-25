@@ -13,6 +13,14 @@ main:
 
   autoStart: true
 
+  resources:
+    limits:
+      cpu: 4000m
+      memory: 16Gi
+    requests:
+      cpu: 4000m
+      memory: 16Gi
+
   #persistentvolume:
   #  create: false         
   #  path: "/mnt/panda-bigmon-logs"

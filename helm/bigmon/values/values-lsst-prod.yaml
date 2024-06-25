@@ -1,0 +1,30 @@
+# Default values for bigmon.
+# # This is a YAML-formatted file.
+# # Declare variables to be passed into your templates.
+#
+
+main:
+  replicaCount: 2
+  persistentvolume:
+    class: wekafs--sdf-k8s01
+    create: false
+
+  hostName: "usdf-panda-bigmon.slac.stanford.edu"
+
+  ingress:
+    enabled: true
+    hosts:
+      - domain: slac.stanford.edu
+        hostOverride: usdf-panda-bigmon.slac.stanford.edu
+        paths:
+          - path: /condor_logs
+            pathType: Prefix
+            serviceName: harvester
+            servicePort: 443
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: "default"
+        hosts:
+          - domain: slac.stanford.edu
+            hostOverride: usdf-panda-bigmon.slac.stanford.edu

@@ -1,0 +1,94 @@
+# special mount data
+{{- if .Values.persistentvolumespecial.mount }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+ name: {{ include "backup.fullname" . }}-special-data
+spec:
+ storageClassName: {{ .Values.persistentvolumespecial.class }}
+ accessModes:
+  - ReadWriteMany
+ resources:
+  requests:
+   storage: {{ .Values.persistentvolumespecial.size }}
+---
+{{- end }}
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "backup.fullname" . }}
+  labels:
+    {{- include "backup.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  serviceName: {{ include "backup.fullname" . }}
+  selector:
+    matchLabels:
+      {{- include "backup.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "backup.selectorLabels" . | nindent 8 }}
+    spec:
+      hostname:  {{ .Release.Name}}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "backup.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{ if .Values.autoStart -}}
+          command: ["/bin/sh", "-c"]
+          args:
+            - bash /opt/sandbox/backup_database_cron.sh;
+              sleep infinity & wait
+          {{ end -}}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.global.secret }}-iam-envs
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+              - name: {{ include "backup.fullname" . }}-sandbox
+                mountPath: /opt/sandbox
+              {{- if .Values.persistentvolumespecial.mount }}
+              - name: {{ include "backup.fullname" . }}-special-data
+                mountPath: /mnt/special-data
+              {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: {{ include "backup.fullname" . }}-sandbox
+          projected:
+            sources:
+              - configMap:
+                  name: {{ include "backup.fullname" . }}-sandbox
+        {{- if .Values.persistentvolumespecial.mount }}
+        - name: {{ include "backup.fullname" . }}-special-data
+          persistentVolumeClaim:
+            claimName: {{ include "backup.fullname" . }}-special-data
+        {{- end }}

@@ -26,7 +26,14 @@ harvester:
 
   # run containers with no-root PID e.g. for OKD
   #noRoot: true
-
+  
+  resources:
+    limits:
+      cpu: 4000m
+      memory: 16Gi
+    requests:
+      cpu: 4000m
+      memory: 16Gi
 
 mariadb:
   # enable database
@@ -35,3 +42,11 @@ mariadb:
   # PV with selector support
   #persistentvolume:
   #    selector: false
+
+  resources:
+    limits:
+      cpu: 4000m
+      memory: 16Gi
+    requests:
+      cpu: 4000m
+      memory: 16Gi

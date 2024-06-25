@@ -1,10 +1,16 @@
-executable = /opt/harvester/sandbox/lsst.runpilot2-wrapper.sh
+# executable = /opt/harvester/sandbox/lsst.runpilot2-wrapper.sh
+executable = /opt/harvester/sandbox/lsst.rubin-wrapper_slac.sh
+
 #arguments = -s {computingSite} -r {computingSite} -q {pandaQueueName} -j {prodSourceLabel} -i {pilotType} -t -w generic --pilot-user generic --url https://sphenix-pandaserver.apps.rcf.bnl.gov -p 443 -d --harvester-submit-mode PUSH --allow-same-user=False --input-destination-dir /sphenix/lustre01/sphnxpro/rucio --job-type={jobType} {pilotResourceTypeOption} {pilotUrlOption} --pilotversion {pilotVersion} {pilotPythonOption}
 
 # arguments = "-s {computingSite} -r {computingSite} -q {pandaQueueName} -j {prodSourceLabel} -i {pilotType} -w generic --pilot-user rubin --url https://pandaserver-doma.cern.ch -d --harvester-submit-mode PUSH {pilotResourceTypeOption} --queuedata-url http://pandaserver-doma.cern.ch:25080/cache/schedconfig/{computingSite}.all.json --storagedata-url https://datalake-cric.cern.ch/api/atlas/ddmendpoint/query/?json --pilotversion 3  --pythonversion 3 --localpy"
 
-arguments = "-s {computingSite} -r {computingSite} -q {pandaQueueName} -j {prodSourceLabel} -i {pilotType} -t -w generic --pilot-user rubin --allow-same-user false --url https://panda-dev-server.slac.stanford.edu -d --harvester-submit-mode PUSH {pilotResourceTypeOption} --queuedata-url http://pandaserver-doma.cern.ch:25080/cache/schedconfig/{computingSite}.all.json --storagedata-url https://datalake-cric.cern.ch/api/atlas/ddmendpoint/query/?json --use-realtime-logging --realtime-logging-server google-cloud-logging --realtime-logname Panda-RubinLog --pilotversion 3  --pythonversion 3 --localpy -p 443 --job-type={jobType} --piloturl http://cern.ch/atlas-panda-pilot/pilot3-PRE.tar.gz"
+# arguments = "-s {computingSite} -r {computingSite} -q {pandaQueueName} -j {prodSourceLabel} -i {pilotType} -t -w generic --pilot-user rubin --allow-same-user false --url https://panda-dev-server.slac.stanford.edu -d --harvester-submit-mode PULL {pilotResourceTypeOption} --queuedata-url http://pandaserver-doma.cern.ch:25080/cache/schedconfig/{computingSite}.all.json --storagedata-url https://datalake-cric.cern.ch/api/atlas/ddmendpoint/query/?json --use-realtime-logging --realtime-logging-server google-cloud-logging --realtime-logname Panda-RubinLog --pilotversion 3  --pythonversion 3 --localpy -p 443 --job-type={jobType} --piloturl http://cern.ch/atlas-panda-pilot/pilot3-PRE.tar.gz"
 
+
+# arguments = "-s {computingSite} -r {computingSite} -q {pandaQueueName} -j {prodSourceLabel} -i {pilotType} -t -w generic --pilot-user rubin --allow-same-user false --url https://panda-dev-server.slac.stanford.edu -d --harvester-submit-mode PULL {pilotResourceTypeOption} --queuedata-url http://pandaserver-doma.cern.ch:25080/cache/schedconfig/{computingSite}.all.json --storagedata-url https://datalake-cric.cern.ch/api/atlas/ddmendpoint/query/?json --use-realtime-logging --realtime-logging-server google-cloud-logging --realtime-logname Panda-RubinLog --pilotversion 3  --pythonversion 3 --localpy -p 443 --job-type={jobType} --piloturl http://cern.ch/atlas-panda-pilot/pilot3-dev.tar.gz"
+
+arguments = "--pilotnum {nCoreTotal} -s {computingSite} -r {computingSite} -q {pandaQueueName} -j {prodSourceLabel} -i {pilotType} -t --es-executor-type fineGrainedProc -w generic --pilot-user rubin --allow-same-user false --url https://rubin-panda-server-dev.slac.stanford.edu:8443 -d --harvester-submit-mode PULL  --queuedata-url https://rubin-panda-server-dev.slac.stanford.edu:8443/cache/schedconfig/{computingSite}.all.json --storagedata-url https://datalake-cric.cern.ch/api/atlas/ddmendpoint/query/?json --use-realtime-logging --realtime-logging-server loki --realtime-logname Panda-RubinLog --pilotversion 3  --pythonversion 3 --localpy"
 
 initialdir = {accessPoint}
 
@@ -17,20 +23,22 @@ environment = "PANDA_JSID=harvester-{harvesterID} HARVESTER_ID={harvesterID} HAR
 +harvesterID = "{harvesterID}"
 +harvesterWorkerID = "{workerID}"
 
-transfer_input_files = {accessPoint}/pandaJobData.out
+# transfer_input_files = {accessPoint}/pandaJobData.out
 
 universe = grid
-grid_resource = arc https://arcce1.slac.stanford.edu:9443/arex/rest/1.0
+# grid_resource = arc https://arcce1.slac.stanford.edu:9443/arex/rest/1.0
 # grid_resource = {ceARCGridType} {ceEndpoint}
+grid_resource = arc {ceEndpoint}
 
 nordugrid_rsl = (queue = rubin)(runtimeenvironment = ENV/PROXY)(jobname = arc_pilot)(count = {nCoreTotal})(countpernode = {nCoreTotal})(memory = {requestRamPerCore})(walltime = {requestWalltime})(cputime = {requestCputime})(environment = (PANDA_JSID harvester-{harvesterID})(HARVESTER_ID {harvesterID})(HARVESTER_WORKER_ID {workerID})(GTAG {gtag})(APFMON http://apfmon.lancs.ac.uk/api)(APFFID {harvesterID})(APFCID $(Cluster).$(Process)))
 
 arc_resources = <SlotRequirement>  \
-                <NumberOfSlots>1</NumberOfSlots> \
-                    <SlotsPerHost>1</SlotsPerHost> \
+                <NumberOfSlots>{nCoreTotal}</NumberOfSlots> \
+                    <SlotsPerHost>{nCoreTotal}</SlotsPerHost> \
                 </SlotRequirement> \
                 <QueueName>rubin</QueueName> \
-                <IndividualPhysicalMemory>{requestRamBytes}</IndividualPhysicalMemory>
+                <RuntimeEnvironment><Name>ENV/PROXY</Name></RuntimeEnvironment> \
+                <IndividualPhysicalMemory>{requestRamBytesPerCore}</IndividualPhysicalMemory>
 
 arc_rte = ENV/PROXY
 
@@ -58,9 +66,9 @@ delegate_job_GSI_credentials_lifetime = 0
 
 #+remote_Requirements = JobRunCount == 0
 # periodic_remove = (JobStatus == 2 && (CurrentTime - EnteredCurrentStatus) > 604800)
-periodic_remove = (JobStatus == 2 && (CurrentTime - EnteredCurrentStatus) > 604800) || (JobStatus == 5 && (CurrentTime - EnteredCurrentStatus) > 600)
+periodic_remove = (JobStatus == 2 && (CurrentTime - EnteredCurrentStatus) > 604800) || (JobStatus == 5 && (CurrentTime - EnteredCurrentStatus) > 300)
 #+remote_PeriodicHold = ( JobStatus==1 && gridjobstatus=?=UNDEFINED && CurrentTime-EnteredCurrentStatus>3600 ) || ( (JobRunCount =!= UNDEFINED && JobRunCount > 0) ) || ( JobStatus == 2 && CurrentTime-EnteredCurrentStatus>604800 )
-+remote_PeriodicRemove = (JobStatus == 5 && (CurrentTime - EnteredCurrentStatus) > 600) || (JobStatus == 1 && globusstatus =!= 1 && (CurrentTime - EnteredCurrentStatus) > 86400)
++remote_PeriodicRemove = (JobStatus == 5 && (CurrentTime - EnteredCurrentStatus) > 300) || (JobStatus == 1 && globusstatus =!= 1 && (CurrentTime - EnteredCurrentStatus) > 86400)
 
 +sdfPath = "{sdfPath}"
 

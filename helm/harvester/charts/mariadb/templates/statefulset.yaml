@@ -1,4 +1,4 @@
-{{- if .Values.persistentvolume.create -}}
+{{- if .Values.persistentvolume.create }}
 # pv
 kind: PersistentVolume
 apiVersion: v1
@@ -12,6 +12,7 @@ spec:
     storage: {{ .Values.persistentvolume.size }}
   accessModes:
     - ReadWriteMany
+  persistentVolumeReclaimPolicy: Delete
   hostPath:
     path: {{ .Values.persistentvolume.path }}
 ---
@@ -30,14 +31,14 @@ spec:
   resources:
     requests:
       storage: {{ .Values.persistentvolume.size }}
-  {{- if .Values.persistentvolume.create }}
+  {{- if .Values.persistentvolume.selector }}
   selector:
     matchLabels:
       {{- include "mariadb.selectorLabels" . | nindent 6 }}
   {{- end }}
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "mariadb.fullname" . }}
   labels:
@@ -78,13 +79,15 @@ spec:
               protocol: TCP
           envFrom:
             - secretRef:
-                name: {{ .Values.global.secret }}-iam-db-envs
+                name: {{ .Values.global.secret }}-harvester-envs
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: {{ include "mariadb.fullname" . }}-data
-            - mountPath: /docker-entrypoint-initdb.d/
+            - mountPath: /bitnami/mariadb
+              name: {{ include "mariadb.fullname" . }}-data
+            - mountPath: /docker-entrypoint-initdb.d
               name: {{ include "mariadb.fullname" . }}-initdb
       {{- with .Values.nodeSelector }}
       nodeSelector:
@@ -104,4 +107,4 @@ spec:
             claimName: {{ include "mariadb.fullname" . }}
         - name: {{ include "mariadb.fullname" . }}-initdb
           secret:
-              secretName: {{ .Values.global.secret }}-iam-initdb
+            secretName: {{ .Values.global.secret }}-harvester-initdb

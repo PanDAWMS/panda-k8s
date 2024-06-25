@@ -1,0 +1,23 @@
+#!/bin/bash
+
+if [[ ${HARVESTER_DB_HOST_ADD_INDEX} == "true" ]]; then
+    if [[ ! -z "${HARVESTER_DB_HOST_DOMAIN}" ]]; then
+        export HARVESTER_DB_HOST=${HARVESTER_DB_HOST_PREFIX}-${HOSTNAME##*-}.${HARVESTER_DB_HOST_DOMAIN}
+    else
+        export HARVESTER_DB_HOST=${HARVESTER_DB_HOST_PREFIX}-${HOSTNAME##*-}
+    fi
+fi
+
+if [[ ${HARVESTER_DB_ADD_INDEX} == "true" ]]; then
+    if [[ ! -z "${MARIADB_DATABASE_PREFIX}" ]]; then
+        export MARIADB_DATABASE=${MARIADB_DATABASE_PREFIX}_${HOSTNAME##*-}
+    fi
+fi
+
+if [[ -z "${ORIG_HARVESTER_ID}" ]]; then
+    export ORIG_HARVESTER_ID=${HARVESTER_ID}
+fi
+
+export HARVESTER_ID=${ORIG_HARVESTER_ID}-${HOSTNAME##*-}
+export CLOUDSDK_CONFIG=/data/harvester/gcloud_config
+export KUBECONFIG=/data/harvester/gcloud_config/.kube

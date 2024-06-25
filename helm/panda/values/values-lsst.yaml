@@ -10,17 +10,31 @@ jedi:
     selector: false
     size: 50Gi
 
+  resources:
+    limits:
+      cpu: 4000m
+      memory: 32Gi
+    requests:
+      cpu: 4000m
+      memory: 32Gi
+
 server:
   replicaCount: 2
   persistentvolume:
     class: wekafs--sdf-k8s01
     create: false
     selector: false
-    size: 50Gi
+    size: 500Gi
 
-  httpProxy: "http://squid.slac.stanford.edu:3128"
-  httpsProxy: "http://squid.slac.stanford.edu:3128"
-  noProxy: "localhost,idds-dev-rest,panda-dev-server"
+  resources:
+    limits:
+      cpu: 8000m
+      memory: 32Gi
+    requests:
+      cpu: 8000m
+      memory: 32Gi
+
+  sharedCache: true
 
   # use Route class for ingress
   route:

@@ -1,0 +1,36 @@
+
+main:
+  image:
+      repository: ghcr.io/wguanicedew/iam-login-service
+      pullPolicy: Always
+      # tag: "v1.8.1"
+      tag: "v1.8.1.3"
+
+  # PV: For use cases that users are not allowed to create PV,
+  # please update class to corresponding storageclass and update create to false.
+  persistentvolume:
+    class: wekafs--sdf-k8s01
+    create: false
+    selector: false
+    size: 50Gi
+
+  ingress:
+    enabled: true
+    hosts:
+      - domain: slac.stanford.edu
+        hostOverride: usdf-panda-iam.slac.stanford.edu
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: "default"
+        hosts:
+          - domain: slac.stanford.edu
+            hostOverride: usdf-panda-iam.slac.stanford.edu
+
+mariadb:
+  persistentvolume:
+    class: wekafs--sdf-k8s01
+    create: false
+    selector: false
+    size: 50Gi

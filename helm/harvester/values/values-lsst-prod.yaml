@@ -1,0 +1,40 @@
+# Default values for harvester.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+harvester:
+  replicaCount: 3
+
+  persistentvolume:
+    class: wekafs--sdf-k8s01
+    create: false
+    selector: false
+    size: 300Gi
+
+  persistentvolumecondor:
+    class: wekafs--sdf-k8s01
+    create: false
+    selector: false
+    size: 3000Gi
+
+  persistentvolumespecial:
+    mount: true
+    class: sdf-data-rubin
+    path: "/mnt/harvester-data"
+    logpath: "/mnt/harvester-data/panda_jobs/harvester_workdir_k8s/harvester_wdirs/SLAC_Harvester_SDF"
+    size: 5Gi
+
+  experiment: "lsst_prod"
+  panda:
+    host: "panda-server:443"
+  pilotcerts:
+    enabled: true
+
+mariadb:
+  enabled: true
+  persistentvolume:
+    class: wekafs--sdf-k8s01
+    create: false
+    selector: false
+    size: 50Gi

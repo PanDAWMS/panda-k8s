@@ -1,0 +1,18 @@
+# PV: For use cases that users are not allowed to create PV,
+# please update class to corresponding storageclass and update create to false.
+
+activemq:
+  persistentvolume:
+    create: false
+    class: wekafs--sdf-k8s01
+    path: "/mnt/activemq-data"
+    size: 50Gi
+    selector: false
+
+  resources:
+    limits:
+      cpu: 4000m
+      memory: 32Gi
+    requests:
+      cpu: 4000m
+      memory: 32Gi

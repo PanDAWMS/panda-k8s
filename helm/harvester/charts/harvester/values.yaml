@@ -25,11 +25,27 @@ noRoot: false
 service:
   type: ClusterIP
   httpPort: 80
+  httpsPort: 443
 
 persistentvolume:
   create: true
   class: manual
   path: "/mnt/harvester-logs"
+  size: 5Gi
+  selector: true
+
+persistentvolumecondor:
+  create: true
+  class: manual
+  path: "/mnt/harvester-condor-logs"
+  size: 5Gi
+  selector: true
+
+persistentvolumespecial:
+  mount: false
+  class: manual
+  path: "/mnt/harvester-data"
+  logpath: "/mnt/harvester-data/panda_jobs"
   size: 5Gi
   selector: true
 

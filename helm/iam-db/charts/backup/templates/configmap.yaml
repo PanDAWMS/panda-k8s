@@ -1,0 +1,11 @@
+# backup configuration
+# sandbox
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "backup.fullname" . }}-sandbox
+binaryData:
+  {{- range $path, $_ := .Files.Glob "sandbox/*" }}
+  {{ base $path }}: |-
+    {{ $.Files.Get $path | b64enc }}
+  {{- end }}

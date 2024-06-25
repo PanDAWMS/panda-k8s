@@ -1,0 +1,9 @@
+
+harvester:
+  # enable harvester
+  enabled: true
+  # container image and tag
+  image:
+    repository: ghcr.io/wguanicedew/harvester
+    tag: "wguan0.0.19"
+    # tag: "master"

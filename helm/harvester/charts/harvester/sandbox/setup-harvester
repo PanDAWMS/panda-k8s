@@ -1,4 +1,13 @@
 #!/bin/bash
 
-export CLOUDSDK_CONFIG=/data/harvester/gcloud_config
-export KUBECONFIG=/data/harvester/gcloud_config/.kube
+echo "setup harvester env"
+
+if [[ ! -z "${EXPERIMENT}" ]]; then
+    echo "setup experiment ${EXPERIMENT} environment"
+    CurrentDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    setup_script=${CurrentDir}/${EXPERIMENT}.setup-harvester
+    if [[ -f ${setup_script} ]]; then
+        echo "Executing ${setup_script}"
+        source ${setup_script}
+    fi
+fi

@@ -5,12 +5,31 @@
         "dbport": "$PANDA_DB_PORT",
         "dbpasswd": "$PANDA_DB_PASSWORD",
 	"dbuser": "$PANDA_DB_USER",
-	"dbname": "$PANDA_DB_NAME"
+	"dbname": "$PANDA_DB_NAME",
+	"nWorkers": "5"
     },
     "ddm": {
         "modConfig": "wlcg:4:pandajedi.jediddm.GenDDMClient:GenDDMClient::off,wlcg:2:pandajedi.jediddm.AtlasDDMClient:AtlasDDMClient:sphenix",
         "endpoints_json_path": "$PANDA_CRIC_URL_DDMENDPOINTS",
         "voWithScope": "wlcg"
+    },
+    "confeeder": {
+        "nWorkers": "6"
+    },
+    "taskrefine": {
+        "nWorkers": "3"
+    },
+    "jobgen": {
+        "nWorkers": "6"
+    },
+    "postprocessor": {
+        "nWorkers": "6"
+    },
+    "taskbroker": {
+        "nWorkers": "3"
+    },
+    "tcommando": {
+        "nWorkers": "6"
     },
     "tasksetup": {
         "modConfig": "wlcg:any:pandajedi.jedisetup.SimpleTaskSetupper:SimpleTaskSetupper"

@@ -1,0 +1,68 @@
+executable = /opt/harvester/sandbox/lsst_prod.rubin-srun.sh
+
+arguments = "--ntasks-total {nCoreTotal} --ntasks 1 --cpus-per-task 1 --mem-per-cpu {requestRamPerCore}  -s {computingSite} -r {computingSite} -q {pandaQueueName} -j {prodSourceLabel} -i {pilotType} -t --es-executor-type fineGrainedProc -w generic --pilot-user rubin --allow-same-user false --url https://usdf-panda-server.slac.stanford.edu:8443 -d --harvester-submit-mode PULL  --queuedata-url https://usdf-panda-server.slac.stanford.edu:8443/cache/schedconfig/{computingSite}.all.json --storagedata-url https://none-url --use-realtime-logging --realtime-logging-server google-cloud-logging --realtime-logname Panda-RubinLog  --pilotversion 3  --pythonversion 3 --localpy"
+
+initialdir = {accessPoint}
+
+log = {logDir}/{logSubdir}/grid.$(Cluster).$(Process).log
+output = {logDir}/{logSubdir}/grid.$(Cluster).$(Process).out
+error = {logDir}/{logSubdir}/grid.$(Cluster).$(Process).err
+transfer_executable = True
+
+environment = "PANDA_JSID=harvester-{harvesterID} HARVESTER_ID={harvesterID} HARVESTER_WORKER_ID={workerID} GTAG={gtag} STORAGEDATA_SERVER_URL=http://datalake-cric.cern.ch/api/atlas/ddmendpoint/query/?json"
++harvesterID = "{harvesterID}"
++harvesterWorkerID = "{workerID}"
+
+# transfer_input_files = {accessPoint}/pandaJobData.out
+
+universe = grid
+# grid_resource = arc https://arcce1.slac.stanford.edu:9443/arex/rest/1.0
+# grid_resource = {ceARCGridType} {ceEndpoint}
+grid_resource = arc {ceEndpoint}
+
+nordugrid_rsl = (queue = {ceQueueName})(runtimeenvironment = ENV/PROXY)(jobname = arc_pilot)(count = {nCoreTotal})(countpernode = {nCoreTotal})(memory = {requestRamPerCore})(walltime = {requestWalltime})(cputime = {requestCputime})(environment = (PANDA_JSID harvester-{harvesterID})(HARVESTER_ID {harvesterID})(HARVESTER_WORKER_ID {workerID})(GTAG {gtag})(APFMON http://apfmon.lancs.ac.uk/api)(APFFID {harvesterID})(APFCID $(Cluster).$(Process)))
+
+arc_resources = <SlotRequirement>  \
+                <NumberOfSlots>{nCoreTotal}</NumberOfSlots> \
+                    <SlotsPerHost>{nCoreTotal}</SlotsPerHost> \
+                </SlotRequirement> \
+                <QueueName>{ceQueueName}</QueueName> \
+                <IndividualPhysicalMemory>{requestRamBytesPerCore}</IndividualPhysicalMemory> \
+                <RuntimeEnvironment><Name>ENV/PROXY</Name></RuntimeEnvironment> \
+                <WallTime>259200</WallTime>
+
+arc_rte = ENV/PROXY
+
+X509UserProxy = {x509UserProxy}
+ShouldTransferFiles = YES
+WhenToTransferOutput = ON_EXIT
+use_x509userproxy = true
+
++remote_jobuniverse = 5
++remote_ShouldTransferFiles = "YES"
++remote_WhenToTransferOutput = "ON_EXIT_OR_EVICT"
++remote_TransferOutput = ""
+#+remote_RequestCpus = {nCoreTotal}
+#+remote_RequestMemory = {requestRam}
+#+remote_RequestDisk = {requestDisk}
+#+remote_JobMaxVacateTime = {requestWalltime}
++ioIntensity = {ioIntensity}
++xcount = {nCoreTotal}
++maxMemory = {requestRam}
++remote_queue = "{ceQueueName}"
+#+maxWallTime = {requestWalltimeMinute}
++maxWallTime = 1440
+
+delegate_job_GSI_credentials_lifetime = 0
+
+#+remote_Requirements = JobRunCount == 0
+# periodic_remove = (JobStatus == 2 && (CurrentTime - EnteredCurrentStatus) > 604800)
+periodic_remove = (JobStatus == 2 && (CurrentTime - EnteredCurrentStatus) > 604800) || (JobStatus == 5 && (CurrentTime - EnteredCurrentStatus) > 300)
+#+remote_PeriodicHold = ( JobStatus==1 && gridjobstatus=?=UNDEFINED && CurrentTime-EnteredCurrentStatus>300 ) || ( (JobRunCount =!= UNDEFINED && JobRunCount > 0) ) || ( JobStatus == 2 && CurrentTime-EnteredCurrentStatus>604800 )
++remote_PeriodicRemove = (JobStatus == 5 && (CurrentTime - EnteredCurrentStatus) > 300) || (JobStatus == 1 && globusstatus =!= 1 && (CurrentTime - EnteredCurrentStatus) > 86400)
+
++sdfPath = "{sdfPath}"
+
+#+remote_queue = "osg"
+
+queue 1

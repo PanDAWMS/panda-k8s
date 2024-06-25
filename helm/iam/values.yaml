@@ -9,7 +9,7 @@ main:
   enabled: true
 
   image:
-    tag: "v1.8.1"
+    tag: "v1.8.4"
 
   ingress:
     enabled: true

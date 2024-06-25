@@ -4,3 +4,9 @@ mariadb:
     create: false
     selector: false
     size: 50Gi
+
+backup:
+  persistentvolumespecial:
+    mount: true
+    class: sdf-data-rubin
+    size: 100Gi

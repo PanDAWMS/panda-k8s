@@ -17,3 +17,11 @@ activemq:
   # PV with selector support
   #persistentvolume:
   #    selector: false
+
+  resources:
+    limits:
+      cpu: 4000m
+      memory: 16Gi
+    requests:
+      cpu: 4000m
+      memory: 16Gi

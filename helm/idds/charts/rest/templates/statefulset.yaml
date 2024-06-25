@@ -77,7 +77,7 @@ spec:
           {{ if .Values.autoStart -}}
           command: ["/bin/sh", "-c"]
           args:
-            - until /usr/pgsql-*/bin/pg_isready -h ${IDDS_DATABASE_HOST} -p ${IDDS_DATABASE_PORT}; do echo waiting for database; sleep 2; done;
+            - until /usr/bin/pg_isready -h ${IDDS_DATABASE_HOST} -p ${IDDS_DATABASE_PORT}; do echo waiting for database; sleep 2; done;
               {{- if .Values.noRoot }}
               /opt/idds/bin/start-daemon.sh all
               {{- else }}

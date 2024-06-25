@@ -1,0 +1,1360 @@
+{
+
+  "production.pull": {
+    "isTemplateQueue": true,
+    "prodSourceLabel": "managed",
+    "nQueueLimitWorkerMin": 100,
+    "nQueueLimitWorker": 50,
+    "nQueueLimitWorkerMax": 50,
+    "maxWorkers": 10,
+    "maxNewWorkersPerCycle": 100,
+    "mapType": "NoJob",
+    "truePilot": true,
+    "maxSubmissionAttempts": 3,
+    "walltimeLimit": 1209600,
+    "prefetchEvents": false,
+    "preparator": {
+      "name": "DummyPreparator",
+      "module": "pandaharvester.harvesterpreparator.dummy_preparator"
+    },
+    "submitter": {
+      "name": "HTCondorSubmitter",
+      "module": "pandaharvester.harvestersubmitter.htcondor_submitter",
+      "useSpool": false,
+      "useAtlasGridCE": false,
+      "useAtlasAGIS": true,
+      "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot.sdf",
+      "executableFile": "/opt/harvester/sandbox/lsst.runpilot2-wrapper.sh",
+      "x509UserProxy": "/data/harvester/run/x509up_u25606",
+      "logDir": "/var/log/condor_logs/${hostname}",
+      "logBaseURL": "https://usdf-panda-bigmon.slac.stanford.edu:8443/condor_logs/${hostname}",
+      "condorPool": "${hostname}",
+      "nProcesses": 8
+    },
+    "workerMaker": {
+      "name": "SimpleWorkerMaker",
+      "module": "pandaharvester.harvesterworkermaker.simple_worker_maker",
+      "jobAttributesToUse": [
+        "nCore"
+      ],
+      "pilotTypeRandomWeightsPermille": {
+        "RC": 10,
+        "ALRB": 10,
+        "PT": 10
+      }
+    },
+    "messenger": {
+      "name": "SharedFileMessenger",
+      "module": "pandaharvester.harvestermessenger.shared_file_messenger",
+      "jobSpecFileFormat": "cgi",
+      "accessPoint": "/var/log/harvester_wdirs/${harvesterID}/${_workerID_3.2}/${_workerID_1.0}/${workerID}"
+    },
+    "stager": {
+      "name": "DummyStager",
+      "module": "pandaharvester.harvesterstager.dummy_stager"
+    },
+    "monitor": {
+      "name": "HTCondorMonitor",
+      "module": "pandaharvester.harvestermonitor.htcondor_monitor",
+      "cancelUnknown": false
+    },
+    "sweeper": {
+      "name": "HTCondorSweeper",
+      "module": "pandaharvester.harvestersweeper.htcondor_sweeper"
+    },
+    "throttler": {
+      "name": "TinyThrottler",
+      "module": "pandaharvester.harvesterthrottler.tiny_throttler",
+      "logicType": "OR",
+      "rulesForMissed": [{"level": "site", "timeWindow": 10, "maxMissed": 50}],
+      "rulesForSiteFamilySubmittedRunning":[{"level": "cores", "maxCores": 1000}]
+    }
+  },
+
+  "production.push": {
+    "isTemplateQueue": true,
+    "prodSourceLabel": "managed",
+    "nQueueLimitWorkerMin": 100,
+    "nQueueLimitWorker": 50,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax": 1000,
+    "nQueueLimitJobMin":3,
+    "maxWorkers": 10,
+    "maxNewWorkersPerCycle": 100,
+    "mapType": "OneToOne",
+    "truePilot": true,
+    "maxSubmissionAttempts": 3,
+    "walltimeLimit": 1209600,
+    "prefetchEvents": false,
+    "preparator": {
+      "name": "DummyPreparator",
+      "module": "pandaharvester.harvesterpreparator.dummy_preparator"
+    },
+    "submitter": {
+      "name": "HTCondorSubmitter",
+      "module": "pandaharvester.harvestersubmitter.htcondor_submitter",
+      "useSpool": false,
+      "useAtlasGridCE": false,
+      "useAtlasAGIS": true,
+      "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot.sdf",
+      "executableFile": "/opt/harvester/sandbox/lsst.runpilot2-wrapper.sh",
+      "x509UserProxy": "/data/harvester/run/x509up_u25606",
+      "logDir": "/var/log/condor_logs/$hostname",
+      "logBaseURL": "https://usdf-panda-bigmon.slac.stanford.edu:8443/condor_logs/$hostname",
+      "condorPool": "${hostname}",
+      "nProcesses": 8
+    },
+    "workerMaker": {
+      "name": "SimpleWorkerMaker",
+      "module": "pandaharvester.harvesterworkermaker.simple_worker_maker",
+      "jobAttributesToUse": [
+        "nCore",
+        "minRamCount"
+      ],
+      "pilotTypeRandomWeightsPermille": {
+        "RC": 10,
+        "ALRB": 10,
+        "PT": 10
+      }
+    },
+    "messenger": {
+      "name": "SharedFileMessenger",
+      "module": "pandaharvester.harvestermessenger.shared_file_messenger",
+      "jobSpecFileFormat": "cgi",
+      "accessPoint": "/var/log/harvester_wdirs/${harvesterID}/${_workerID_3.2}/${_workerID_1.0}/${workerID}"
+    },
+    "stager": {
+      "name": "DummyStager",
+      "module": "pandaharvester.harvesterstager.dummy_stager"
+    },
+    "monitor": {
+      "name": "HTCondorMonitor",
+      "module": "pandaharvester.harvestermonitor.htcondor_monitor",
+      "cancelUnknown": false
+    },
+    "sweeper": {
+      "name": "HTCondorSweeper",
+      "module": "pandaharvester.harvestersweeper.htcondor_sweeper"
+    },
+    "throttler": {
+      "name": "TinyThrottler",
+      "module": "pandaharvester.harvesterthrottler.tiny_throttler",
+      "logicType": "OR",
+      "rulesForMissed": [{"level": "site", "timeWindow": 10, "maxMissed": 50}],
+      "rulesForSiteFamilySubmittedRunning":[{"level": "cores", "maxCores": 1000}]
+    }
+  },
+
+
+  "production_k8s.pull":{
+      "isTemplateQueue": true,
+      "prodSourceLabel":"managed",
+      "prodSourceLabelRandomWeightsPermille": {"ptest":10, "rc_test":10, "rc_test2":10, "rc_alrb":10},
+      "maxWorkers": 10000,
+      "nQueueLimitWorkerMin": 1,
+      "nQueueLimitWorkerMax": 100,
+      "nQueueLimitWorker":50,
+      "maxNewWorkersPerCycle":50,
+      "mapType":"NoJob",
+      "truePilot":true,
+      "allowJobMixture":true,
+      "maxSubmissionAttempts":3,
+      "walltimeLimit":1209600,
+      "prefetchEvents":false,
+      "preparator":{
+          "name":"DummyPreparator",
+          "module":"pandaharvester.harvesterpreparator.dummy_preparator"
+      },
+      "workerMaker":{
+          "name":"SimpleWorkerMaker",
+          "module":"pandaharvester.harvesterworkermaker.simple_worker_maker",
+          "jobAttributesToUse":[
+              "nCore"
+          ],
+          "pilotTypeRandomWeightsPermille": {"RC": 10, "ALRB": 10, "PT": 10}
+      },
+      "messenger":{
+          "name":"SharedFileMessenger",
+          "module":"pandaharvester.harvestermessenger.shared_file_messenger",
+          "jobSpecFileFormat":"cgi",
+          "accessPoint":"/var/log/harvester_wdirs/${harvesterID}/${_workerID_3.2}/${_workerID_1.0}/${workerID}"
+      },
+      "stager":{
+          "name":"DummyStager",
+          "module":"pandaharvester.harvesterstager.dummy_stager"
+      },
+      "submitter":{
+          "name": "K8sSubmitter",
+          "module": "pandaharvester.harvestersubmitter.k8s_submitter",
+          "x509UserProxy": "/data/harvester/run/x509up_u25606",    
+          "proxySecretPath": "/data/harvester/run/x509up_u25606",
+          "logDir": "/var/log/condor_logs/$hostname",
+          "logBaseURL": "https://usdf-panda-bigmon.slac.stanford.edu:8443/condor_logs/$hostname",
+          "cpuAdjustRatio": 90,
+          "memoryAdjustRatio": 100,
+          "nProcesses": 4
+      },
+      "monitor":{
+          "name": "K8sMonitor",
+          "module": "pandaharvester.harvestermonitor.k8s_monitor"
+      },
+      "sweeper":{
+          "name": "K8sSweeper",
+          "module": "pandaharvester.harvestersweeper.k8s_sweeper"
+      },
+      "credmanagers": [
+        {
+          "module": "pandaharvester.harvestercredmanager.k8s_secret_cred_manager",
+          "name": "K8sSecretCredManager",
+          "k8s_namespace": "${common.k8s_namespace}",
+          "k8s_config_file": "${common.k8s_config_file}",
+          "proxy_files": ["/data/harvester/run/x509up_u25606"]
+        }
+      ],
+      "common": {
+          "k8s_yaml_file": "/opt/harvester/sandbox/job_cvmfs_prp_driver.yaml",
+          "k8s_config_file": "/opt/harvester/sandbox/kube",
+          "k8s_namespace": "default"
+      }
+  },
+  "production_k8s.push":{
+      "isTemplateQueue": true,
+      "prodSourceLabel":"managed",
+      "nQueueLimitJobMax":10000,
+      "nQueueLimitJob": 10000,
+      "nQueueLimitWorkerMin": 100,
+      "nQueueLimitWorker": 50,
+      "nQueueLimitWorkerMax": 50,
+      "maxWorkers":50000,
+      "maxNewWorkersPerCycle":500,
+      "mapType":"OneToOne",
+      "truePilot":true,
+      "maxSubmissionAttempts":5,
+      "walltimeLimit":172800,
+      "prefetchEvents":false,
+      "preparator":{
+          "name":"DummyPreparator",
+          "module":"pandaharvester.harvesterpreparator.dummy_preparator"
+      },
+      "submitter":{
+          "name": "K8sSubmitter",
+          "module": "pandaharvester.harvestersubmitter.k8s_submitter",
+          "x509UserProxy": "/data/harvester/run/x509up_u25606",
+          "proxySecretPath": "/data/harvester/run/x509up_u25606",
+          "logDir": "/var/log/condor_logs/$hostname",
+          "logBaseURL": "https://usdf-panda-bigmon.slac.stanford.edu:8443/condor_logs/$hostname",
+          "cpuAdjustRatio": 90,
+          "memoryAdjustRatio": 100,
+          "nProcesses": 4
+      },
+      "workerMaker":{
+          "name":"SimpleWorkerMaker",
+          "module":"pandaharvester.harvesterworkermaker.simple_worker_maker",
+          "jobAttributesToUse":[
+              "nCore"
+          ]
+      },
+      "messenger":{
+          "name":"SharedFileMessenger",
+          "module":"pandaharvester.harvestermessenger.shared_file_messenger",
+          "jobSpecFileFormat":"cgi",
+          "accessPoint":"/var/log/harvester_wdirs/${harvesterID}/${_workerID_3.2}/${_workerID_1.0}/${workerID}"
+      },
+      "stager":{
+          "name":"DummyStager",
+          "module":"pandaharvester.harvesterstager.dummy_stager"
+      },
+      "monitor":{
+          "name": "K8sMonitor",
+          "module": "pandaharvester.harvestermonitor.k8s_monitor"
+      },
+      "sweeper":{
+          "name": "K8sSweeper",
+          "module": "pandaharvester.harvestersweeper.k8s_sweeper"
+      },
+      "credmanagers": [
+        {
+          "module": "pandaharvester.harvestercredmanager.k8s_secret_cred_manager",
+          "name": "K8sSecretCredManager",
+          "k8s_namespace": "${common.k8s_namespace}",
+          "k8s_config_file": "${common.k8s_config_file}",
+          "proxy_files": ["/data/harvester/run/x509up_u25606"]
+        }
+      ],
+      "common": {
+          "k8s_yaml_file": "/opt/harvester/sandbox/job_cvmfs_prp_driver.yaml",
+          "k8s_config_file": "/opt/harvester/sandbox/kube",
+          "k8s_namespace": "default"
+      }
+  },
+
+  "SLAC_TEST": {
+      "queueStatus": "online",
+      "site": "SLAC",
+      "prodSourceLabel": "managed",
+      "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+      "templateQueueName": "production.pull",
+      "maxWorkers": 300,
+      "maxNewWorkersPerCycle":10,
+      "nQueueLimitWorkerMin":1,
+      "nQueueLimitWorkerMax": 50,
+      "nQueueLimitJobMax":50,
+      "nQueueLimitJobMin":50,
+      "nQueueLimitJob": 50,
+      "nQueueLimitWorker": 50,
+
+      "submitter": {
+	  "nCore": 1,
+          "nCorePerNode": 1,
+	  "nCoreFactor": 8,
+          "activateWorkerFactor": 0.125,
+	  "noPilotsWhenNoActiveJobs": false,
+          "submitMode": "PULL",
+	  "ceQueueName": "rubin",
+	  "ceARCGridType": "arc",
+	  "ceHostname": "sdfarcce001.slac.stanford.edu",
+	  "ceEndpoint": "https://sdfarcce001.slac.stanford.edu:9443/arex/rest/1.0",
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull_srun.sdf"
+      }
+  },
+
+  "SLAC_Rubin": {
+    "queueStatus": "offline",
+    "site": "SLAC",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.pull",
+    "maxWorkers": 400,
+    "maxNewWorkersPerCycle":10,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":50,
+    "nQueueLimitJobMin":50,
+    "nQueueLimitJob": 50,
+    "nQueueLimitWorker":50,
+
+    "submitter": {
+	  "nCore": 1,
+          "nCorePerNode": 1,
+	  "nCoreFactor": 8,
+          "activateWorkerFactor": 0.125,
+	  "noPilotsWhenNoActiveJobs": false,
+          "submitMode": "PULL",
+          "ceQueueName": "rubin",
+          "ceARCGridType": "arc",
+	  "ceHostname": ["sdfarcce001.slac.stanford.edu", "sdfarcce001.slac.stanford.edu"],
+          "ceEndpoint": ["https://sdfarcce001.slac.stanford.edu:9443/arex/rest/1.0",
+		         "https://sdfarcce001.slac.stanford.edu:9444/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull_srun.sdf"
+      }
+  },
+
+  "SLAC_Rubin_Medium": {
+    "queueStatus": "offline",
+    "site": "SLAC",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.pull",
+    "maxWorkers": 500,
+    "maxNewWorkersPerCycle":20,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":50,
+    "nQueueLimitJobMin":50,
+    "nQueueLimitJob": 50,
+    "nQueueLimitWorker":50,
+
+    "submitter": {
+	  "nCore": 1,
+          "nCorePerNode": 1,
+	  "nCoreFactor": 4,
+          "activateWorkerFactor": 0.25,
+	  "noPilotsWhenNoActiveJobs": false,
+          "submitMode": "PULL",
+          "ceQueueName": "rubin",
+          "ceARCGridType": "arc",
+	  "ceHostname": ["sdfarcce001.slac.stanford.edu", "sdfarcce001.slac.stanford.edu"],
+          "ceEndpoint": ["https://sdfarcce001.slac.stanford.edu:9443/arex/rest/1.0",
+                         "https://sdfarcce001.slac.stanford.edu:9444/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull_srun.sdf"
+      }
+  },
+
+  "SLAC_Rubin_Himem": {
+    "queueStatus": "offline",
+    "site": "SLAC",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.pull",
+    "maxWorkers": 500,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
+    "nQueueLimitWorker":200,
+
+    "submitter": {
+	  "nCore": 1,
+          "nCorePerNode": 1,
+	  "nCoreFactor": 2,
+          "activateWorkerFactor": 0.5,
+	  "noPilotsWhenNoActiveJobs": false,
+          "submitMode": "PULL",
+          "ceQueueName": "rubin_himem",
+          "ceARCGridType": "arc",
+	  "ceHostname": ["sdfarcce001.slac.stanford.edu", "sdfarcce001.slac.stanford.edu"],
+          "ceEndpoint": ["https://sdfarcce001.slac.stanford.edu:9443/arex/rest/1.0",
+                         "https://sdfarcce001.slac.stanford.edu:9444/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull_srun.sdf"
+      }
+  },
+
+  "SLAC_Rubin_Big_Himem": {
+    "queueStatus": "offline",
+    "site": "SLAC",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.pull",
+    "maxWorkers": 1000,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
+    "nQueueLimitWorker":200,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+          "nCoreFactor": 1,
+          "activateWorkerFactor": 1.0,
+	  "noPilotsWhenNoActiveJobs": false,
+          "submitMode": "PULL",
+          "ceQueueName": "rubin_himem",
+          "ceARCGridType": "arc",
+          "ceHostname": ["sdfarcce001.slac.stanford.edu", "sdfarcce001.slac.stanford.edu"],
+          "ceEndpoint": ["https://sdfarcce001.slac.stanford.edu:9443/arex/rest/1.0",
+                         "https://sdfarcce001.slac.stanford.edu:9444/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull_srun.sdf"
+      }
+  },
+
+  "SLAC_Rubin_Extra_Himem": {
+    "queueStatus": "offline",
+    "site": "SLAC",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.push",
+    "maxWorkers": 500,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
+    "nQueueLimitWorker":200,
+
+    "submitter": {
+	  "nCore": 1,
+          "nCorePerNode": 1,
+          "submitMode": "PUSH",
+          "ceQueueName": "rubin_extra_himem",
+          "ceARCGridType": "arc",
+	  "ceHostname": ["sdfarcce001.slac.stanford.edu", "sdfarcce001.slac.stanford.edu"],
+          "ceEndpoint": ["https://sdfarcce001.slac.stanford.edu:9443/arex/rest/1.0",
+                         "https://sdfarcce001.slac.stanford.edu:9444/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_push_96.sdf"
+      }
+  },
+
+  "SLAC_Rubin_IO": {
+    "queueStatus": "offline",
+    "site": "SLAC",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.push",
+    "maxWorkers": 100,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":100,
+    "nQueueLimitJobMin":50,
+    "nQueueLimitJob": 100,
+    "nQueueLimitWorker":100,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+          "submitMode": "PUSH",
+          "ceQueueName": "rubin_extra_himem",
+          "ceARCGridType": "arc",
+          "ceHostname": ["sdfarcce001.slac.stanford.edu", "sdfarcce001.slac.stanford.edu"],
+          "ceEndpoint": ["https://sdfarcce001.slac.stanford.edu:9443/arex/rest/1.0",
+                         "https://sdfarcce001.slac.stanford.edu:9444/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_push_96.sdf"
+      }
+  },
+
+  "SLAC_Rubin_Merge": {
+    "queueStatus": "offline",
+    "site": "SLAC",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.push",
+    "maxWorkers": 200,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
+    "nQueueLimitWorker":200,
+
+    "submitter": {
+	  "nCore": 1,
+          "nCorePerNode": 1,
+          "submitMode": "PUSH",
+          "ceQueueName": "rubin_merge",
+          "ceARCGridType": "arc",
+	  "ceHostname": ["sdfarcce001.slac.stanford.edu", "sdfarcce001.slac.stanford.edu"],
+          "ceEndpoint": ["https://sdfarcce001.slac.stanford.edu:9443/arex/rest/1.0",
+                         "https://sdfarcce001.slac.stanford.edu:9444/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_push.sdf"
+      }
+  },
+
+  "CC-IN2P3_TEST": {
+      "queueStatus": "online",
+      "site": "CC-IN2P3",
+      "prodSourceLabel": "managed",
+      "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+      "templateQueueName": "production.pull",
+      "maxWorkers": 300,
+      "maxNewWorkersPerCycle":10,
+      "nQueueLimitWorkerMin":1,
+      "nQueueLimitWorkerMax": 50,
+      "nQueueLimitJobMax":50,
+      "nQueueLimitJobMin":10,
+      "nQueueLimitJob": 50,
+      "nQueueLimitWorker":50,
+
+      "submitter": {
+	  "nCore": 1,
+          "nCorePerNode": 1,
+          "nCoreFactor": 8,
+          "activateWorkerFactor": 0.125,
+	  "noPilotsWhenNoActiveJobs": false,
+          "ceQueueName": "lsst",
+          "ceARCGridType": "arc",
+	  "ceHostname": ["ccarcce01.in2p3.fr", "ccarcce02.in2p3.fr"],
+          "ceEndpoint": ["https://ccarcce01.in2p3.fr:9443/arex/rest/1.0",
+                         "https://ccarcce02.in2p3.fr:9443/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull_srun.sdf"
+      }
+  },
+
+  "CC-IN2P3_Rubin": {
+      "queueStatus": "online",
+      "site": "CC-IN2P3",
+      "prodSourceLabel": "managed",
+      "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+      "templateQueueName": "production.pull",
+      "maxWorkers": 400,
+      "maxNewWorkersPerCycle":10,
+      "nQueueLimitWorkerMin":1,
+      "nQueueLimitWorkerMax": 50,
+      "nQueueLimitJobMax":50,
+      "nQueueLimitJobMin":10,
+      "nQueueLimitJob": 50,
+      "nQueueLimitWorker":50,
+
+      "submitter": {
+	  "nCore": 1,
+          "nCorePerNode": 1,
+	  "nCoreFactor": 8,
+          "activateWorkerFactor": 0.125,
+	  "noPilotsWhenNoActiveJobs": false,
+          "submitMode": "PULL",
+          "ceQueueName": "lsst",
+          "ceARCGridType": "arc",
+	  "ceHostname": ["ccarcce01.in2p3.fr", "ccarcce02.in2p3.fr"],
+          "ceEndpoint": ["https://ccarcce01.in2p3.fr:9443/arex/rest/1.0",
+                         "https://ccarcce02.in2p3.fr:9443/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull_srun.sdf"
+      }
+  },
+
+  "CC-IN2P3_Rubin_Medium": {
+    "queueStatus": "online",
+    "site": "CC-IN2P3",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.pull",
+    "maxWorkers": 300,
+    "maxNewWorkersPerCycle":20,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":50,
+    "nQueueLimitJobMin":10,
+    "nQueueLimitJob": 50,
+    "nQueueLimitWorker":50,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+	  "nCoreFactor": 4,
+          "activateWorkerFactor": 0.25,
+	  "noPilotsWhenNoActiveJobs": false,
+          "submitMode": "PULL",
+          "ceQueueName": "lsst",
+          "ceARCGridType": "arc",
+	  "ceHostname": ["ccarcce01.in2p3.fr", "ccarcce02.in2p3.fr"],
+          "ceEndpoint": ["https://ccarcce01.in2p3.fr:9443/arex/rest/1.0",
+                         "https://ccarcce02.in2p3.fr:9443/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull_srun.sdf"
+      }
+  },
+
+  "CC-IN2P3_Rubin_Himem": {
+    "queueStatus": "online",
+    "site": "CC-IN2P3",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.pull",
+    "maxWorkers": 300,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
+    "nQueueLimitWorker":200,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+	  "nCoreFactor": 2,
+          "activateWorkerFactor": 0.5,
+	  "noPilotsWhenNoActiveJobs": false,
+          "submitMode": "PULL",
+          "ceQueueName": "lsst",
+          "ceARCGridType": "arc",
+	  "ceHostname": ["ccarcce01.in2p3.fr", "ccarcce02.in2p3.fr"],
+          "ceEndpoint": ["https://ccarcce01.in2p3.fr:9443/arex/rest/1.0",
+                         "https://ccarcce02.in2p3.fr:9443/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull_srun.sdf"
+      }
+  },
+
+  "CC-IN2P3_Rubin_Big_Himem": {
+    "queueStatus": "online",
+    "site": "CC-IN2P3",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.pull",
+    "maxWorkers": 300,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
+    "nQueueLimitWorker":200,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+          "nCoreFactor": 1,
+          "activateWorkerFactor": 1.0,
+	  "noPilotsWhenNoActiveJobs": false,
+          "submitMode": "PULL",
+          "ceQueueName": "lsst",
+          "ceARCGridType": "arc",
+	  "ceHostname": ["ccarcce01.in2p3.fr", "ccarcce02.in2p3.fr"],
+          "ceEndpoint": ["https://ccarcce01.in2p3.fr:9443/arex/rest/1.0",
+                         "https://ccarcce02.in2p3.fr:9443/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull_srun.sdf"
+      }
+  },
+
+  "CC-IN2P3_Rubin_Extra_Himem": {
+    "queueStatus": "online",
+    "site": "CC-IN2P3",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.push",
+    "maxWorkers": 1500,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
+    "nQueueLimitWorker":200,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+          "submitMode": "PUSH",
+          "ceQueueName": "lsst",
+          "ceARCGridType": "arc",
+	  "ceHostname": ["ccarcce01.in2p3.fr", "ccarcce02.in2p3.fr"],
+          "ceEndpoint": ["https://ccarcce01.in2p3.fr:9443/arex/rest/1.0",
+                         "https://ccarcce02.in2p3.fr:9443/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_push_96.sdf"
+      }
+  },
+
+  "CC-IN2P3_Rubin_IO": {
+    "queueStatus": "online",
+    "site": "CC-IN2P3",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.push",
+    "maxWorkers": 100,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":100,
+    "nQueueLimitJobMin":50,
+    "nQueueLimitJob": 100,
+    "nQueueLimitWorker":100,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+          "submitMode": "PUSH",
+          "ceQueueName": "lsst",
+          "ceARCGridType": "arc",
+          "ceHostname": ["ccarcce01.in2p3.fr", "ccarcce02.in2p3.fr"],
+          "ceEndpoint": ["https://ccarcce01.in2p3.fr:9443/arex/rest/1.0",
+                         "https://ccarcce02.in2p3.fr:9443/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_push_96.sdf"
+      }
+  },
+
+  "CC-IN2P3_Rubin_Merge": {
+    "queueStatus": "online",
+    "site": "CC-IN2P3",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.push",
+    "maxWorkers": 200,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
+    "nQueueLimitWorker":200,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+          "submitMode": "PUSH",
+          "ceQueueName": "lsst",
+          "ceARCGridType": "arc",
+	  "ceHostname": ["ccarcce01.in2p3.fr", "ccarcce02.in2p3.fr"],
+          "ceEndpoint": ["https://ccarcce01.in2p3.fr:9443/arex/rest/1.0",
+                         "https://ccarcce02.in2p3.fr:9443/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_push.sdf"
+      }
+  },
+
+  "LANCS_TEST": {
+      "queueStatus": "online",
+      "site": "LANCS",
+      "prodSourceLabel": "managed",
+      "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+      "templateQueueName": "production.pull",
+      "maxWorkers": 300,
+      "maxNewWorkersPerCycle":10,
+      "nQueueLimitWorkerMin":1,
+      "nQueueLimitWorkerMax": 50,
+      "nQueueLimitJobMax":50,
+      "nQueueLimitJobMin":10,
+      "nQueueLimitJob": 50,
+      "nQueueLimitWorker":50,
+
+      "submitter": {
+	  "nCore": 1,
+          "nCorePerNode": 1,
+          "nCoreFactor": 8,
+          "activateWorkerFactor": 0.125,
+	  "noPilotsWhenNoActiveJobs": false,
+	  "ceQueueName": "grid",
+          "ceARCGridType": "arc",
+          "ceHostname": "grendel2.hec.lancs.ac.uk",
+          "ceEndpoint": "https://grendel2.hec.lancs.ac.uk:443/arex/rest/1.0",
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull_srun.sdf"
+      }
+  },
+
+  "LANCS_Rubin": {
+      "queueStatus": "online",
+      "site": "LANCS",
+      "prodSourceLabel": "managed",
+      "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+      "templateQueueName": "production.pull",
+      "maxWorkers": 400,
+      "maxNewWorkersPerCycle":10,
+      "nQueueLimitWorkerMin":1,
+      "nQueueLimitWorkerMax": 50,
+      "nQueueLimitJobMax":50,
+      "nQueueLimitJobMin":10,
+      "nQueueLimitJob": 50,
+      "nQueueLimitWorker":50,
+
+      "submitter": {
+	  "nCore": 1,
+          "nCorePerNode": 1,
+          "nCoreFactor": 8,
+          "activateWorkerFactor": 0.125,
+	  "noPilotsWhenNoActiveJobs": false,
+          "submitMode": "PULL",
+          "ceQueueName": "grid",
+          "ceARCGridType": "arc",
+          "ceHostname": "grendel2.hec.lancs.ac.uk",
+          "ceEndpoint": "https://grendel2.hec.lancs.ac.uk:443/arex/rest/1.0",
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull_srun.sdf"
+      }
+  },
+
+  "LANCS_Rubin_Medium": {
+    "queueStatus": "online",
+    "site": "LANCS",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.pull",
+    "maxWorkers": 300,
+    "maxNewWorkersPerCycle":20,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":50,
+    "nQueueLimitJobMin":10,
+    "nQueueLimitJob": 50,
+    "nQueueLimitWorker":50,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+	  "nCoreFactor": 4,
+          "activateWorkerFactor": 0.25,
+	  "noPilotsWhenNoActiveJobs": false,
+          "submitMode": "PULL",
+          "ceQueueName": "grid",
+          "ceARCGridType": "arc",
+	  "ceHostname": "grendel2.hec.lancs.ac.uk",
+          "ceEndpoint": "https://grendel2.hec.lancs.ac.uk:443/arex/rest/1.0",
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull_srun.sdf"
+      }
+  },
+
+  "LANCS_Rubin_Himem": {
+    "queueStatus": "online",
+    "site": "LANCS",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.pull",
+    "maxWorkers": 300,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
+    "nQueueLimitWorker":200,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+	  "nCoreFactor": 2,
+          "activateWorkerFactor": 0.5,
+	  "noPilotsWhenNoActiveJobs": false,
+          "submitMode": "PULL",
+          "ceQueueName": "grid",
+          "ceARCGridType": "arc",
+	  "ceHostname": "grendel2.hec.lancs.ac.uk",
+          "ceEndpoint": "https://grendel2.hec.lancs.ac.uk:443/arex/rest/1.0",
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull_srun.sdf"
+      }
+  },
+
+  "LANCS_Rubin_Big_Himem": {
+    "queueStatus": "online",
+    "site": "LANCS",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.pull",
+    "maxWorkers": 300,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
+    "nQueueLimitWorker":200,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+          "nCoreFactor": 1,
+          "activateWorkerFactor": 1.0,
+	  "noPilotsWhenNoActiveJobs": false,
+          "submitMode": "PULL",
+          "ceQueueName": "grid",
+          "ceARCGridType": "arc",
+          "ceHostname": "grendel2.hec.lancs.ac.uk",
+          "ceEndpoint": "https://grendel2.hec.lancs.ac.uk:443/arex/rest/1.0",
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull_srun.sdf"
+      }
+  },
+
+  "LANCS_Rubin_Extra_Himem": {
+    "queueStatus": "online",
+    "site": "LANCS",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.push",
+    "maxWorkers": 1500,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
+    "nQueueLimitWorker":200,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+          "submitMode": "PUSH",
+          "ceQueueName": "grid",
+          "ceARCGridType": "arc",
+	  "ceHostname": "grendel2.hec.lancs.ac.uk",
+          "ceEndpoint": "https://grendel2.hec.lancs.ac.uk:443/arex/rest/1.0",
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_push_96.sdf"
+      }
+  },
+
+  "LANCS_Rubin_IO": {
+    "queueStatus": "online",
+    "site": "LANCS",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.push",
+    "maxWorkers": 100,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":100,
+    "nQueueLimitJobMin":50,
+    "nQueueLimitJob": 100,
+    "nQueueLimitWorker":100,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+          "submitMode": "PUSH",
+          "ceQueueName": "grid",
+          "ceARCGridType": "arc",
+          "ceHostname": "grendel2.hec.lancs.ac.uk",
+          "ceEndpoint": "https://grendel2.hec.lancs.ac.uk:443/arex/rest/1.0",
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_push_96.sdf"
+      }
+  },
+
+  "LANCS_Rubin_Merge": {
+    "queueStatus": "online",
+    "site": "LANCS",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.push",
+    "maxWorkers": 200,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
+    "nQueueLimitWorker":200,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+          "submitMode": "PUSH",
+          "ceQueueName": "grid",
+          "ceARCGridType": "arc",
+	  "ceHostname": "grendel2.hec.lancs.ac.uk",
+          "ceEndpoint": "https://grendel2.hec.lancs.ac.uk:443/arex/rest/1.0",
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_push.sdf"
+      }
+  },
+
+  "RAL_TEST": {
+      "queueStatus": "online",
+      "site": "RAL",
+      "prodSourceLabel": "managed",
+      "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+      "templateQueueName": "production.pull",
+      "maxWorkers": 300,
+      "maxNewWorkersPerCycle":50,
+      "nQueueLimitWorkerMin":1,
+      "nQueueLimitWorkerMax": 50,
+      "nQueueLimitJobMax":200,
+      "nQueueLimitJobMin":100,
+      "nQueueLimitJob": 200,
+      "nQueueLimitWorker":200,
+
+      "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+          "noPilotsWhenNoActiveJobs": false,
+          "ceQueueName": "EL9",
+          "ceARCGridType": "arc",
+          "ceHostname": ["arc-ce01.gridpp.rl.ac.uk", "arc-ce02.gridpp.rl.ac.uk"],
+          "ceEndpoint": ["https://arc-ce01.gridpp.rl.ac.uk:443/arex/rest/1.0",
+                         "https://arc-ce02.gridpp.rl.ac.uk:443/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull.sdf"
+      }
+  },
+
+  "RAL_Rubin": {
+      "queueStatus": "online",
+      "site": "RAL",
+      "prodSourceLabel": "managed",
+      "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+      "templateQueueName": "production.pull",
+      "maxWorkers": 300,
+      "maxNewWorkersPerCycle":50,
+      "nQueueLimitWorkerMin":1,
+      "nQueueLimitWorkerMax": 50,
+      "nQueueLimitJobMax":200,
+      "nQueueLimitJobMin":100,
+      "nQueueLimitJob": 200,
+      "nQueueLimitWorker":200,
+
+      "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+          "noPilotsWhenNoActiveJobs": false,
+          "submitMode": "PULL",
+          "ceQueueName": "EL9",
+          "ceARCGridType": "arc",
+          "ceHostname": ["arc-ce01.gridpp.rl.ac.uk", "arc-ce02.gridpp.rl.ac.uk"],
+          "ceEndpoint": ["https://arc-ce01.gridpp.rl.ac.uk:443/arex/rest/1.0",
+                         "https://arc-ce02.gridpp.rl.ac.uk:443/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull.sdf"
+      }
+  },
+
+  "RAL_Rubin_Medium": {
+    "queueStatus": "online",
+    "site": "RAL",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.pull",
+    "maxWorkers": 300,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
+    "nQueueLimitWorker":200,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+          "noPilotsWhenNoActiveJobs": false,
+          "submitMode": "PULL",
+          "ceQueueName": "EL9",
+          "ceARCGridType": "arc",
+          "ceHostname": ["arc-ce01.gridpp.rl.ac.uk", "arc-ce02.gridpp.rl.ac.uk"],
+          "ceEndpoint": ["https://arc-ce01.gridpp.rl.ac.uk:443/arex/rest/1.0",
+                         "https://arc-ce02.gridpp.rl.ac.uk:443/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull.sdf"
+      }
+  },
+
+  "RAL_Rubin_Himem": {
+    "queueStatus": "online",
+    "site": "RAL",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.pull",
+    "maxWorkers": 400,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
+    "nQueueLimitWorker":200,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+          "noPilotsWhenNoActiveJobs": false,
+          "submitMode": "PULL",
+          "ceQueueName": "EL9",
+          "ceARCGridType": "arc",
+          "ceHostname": ["arc-ce01.gridpp.rl.ac.uk", "arc-ce02.gridpp.rl.ac.uk"],
+          "ceEndpoint": ["https://arc-ce01.gridpp.rl.ac.uk:443/arex/rest/1.0",
+                         "https://arc-ce02.gridpp.rl.ac.uk:443/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull.sdf"
+      }
+  },
+
+  "RAL_Rubin_Big_Himem": {
+    "queueStatus": "online",
+    "site": "RAL",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.pull",
+    "maxWorkers": 400,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
+    "nQueueLimitWorker":200,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+          "noPilotsWhenNoActiveJobs": false,
+          "submitMode": "PULL",
+          "ceQueueName": "EL9",
+          "ceARCGridType": "arc",
+          "ceHostname": ["arc-ce01.gridpp.rl.ac.uk", "arc-ce02.gridpp.rl.ac.uk"],
+          "ceEndpoint": ["https://arc-ce01.gridpp.rl.ac.uk:443/arex/rest/1.0",
+                         "https://arc-ce02.gridpp.rl.ac.uk:443/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_pull.sdf"
+      }
+  },
+
+  "RAL_Rubin_Extra_Himem": {
+    "queueStatus": "online",
+    "site": "RAL",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.push",
+    "maxWorkers": 1500,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
+    "nQueueLimitWorker": 50,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+          "submitMode": "PUSH",
+          "ceQueueName": "EL9",
+          "ceARCGridType": "arc",
+          "ceHostname": ["arc-ce01.gridpp.rl.ac.uk", "arc-ce02.gridpp.rl.ac.uk"],
+          "ceEndpoint": ["https://arc-ce01.gridpp.rl.ac.uk:443/arex/rest/1.0",
+                         "https://arc-ce02.gridpp.rl.ac.uk:443/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_push_96.sdf"
+      }
+  },
+
+  "RAL_Rubin_IO": {
+    "queueStatus": "online",
+    "site": "RAL",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.push",
+    "maxWorkers": 100,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":100,
+    "nQueueLimitJobMin":50,
+    "nQueueLimitJob": 100,
+    "nQueueLimitWorker": 50,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+          "submitMode": "PUSH",
+          "ceQueueName": "EL9",
+          "ceARCGridType": "arc",
+          "ceHostname": ["arc-ce01.gridpp.rl.ac.uk", "arc-ce02.gridpp.rl.ac.uk"],
+          "ceEndpoint": ["https://arc-ce01.gridpp.rl.ac.uk:443/arex/rest/1.0",
+                         "https://arc-ce02.gridpp.rl.ac.uk:443/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_push_96.sdf"
+      }
+  },
+
+  "RAL_Rubin_Merge": {
+    "queueStatus": "online",
+    "site": "RAL",
+    "prodSourceLabel": "managed",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production.push",
+    "maxWorkers": 200,
+    "maxNewWorkersPerCycle":50,
+    "nQueueLimitWorkerMin":1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJobMin":100,
+    "nQueueLimitJob": 200,
+    "nQueueLimitWorker": 50,
+
+    "submitter": {
+          "nCore": 1,
+          "nCorePerNode": 1,
+          "submitMode": "PUSH",
+          "ceQueueName": "EL9",
+          "ceARCGridType": "arc",
+          "ceHostname": ["arc-ce01.gridpp.rl.ac.uk", "arc-ce02.gridpp.rl.ac.uk"],
+          "ceEndpoint": ["https://arc-ce01.gridpp.rl.ac.uk:443/arex/rest/1.0",
+                         "https://arc-ce02.gridpp.rl.ac.uk:443/arex/rest/1.0"],
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot_push.sdf"
+      }
+  },
+
+  "QMUL_TEST": {
+      "queueStatus": "offline",
+      "prodSourceLabel": "test",
+      "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+      "templateQueueName": "production.push",
+      "maxWorkers": 10,
+      "nQueueLimitWorkerMin":100,
+      "nQueueLimitWorkerMax": 50,
+      "nQueueLimitJobMax":100,
+      "nQueueLimitJobMin":100,
+      "nQueueLimitJob": 100,
+      "nQueueLimitWorker":200,
+
+      "submitter": {
+          "useAtlasGridCE": true,
+          "templateFile": "/opt/harvester/sandbox/lsst_prod.submit_pilot.sdf"
+      }
+  },
+
+  "DOMA_LSST_GOOGLE_TEST_HIMEM": {
+    "queueStatus": "offline",
+    "maxWorkers": 4050,
+    "nQueueLimitWorkerMin": 1,
+    "nQueueLimitWorkerMax": 50,
+    "nQueueLimitWorker":30,
+    "maxNewWorkersPerCycle":50,
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production_k8s.pull",
+    "common": {
+      "k8s_yaml_file": "/data/harvester/k8s/kube_job.yaml",
+      "k8s_config_file": "/data/harvester/gcloud_config_rubin/highmem",
+      "k8s_namespace": "default"
+    }
+  },
+
+  "DOMA_LSST_GOOGLE_TEST_HIMEM_NON_PREEMPT": {
+    "queueStatus": "offline",
+    "maxWorkers": 2000,
+    "nQueueLimitJobMax":200,
+    "nQueueLimitJob": 200,
+    "nQueueLimitWorker":5,
+    "nQueueLimitWorkerMin": 1,
+    "nQueueLimitWorkerMax": 20,
+    "maxNewWorkersPerCycle":50,
+    "mapType":"OneToOne",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production_k8s.pull",
+    "common": {
+      "k8s_yaml_file": "/data/harvester/k8s/kube_job_non_preempt.yaml",
+      "k8s_config_file": "/data/harvester/gcloud_config_rubin/highmem-non-preempt",
+      "k8s_namespace": "default"
+    }
+  },
+
+  "DOMA_LSST_GOOGLE_TEST_EXTRA_HIMEM": {
+    "maxWorkers": 200,
+    "maxNewWorkersPerCycle":1,
+    "nQueueLimitWorkerMax": 1,
+    "queueStatus": "offline",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production_k8s.pull",
+    "common": {
+      "k8s_yaml_file": "/data/harvester/k8s/kube_job.yaml",
+      "k8s_config_file": "/data/harvester/gcloud_config_rubin/extra-highmem",
+      "k8s_namespace": "default"
+    }
+  },
+
+  "DOMA_LSST_GOOGLE_TEST_EXTRA_HIMEM_NON_PREEMPT": {
+    "maxWorkers": 50,
+    "nQueueLimitJob": 10,
+    "nQueueLimitWorkerMin": 1,
+    "nQueueLimitWorkerMax": 2,
+    "maxNewWorkersPerCycle":1,
+    "queueStatus": "offline",
+    "mapType":"OneToOne",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production_k8s.pull",
+    "common": {
+      "k8s_yaml_file": "/data/harvester/k8s/kube_job_non_preempt.yaml",
+      "k8s_config_file": "/data/harvester/gcloud_config_rubin/extra-highmem-non-preempt",
+      "k8s_namespace": "default"
+    }
+  },
+
+  "DOMA_LSST_GOOGLE_MERGE": {
+    "queueStatus": "offline",
+    "maxWorkers": 20,
+    "nQueueLimitWorkerMin": 1,
+    "nQueueLimitWorkerMax": 5,
+    "maxNewWorkersPerCycle":5,
+    "queueStatus": "offline",
+    "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+    "templateQueueName": "production_k8s.pull",
+    "common": {
+      "k8s_yaml_file": "/data/harvester/k8s/kube_job.yaml",
+      "k8s_config_file": "/data/harvester/gcloud_config_rubin/merge",
+      "k8s_namespace": "default"
+    }
+  },
+
+  "DOMA_LSST_GOOGLE_TEST": {
+  "queueStatus": "offline",
+  "nQueueLimitWorker":200,
+  "nQueueLimitWorkerMin":1,
+  "maxNewWorkersPerCycle":200,
+  "nQueueLimitWorkerMax": 50,
+  "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+  "templateQueueName": "production_k8s.pull",
+  "common": {
+    "k8s_yaml_file": "/data/harvester/k8s/kube_job_moderate.yaml",
+    "k8s_config_file": "/data/harvester/gcloud_config_rubin/moderatemem",
+    "k8s_namespace": "default"
+    }
+  },
+
+  "DOMA_LSST_DEV": {
+  "queueStatus": "offline",
+  "prodSourceLabelRandomWeightsPermille": {"rc_test":0, "rc_test2":0, "rc_alrb":0},
+  "nQueueLimitJobMax":5,
+  "nQueueLimitJob": 5,
+  "nQueueLimitWorker":5,
+  "maxWorkers":3,
+  "maxNewWorkersPerCycle":2,
+  "mapType":"NoJob",
+  "truePilot":true,
+  "maxSubmissionAttempts":3,
+  "templateQueueName": "production_k8s.pull",
+  "common": {
+    "k8s_yaml_file": "/data/harvester/k8s/job_dev-prmon.yaml",
+    "k8s_config_file": "/data/harvester/gcloud_config_rubin/developmentcluster",
+    "k8s_namespace": "default"
+    }
+  }
+
+}

@@ -41,6 +41,11 @@ data:
   {{- end }}
   {{- end }}
 
+  {{- if .Values.persistentvolumespecial.mount }}
+  SPECIAL_MOUNT_POINT: {{ .Values.persistentvolumespecial.path }}
+  SPECIAL_LOG_MOUNT_POINT: {{ .Values.persistentvolumespecial.logpath }}
+  {{- end }}
+
 ---
 # sandbox
 apiVersion: v1

@@ -3,7 +3,7 @@
     "engine": "mariadb",
     "useMySQLdb": true,
     "syncMaxWorkerID": true,
-    "schema": "harvester",
+    "schema": "${MARIADB_DATABASE}",
     "host": "${HARVESTER_DB_HOST}",
     "password": "${MARIADB_PASSWORD}",
     "verbose": true
@@ -12,6 +12,9 @@
     "gname": "zp",
     "harvester_id": "${HARVESTER_ID}",
     "uname": "atlpan"
+  },
+  "communicator": {
+    "nConnections": 10
   },
   "credmanager": {
     "moduleName": [],
@@ -43,23 +46,40 @@
     "sleepTime": 5
   },
   "preparator": {
+    "nThreads": 5,
     "maxJobsToCheck": 1000,
     "maxJobsToTrigger": 1000,
-    "checkInterval": 30,
-    "triggerInterval": 30,
+    "checkInterval": 15,
+    "triggerInterval": 10,
     "sleepTime": 10
   },
   "submitter": {
+    "nThreads": 5,
     "nQueues": 30,
     "lookupTime": 30,
     "maxNewWorkers": 1000,
-    "sleepTime": 10
+    "checkInterval": 30,
+    "sleepTime": 10,
+    "activateWorkerFactor": "auto"
   },
   "monitor": {
     "nThreads": 10,
     "checkInterval": 30,
     "lookupTime": 30,
     "sleepTime": 10
+  },
+  "stager": {
+    "nThreads": 5,
+    "maxJobsToCheck": 1000,
+    "maxJobsToTrigger": 1000,
+    "maxJobsToZip": 1000,
+    "checkInterval": 180,
+    "triggerInterval": 180,
+    "sleepTime": 60
+  },
+  "watcher": {
+    "checkInterval": 30,
+    "sleepTime": 30
   },
   "service_monitor": {
     "pidfile": "/var/run/panda/panda_harvester.pid"
@@ -71,9 +91,11 @@
     ]
   },
   "cacher": {
+    "refreshInterval": 1,
     "data": [
       "resource_types.json||panda_server:get_resource_types",
       "job_statistics.json||panda_server:get_job_stats",
+      "worker_statistics.json||panda_server:get_worker_stats_from_panda",
       "ddmendpoints_objectstores.json||$HARVESTER_CRIC_OS",
       "panda_queues.json||$HARVESTER_CRIC_SCHEDCONFIG",
       "agis_ddmendpoints.json||$HARVESTER_CRIC_DDMENDPOINTS"

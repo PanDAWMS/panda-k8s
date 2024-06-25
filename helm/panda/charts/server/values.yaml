@@ -69,6 +69,7 @@ ingress:
   className: ""
   annotations:
     kubernetes.io/ingress.class: nginx
+    spec.ingressClassName: nginx
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     nginx.ingress.kubernetes.io/ssl-redirect: "true"
     nginx.ingress.kubernetes.io/secure-backends: "true"
@@ -92,7 +93,6 @@ ingress:
       proxy_set_header SSL-CLIENT-CERT $ssl_client_escaped_cert;
       proxy_set_header SSL-CLIENT-S-DN  $ssl_client_s_dn;
     nginx.ingress.kubernetes.io/server-snippet: |
-       ssl on;
        ssl_verify_client optional_no_ca;
        ssl_verify_depth 10;
 
@@ -123,11 +123,11 @@ resources: {}
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
+  #   cpu: 8000m
+  #   memory: 32Gi
   # requests:
-  #   cpu: 100m
-  #   memory: 128Mi
+  #   cpu: 8000m
+  #   memory: 32Gi
 
 autoscaling:
   enabled: false

@@ -8,7 +8,15 @@ global:
 rest:
   enabled: true
   image:
-    tag: "1.2.7"
+    tag: "2.1.30"
+
+  resources:
+    limits:
+      cpu: 4000m
+      memory: 16Gi
+    requests:
+      cpu: 4000m
+      memory: 16Gi
 
 postgres:
   enabled: true
@@ -21,3 +29,11 @@ postgres:
     password: "MyPass123"
     schema: "doma_idds"
     host: ""
+
+  resources:
+    limits:
+      cpu: 4000m
+      memory: 16Gi
+    requests:
+      cpu: 4000m
+      memory: 16Gi

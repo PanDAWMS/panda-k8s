@@ -35,6 +35,20 @@
         "panda_jedi": {
             "server": "internal_mb",
             "destination": "/queue/panda_jedi"
+        },
+        "jedi_contents_feeder": {
+            "server": "internal_mb",
+            "destination": "/queue/jedi_contents_feeder",
+            "ack_mode": "auto",
+            "max_buffer_len": 1,
+            "buffer_block_sec": 1
+        },
+        "jedi_job_generator": {
+            "server": "internal_mb",
+            "destination": "/queue/jedi_job_generator",
+            "ack_mode": "auto",
+            "max_buffer_len": 1,
+            "buffer_block_sec": 1
         }
     },
     "processors": {
@@ -42,6 +56,7 @@
             "module": "pandajedi.jedimsgprocessor.atlas_idds_msg_processor",
             "name": "AtlasIddsMsgProcPlugin",
             "in_queue": "idds",
+	    "n_threads": 8,
             "verbose": true
         },
         "push_task_status": {
@@ -56,6 +71,20 @@
             "name": "PandaToJediMsgProcPlugin",
             "in_queue": "panda_jedi",
             "verbose": true
+        },
+        "jedi-contents-feeder": {
+            "enable": true,
+            "module": "pandajedi.jedimsgprocessor.jedi_contents_feeder_msg_processor",
+            "name": "JediContentsFeederMsgProcPlugin",
+            "n_threads": 2,
+            "in_queue": "jedi_contents_feeder"
+        },
+        "jedi-job-generator": {
+            "enable": true,
+            "module": "pandajedi.jedimsgprocessor.jedi_job_generator_msg_processor",
+            "name": "JediJobGeneratorMsgProcPlugin",
+            "n_threads": 2,
+            "in_queue": "jedi_job_generator"
         }
     }
 }

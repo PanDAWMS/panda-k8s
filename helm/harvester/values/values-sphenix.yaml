@@ -8,6 +8,11 @@ harvester:
     create: false
     selector: false
 
+  persistentvolumecondor:
+    class: nas
+    create: false
+    selector: false
+
   experiment: "sphenix"
 
   noRoot: true

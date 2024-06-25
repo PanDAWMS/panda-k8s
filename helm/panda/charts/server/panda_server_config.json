@@ -27,6 +27,8 @@
         "mq_configFile": "/opt/panda/etc/panda/panda_mbproxy_config.json"
     },
     "daemon": {
-        "enable": "True"
+        "enable": "True",
+        "n_proc": "6",
+        "n_dbconn": "1"
     }
 }

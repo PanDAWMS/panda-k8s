@@ -13,6 +13,14 @@ rest:
     create: false
     size: 50Gi
 
+  resources:
+    limits:
+      cpu: 4000m
+      memory: 32Gi
+    requests:
+      cpu: 4000m
+      memory: 32Gi
+
   ingress:
     enabled: true
     hosts:

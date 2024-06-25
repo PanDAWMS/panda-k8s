@@ -1,0 +1,40 @@
+# Default values for idds.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+rest:
+  replicaCount: 1
+  iddsServer: panda-idds-doma.cern.ch
+
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 8Gi
+    requests:
+      cpu: 2000m
+      memory: 8Gi
+
+  ingress:
+    enabled: true
+    hosts:
+      - domain: cern.ch
+        hostOverride: panda-idds-doma.cern.ch
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: "default"
+        hosts:
+          - domain: cern.ch
+            hostOverride: panda-idds-doma.cern.ch
+
+postgres:
+  enabled: true
+
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 8Gi
+    requests:
+      cpu: 2000m
+      memory: 8Gi

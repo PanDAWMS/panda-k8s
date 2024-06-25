@@ -37,7 +37,7 @@ spec:
   {{- end }}
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: {{ include "main.fullname" . }}
   labels:
@@ -86,6 +86,12 @@ spec:
                 mountPath: /indigo-iam/config/
               - name: {{ include "main.fullname" . }}-certs
                 mountPath: /indigo-iam/certs/
+          # readinessProbe:
+          #   httpGet:
+          #     path: /actuator/health
+          #     port: {{ .Values.container.port }}
+          #   initialDelaySeconds: 90
+          #   timeoutSeconds: 10
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -98,6 +104,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+
       volumes:
         - name: {{ include "main.fullname" . }}-configmap
           secret:
