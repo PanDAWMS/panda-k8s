@@ -168,8 +168,21 @@ spec:
               - secret:
                   name: {{ .Values.global.secret }}-panda-token-cache
         - name: {{ include "server.fullname" . }}-certs
+          {{- if .Values.global.existingTlsSecret }}
+          secret:
+              secretName: {{ .Values.global.existingTlsSecret }}
+              items:
+                # Map the TLS keys to the filenames panda expects
+                - key: tls.crt
+                  path: hostcert.pem
+                - key: tls.key
+                  path: hostkey.pem
+                - key: tls.crt
+                  path: chain.pem
+          {{- else }}
           secret:
               secretName: {{ .Values.global.secret }}-panda-certs
+          {{- end }}
         - name: {{ include "server.fullname" . }}-cric-jsons-volume
           secret:
               secretName: {{ .Values.global.secret }}-cric-jsons

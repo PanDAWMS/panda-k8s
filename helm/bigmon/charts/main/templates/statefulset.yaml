@@ -125,8 +125,19 @@ spec:
           configMap:
               name: {{ include "main.fullname" . }}-sandbox
         - name: {{ include "main.fullname" . }}-certs
+          {{- if .Values.global.existingTlsSecret }}
+          secret:
+              secretName: {{ .Values.global.existingTlsSecret }}
+              items:
+                # Map the TLS keys to the filenames bigmon expects
+                - key: tls.crt
+                  path: hostcert.pem
+                - key: tls.key
+                  path: hostkey.pem
+          {{- else }}
           secret:
               secretName: {{ .Values.global.secret }}-bigmon-certs
+          {{- end }}
   {{- if .Values.persistentvolume.create }}
         - name: {{ include "main.fullname" . }}-logs
           persistentVolumeClaim:

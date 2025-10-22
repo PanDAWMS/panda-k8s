@@ -4,6 +4,9 @@
 
 global:
   secret: "panda-secrets"
+  # Set the below to true to use certificates from an existing secret (e.g. cert-manager issued certs)
+  # If it's defined to a true value the helm-provided certificate files will be ignored.
+  existingTlsSecret: ""
 
 main:
   enabled: true
