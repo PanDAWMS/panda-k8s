@@ -26,10 +26,8 @@ appVersion: "1.16.0"
 
 dependencies:
     - name: rest
-      repository: http://localhost:10191
       version: 0.1.0
       condition: rest.enabled
     - name: postgres
-      repository: http://localhost:10191
       version: 0.1.0
       condition: postgres.enabled

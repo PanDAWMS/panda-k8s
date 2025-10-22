@@ -1,0 +1,131 @@
+name: Helm Charts (OCI)
+
+on:
+  push:
+    branches: [ "**" ]
+    paths:
+      - "helm/**"
+      - ".github/workflows/helm-release.yml"
+    tags:
+      - "v*"
+  pull_request:
+    paths:
+      - "helm/**"
+      - ".github/workflows/helm-release.yml"
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: "Publish charts (push to GHCR)?"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    name: Lint & package charts
+    runs-on: ubuntu-latest
+    outputs:
+      any_chart: ${{ steps.detect.outputs.any_chart }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/setup-helm@v4
+
+      - name: Find charts
+        id: detect
+        shell: bash
+        run: |
+          shopt -s nullglob
+          charts=(helm/*)
+          if [[ ${#charts[@]} -eq 0 ]]; then
+            echo "No charts found under helm/"
+            echo "any_chart=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "any_chart=true" >> "$GITHUB_OUTPUT"
+
+      - name: Lint & package all charts
+        if: steps.detect.outputs.any_chart == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          shopt -s nullglob
+          for chart in helm/*; do
+            [[ -f "$chart/Chart.yaml" ]] || continue
+            echo "==> deps: $chart";   helm dependency build "$chart"
+            echo "==> lint: $chart";   helm lint "$chart"
+            echo "==> pack: $chart";   helm package -u "$chart" --destination dist
+          done
+          ls -l dist || true
+
+      - name: Upload packaged charts (artifact)
+        if: steps.detect.outputs.any_chart == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: helm-packages
+          path: dist/*.tgz
+          if-no-files-found: ignore
+
+  publish:
+    name: Publish to GHCR (OCI)
+    needs: build
+    runs-on: ubuntu-latest
+    # Publish when:
+    #  - manual dispatch with publish=true
+    #  - OR push to main (no tag needed)
+    #  - OR a tagged push (refs/tags/*)
+    if: |
+      needs.build.outputs.any_chart == 'true' && (
+        (github.event_name == 'workflow_dispatch' && inputs.publish == true) ||
+        (github.event_name == 'push' && github.ref == 'refs/heads/main') ||
+        (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/'))
+      )
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: helm-packages
+          path: dist
+
+      - uses: azure/setup-helm@v4
+
+      - name: Login to GHCR
+        env:
+          GHCR_USERNAME: ${{ github.actor }}
+          GHCR_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "$GHCR_PASSWORD" | helm registry login ghcr.io \
+            --username "$GHCR_USERNAME" --password-stdin
+
+      - name: Push all packages to GHCR
+        env:
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          owner=$(echo "$OWNER" | tr '[:upper:]' '[:lower:]')
+          repo=$(echo  "$REPO"  | tr '[:upper:]' '[:lower:]')
+
+          for pkg in dist/*.tgz; do
+            base=$(basename "$pkg" .tgz)
+            chart="${base%-*}"  # bigmon-0.1.1 -> bigmon
+            # choose ONE of these targets:
+
+            # A) per-repo namespace (one package per chart path):
+            # target="oci://ghcr.io/${owner}/${repo}/${chart}"
+
+            # B) single shared 'charts' namespace (uncomment these 2 lines instead):
+            namespace="${repo}-charts"
+            target="oci://ghcr.io/${owner}/${namespace}"
+
+            echo "==> Pushing $pkg to $target"
+            helm push "$pkg" "$target"
+          done
