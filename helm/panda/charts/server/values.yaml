@@ -162,6 +162,10 @@ route:
     termination: passthrough
     insecureEdgeTerminationPolicy: None
 
+gateway:
+  enabled: false
+  implementation: "envoy"
+  className: ""
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
