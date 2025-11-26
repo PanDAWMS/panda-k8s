@@ -4,7 +4,7 @@
 
 
 jedi:
-  replicaCount: 2
+  replicaCount: 4
   persistentvolume:
     class: wekafs--sdf-k8s01
     create: false
@@ -13,14 +13,14 @@ jedi:
 
   resources:
     limits:
-      cpu: 4000m
+      cpu: 8000m
       memory: 32Gi
     requests:
-      cpu: 4000m
+      cpu: 8000m
       memory: 32Gi
 
 server:
-  replicaCount: 6
+  replicaCount: 7
   persistentvolume:
     class: wekafs--sdf-k8s01
     create: false
