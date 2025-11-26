@@ -52,6 +52,10 @@ server:
   route:
     enabled: false
 
+  # use Gateway class to expose the service
+  gateway:
+    enabled: false
+    className: "FIXME"
     
   # use Ingress class to expose the service  
   ingress:
