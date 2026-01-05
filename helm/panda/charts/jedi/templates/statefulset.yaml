@@ -133,6 +133,8 @@ spec:
                   name: {{ .Release.Name }}-external-sandbox
               - configMap:
                   name: {{ .Release.Name }}-server-sandbox
+              - secret:
+                  name: {{ .Values.global.secret }}-panda-token-cache
         - name: {{ include "jedi.fullname" . }}-configjson
           projected:
             sources:
