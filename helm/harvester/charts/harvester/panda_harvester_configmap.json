@@ -16,10 +16,6 @@
   "communicator": {
     "nConnections": 10
   },
-  "credmanager": {
-    "moduleName": [],
-    "pluginConfigs": []
-  },
   "payload_interaction": {
     "jobSpecFile": "pandaJobData.out"
   },
