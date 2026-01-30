@@ -1,0 +1,26 @@
+# Default values for bigmon.
+# # This is a YAML-formatted file.
+# # Declare variables to be passed into your templates.
+#
+
+main:
+  persistentvolume:
+    create: true
+
+  ingress:
+    enabled: true
+    hosts:
+      - domain: cern.ch
+        hostOverride: bigpanda-tb.cern.ch
+        paths:
+          - path: /condor_logs
+            pathType: Prefix
+            serviceName: panda-harvester
+            servicePort: 443
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: "default"
+        hosts:
+          - domain: cern.ch
+            hostOverride: bigpanda-tb.cern.ch
