@@ -1,0 +1,21 @@
+# Default values for panda.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+server:
+  # use Route class for ingress
+  route:
+    enabled: false
+  ingress:
+    enabled: true
+    hosts:
+      - domain: cern.ch
+        hostOverride: pandaserver-doma.cern.ch
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: default
+        hosts:
+          - domain: cern.ch
+            hostOverride: pandaserver-doma.cern.ch
