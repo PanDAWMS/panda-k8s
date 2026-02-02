@@ -8,7 +8,7 @@
 	    "dbname": "$PANDA_DB_NAME",
         "schemaJEDI": "$PANDA_DB_SCHEMAJEDI",
         "schemaDEFT": "$PANDA_DB_SCHEMADEFT",
-	    "nWorkers": "5"
+	    "nWorkers": "10"
     },
     "ddm": {
         "modConfig": "wlcg:4:pandajedi.jediddm.GenDDMClient:GenDDMClient::off,wlcg:2:pandajedi.jediddm.AtlasDDMClient:AtlasDDMClient:sphenix",
@@ -22,7 +22,8 @@
         "nWorkers": "3"
     },
     "jobgen": {
-        "nWorkers": "6"
+        "nWorkers": "6",
+	"nFiles": "2000"
     },
     "postprocessor": {
         "nWorkers": "6"

@@ -5,7 +5,7 @@
          "database":
             {"default": "postgresql://${IDDS_DATABASE_USER}:${IDDS_DATABASE_PASSWORD}@${IDDS_DATABASE_HOST}:${IDDS_DATABASE_PORT}/${IDDS_DATABASE_NAME}?keepalives=1&keepalives_idle=30&keepalives_interval=5&keepalives_count=5",
              "schema": "${IDDS_DATABASE_SCHEMA}",
-             "pool_size": 50,
+             "pool_size": 10,
              "pool_recycle": 3600,
              "echo": 0,
              "pool_reset_on_return": "rollback"
@@ -15,7 +15,14 @@
              "additional_storage": "/data/idds-requests/panda_jobs/panda/idds-requests"
 	    },
 	 "clerk":
-	    {"cache_expire_seconds": 300},
+	    {"cache_expire_seconds": 300,
+	     "update_poll_period": 120,
+	     "update_command_poll_period": 120},
+	 "transformer":
+	    {"num_threads": 8,
+	     "max_number_workers": 8,
+             "update_poll_period": 180,
+	     "poll_operation_time_period": 180},
 	 "carrier":
 	    {"receiver_num_threads": 16,
              "enable_executors": true,

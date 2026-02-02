@@ -101,6 +101,7 @@ spec:
         {{- include "rest.selectorLabels" . | nindent 8 }}
     spec:
       hostname:  {{ .Release.Name}}
+
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -122,7 +123,7 @@ spec:
               /opt/idds/bin/start-daemon.sh all
               {{- else }}
               chmod 777 /var/log/idds;
-              runuser -u atlpan -g zp -- /opt/idds/bin/start-daemon.sh all
+              runuser -u atlpan -- /opt/idds/bin/start-daemon.sh all
               {{- end}}
           {{ end -}}
           ports:
@@ -142,6 +143,8 @@ spec:
               value: "{{ .Values.restHost }}"
             - name: PANDAMON_URL
               value: "{{ .Values.bigmonURL }}"
+            - name: POD_FQDN
+              value: "{{ include "rest.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
@@ -151,6 +154,8 @@ spec:
                 mountPath: /opt/idds/configmap
               - name: {{ include "rest.fullname" . }}-certs
                 mountPath: /opt/idds/certs
+              - name: {{ include "rest.fullname" . }}-sandbox
+                mountPath: /opt/idds/sandbox
               - name: {{ include "rest.fullname" . }}-requests
                 mountPath: {{ .Values.persistentvolumerequests.path }}
       {{- with .Values.nodeSelector }}
@@ -173,6 +178,9 @@ spec:
                   name: {{ include "rest.fullname" . }}-configmap
               - secret:
                   name: {{ .Values.global.secret }}-idds-auth
+        - name: {{ include "rest.fullname" . }}-sandbox
+          configMap:
+              name: {{ include "rest.fullname" . }}-sandbox
         - name: {{ include "rest.fullname" . }}-certs
           secret:
               secretName: {{ .Values.global.secret }}-idds-certs
