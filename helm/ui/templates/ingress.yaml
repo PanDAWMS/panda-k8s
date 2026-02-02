@@ -1,0 +1,76 @@
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "ui.fullname" . -}}
+{{- $globalSecret := .Values.global.secret -}}
+{{- $host := .Values.global.hostOverwrite -}}
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "ui.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+
+spec:
+  {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+
+  {{- if .Values.ingress.tls }}
+  tls:
+    {{- range .Values.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        {{- if $host }}
+        - {{ $host | quote }}
+        {{- else }}
+        - {{ printf "%s.%s" $fullName .domain | quote }}
+        {{- end }}
+        {{- end }}
+      # secretName: {{ .secretName }}
+      secretName: {{ $globalSecret }}-ui-tls-certs
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.ingress.hosts }}
+    {{- if $host }}
+    - host: {{ $host | quote }}
+    {{- else }}
+    - host: {{ printf "%s.%s" $fullName .domain | quote }}
+    {{- end }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
+            pathType: {{ .pathType }}
+            {{- end }}
+            backend:
+              {{- if semverCompare ">=1.19-0" $.Capabilities.KubeVersion.GitVersion }}
+              service:
+                {{- if eq .service.name "frontend" }}
+                name: {{ printf "%s-%s" $fullName .service.name }}
+                {{- else if eq .service.name "backend" }}
+                name: {{ printf "%s-%s" $fullName .service.name }}
+                {{- else }}
+                name: {{ fail "Service name must be either 'frontend' or 'backend'" }}
+                {{- end }}
+                port:
+                  number: {{ .service.port }}
+              {{- else }}
+              {{- if eq .service.name "frontend" }}
+              serviceName: {{ include "frontend.fullname" . }}
+              servicePort: {{ .service.port }}
+              {{- else if eq .service.name "backend" }}
+              serviceName: {{ include "backend.fullname" . }}
+              servicePort: {{ .service.port }}
+              {{- else }}
+                {{ fail "Service name must be either 'frontend' or 'backend'" }}
+              {{- end }}
+              {{- end }}
+          {{- end }}
+    {{- end }}
+{{- end }}

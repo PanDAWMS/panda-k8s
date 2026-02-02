@@ -1,23 +1,10 @@
 # Patterns to ignore when building packages.
 # This supports shell glob matching, relative path matching, and
 # negation (prefixed with !). Only one pattern per line.
-*.pem
-*.p12
-*auth_config.json
-idds2panda_token
-values-secret.yaml
-ca.crt
-tls.*
-*.crt
-*.key
-tlssan.*
-config.py
-local.py
-*.local.yaml
-
 .DS_Store
 # Common VCS dirs
 .git/
+.gitignore
 .bzr/
 .bzrignore
 .hg/

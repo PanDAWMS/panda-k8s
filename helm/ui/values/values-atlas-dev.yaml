@@ -1,0 +1,10 @@
+global:
+  vo: ATLAS
+  hostOverwrite: panda-ui-dev.cern.ch
+
+backend:
+  persistentvolume:
+    create: true
+
+autoscaling:
+  enabled: false

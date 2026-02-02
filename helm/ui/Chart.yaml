@@ -1,0 +1,17 @@
+apiVersion: v2
+name: ui
+description: PanDA UI Helm Chart (Django REST API and Angular Frontend)
+icon: https://github.com/PanDAWMS/panda-ui/blob/main/frontend/public/favicon.ico
+
+type: application
+version: 0.1.0
+appVersion: ""
+
+dependencies:
+  - name: backend
+    repository: file://charts/backend
+    version: 1.0.0
+
+  - name: frontend
+    version: 1.0.0.
+    repository: file://charts/frontend

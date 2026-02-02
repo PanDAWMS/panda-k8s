@@ -1,0 +1,40 @@
+# pv
+{{- if .Values.persistentVolume.create }}
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: {{ include "backend.fullname" . }}
+  labels:
+      {{- include "backend.labels" . | nindent 4 }}
+spec:
+  storageClassName: {{ .Values.persistentVolume.class }}
+  capacity:
+    storage: {{ .Values.persistentVolume.size }}
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Delete
+  hostPath:
+    path: {{ .Values.persistentVolume.path }}
+
+---
+# pv claim
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: {{ include "backend.fullname" . }}
+  labels:
+    {{- include "backend.labels" . | nindent 4 }}
+spec:
+  storageClassName: {{ .Values.persistentVolume.class }}
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.persistentVolume.size }}
+  {{- if .Values.persistentVolume.create }}
+  selector:
+    matchLabels:
+      {{- include "backend.selectorLabels" . | nindent 6 }}
+  {{- end }}
+---
+{{- end }}

@@ -1,0 +1,59 @@
+# Default values for panda-ui-backend.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: "ghcr.io/pandawms/panda-ui-backend"
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  containerPort: 8080  # it is expected that the backend serves nginx on 8080
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+  fsGroup: 0
+
+db:
+  deployment: external  # options: external, kubernetes
+  vendor: oracle  # options: oracle, postgresql
+
+persistentVolume:
+  create: true
+  class: manual
+  path: "/mnt/panda-ui-backend-logs"
+  size: 5Gi
+  selector: true
+
+# expected paths inside the container from backend Dockerfile
+paths:
+  base: /opt/pandaui  # from panda-ui-backend Dockerfile
+  config: /data/pandaui/config  # from panda-ui-backend Dockerfile
+  logs: /data/pandaui/logs  # from panda-ui-backend Dockerfile
+  sandbox: /opt/pandaui/configmap
+  certs: /opt/pandaui/etc/cert
+
+autoStart: true
+
+replicaCount: 1
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+resources: {}
+podAnnotations: {}
+podSecurityContext: {}
+imagePullSecrets: []
+securityContext: {}

@@ -1,0 +1,40 @@
+1. Access the Panda UI application
+
+{{- if .Values.ingress.enabled }}
+Application URLs via Ingress:
+{{- range $host := .Values.ingress.hosts }}
+  {{- range .paths }}
+  {{- $scheme := "http" }}
+  {{- if $.Values.ingress.tls }}
+    {{- $scheme = "https" }}
+  {{- end }}
+  {{$scheme}}://{{- if $.Values.global.hostOverwrite }}{{ $.Values.global.hostOverwrite }}{{- else }}{{ $host.domain }}{{- end }}{{ .path }}
+  {{- end }}
+{{- end }}
+
+Example curl command to test backend API:
+curl -vk \
+  -H "Host: {{ (index .Values.ingress.hosts 0).hostOverride }}" \
+  https://{{ (index .Values.ingress.hosts 0).hostOverride }}/api/
+
+{{- else if contains "NodePort" .Values.backend.service.type }}
+# NodePort access (internal/testing)
+export NODE_PORT=$(kubectl get svc {{ include "ui.fullname" . }} -o jsonpath="{.spec.ports[0].nodePort}")
+export NODE_IP=$(kubectl get nodes -o jsonpath="{.items[0].status.addresses[0].address}")
+echo "Access at: http://$NODE_IP:$NODE_PORT"
+
+{{- else if contains "LoadBalancer" .Values.backend.service.type }}
+# LoadBalancer access
+NOTE: It may take a few minutes for the LoadBalancer IP to be available.
+kubectl get svc {{ include "ui.fullname" . }}
+export SERVICE_IP=$(kubectl get svc {{ include "ui.fullname" . }} --template "{{"{{ range (index .status.loadBalancer.ingress 0) }}{{.}}{{ end }}"}}")
+echo "Access at: http://$SERVICE_IP:{{ .Values.service.port }}"
+
+{{- else if contains "ClusterIP" .Values.backend.service.type }}
+# ClusterIP fallback (local port-forward)
+export POD_NAME=$(kubectl get pods -l "app.kubernetes.io/instance={{ .Release.Name }}" -o jsonpath="{.items[0].metadata.name}")
+export CONTAINER_PORT=$(kubectl get pod $POD_NAME -o jsonpath="{.spec.containers[0].ports[0].containerPort}")
+echo "Port-forwarding to localhost:8080"
+kubectl port-forward $POD_NAME 8080:$CONTAINER_PORT
+echo "Then access the application at: http://127.0.0.1:8080"
+{{- end }}
