@@ -8,6 +8,7 @@ metadata:
 data:
   app-config.json: |
     {
+      "production": true,
       "apiUrl": "{{ if .Values.global.hostOverwrite }}https://{{ .Values.global.hostOverwrite }}/api{{ else }}/api{{ end }}",
-      "production": true
+      "vo": "{{ if .Values.global.vo }}{{ .Values.global.vo }}{{ else }}TEST{{ end }}"
     }
