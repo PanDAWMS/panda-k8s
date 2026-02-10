@@ -10,5 +10,6 @@ data:
     {
       "production": true,
       "apiUrl": "{{ if .Values.global.hostOverwrite }}https://{{ .Values.global.hostOverwrite }}/api{{ else }}/api{{ end }}",
+      "logLevel": "{{ if .Values.global.logLevel }}{{ .Values.global.logLevel }}{{ else }}WARN{{ end }}",
       "vo": "{{ if .Values.global.vo }}{{ .Values.global.vo }}{{ else }}TEST{{ end }}"
     }

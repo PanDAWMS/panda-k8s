@@ -3,6 +3,8 @@ global:
   uiVersion: "v1.0.0"
   # the host alias to be used for external access
   hostOverwrite: ""
+  vo: ""
+  logLevel: ERROR
 
 autoscaling:
   enabled: false

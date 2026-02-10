@@ -1,6 +1,7 @@
 global:
   vo: ATLAS
   hostOverwrite: panda-ui-dev.cern.ch
+  logLevel: WARN
 
 backend:
   persistentvolume:
