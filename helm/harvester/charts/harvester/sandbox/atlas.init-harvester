@@ -1,0 +1,10 @@
+#!/bin/bash
+# copy certs and set permission
+rm -rf /data/harvester/run
+mkdir /data/harvester/run
+cp /opt/harvester/etc/auth/atlpilo1RFC.plain /data/harvester/run/atlpilo1RFC.plain
+chmod 600 /data/harvester/run/atlpilo1RFC.plain
+
+# vomses file to refer to the atlas VOMS server
+echo '"atlas" "voms-atlas-auth.cern.ch" "443" "/DC=ch/DC=cern/OU=computers/CN=atlas-auth.cern.ch" "atlas" "24"' >> /etc/vomses
+
