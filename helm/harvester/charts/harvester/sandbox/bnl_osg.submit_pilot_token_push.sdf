@@ -9,11 +9,11 @@ output = {logDir}/{logSubdir}/grid.$(Cluster).$(Process).out
 error = {logDir}/{logSubdir}/grid.$(Cluster).$(Process).err
 transfer_executable = True
 
-environment = "PANDA_JSID=harvester-{harvesterID} HARVESTER_ID={harvesterID} HARVESTER_WORKER_ID={workerID} GTAG={gtag} STORAGEDATA_SERVER_URL=https://datalake-cric.cern.ch/api/atlas/ddmendpoint/query/?json PANDA_AUTH_ORIGIN=panda_dev.pilot PANDA_AUTH_TOKEN=c9b4ffca7df17fd45bc0d639bb73cd90 "
+environment = "PANDA_JSID=harvester-{harvesterID} HARVESTER_ID={harvesterID} HARVESTER_WORKER_ID={workerID} GTAG={gtag} STORAGEDATA_SERVER_URL=https://datalake-cric.cern.ch/api/atlas/ddmendpoint/query/?json PANDA_AUTH_ORIGIN=panda_dev.pilot PANDA_AUTH_TOKEN=FIXME "
 +harvesterID = "{harvesterID}"
 +harvesterWorkerID = "{workerID}"
 
-transfer_input_files = {accessPoint}/pandaJobData.out,/data/tokens/pilot/c9b4ffca7df17fd45bc0d639bb73cd90
+transfer_input_files = {accessPoint}/pandaJobData.out,/data/tokens/pilot/FIXME
 
 universe = grid
 grid_resource = condor gridgk04.sdcc.bnl.gov gridgk04.sdcc.bnl.gov:9619
