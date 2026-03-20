@@ -77,7 +77,10 @@ spec:
           {{- if .Values.autoStart }}
           command: ["/bin/sh", "-c"]
           args:
-            - until  /usr/pgsql-*/bin/pg_isready -h ${PANDA_DB_HOST} -p ${PANDA_DB_PORT}; do echo waiting for database; sleep 2; done;
+            - |
+              if [ "${PANDA_DB_BACKEND}" = "postgres" ]; then
+                until /usr/pgsql-*/bin/pg_isready -h ${PANDA_DB_HOST} -p ${PANDA_DB_PORT}; do echo waiting for database; sleep 2; done;
+              fi;
               cp /opt/panda/sandbox/* /data/panda/;
               chmod +x /data/panda/init-jedi;
               chmod +x /data/panda/run-jedi-crons;
