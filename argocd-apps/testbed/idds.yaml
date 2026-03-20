@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/EdwardKaravakis/panda-k8s.git
+    repoURL: https://github.com/PanDAWMS/panda-k8s.git
     targetRevision: main
     path: helm/idds
     helm:
