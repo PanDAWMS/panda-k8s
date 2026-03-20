@@ -7,7 +7,7 @@
         "CRIC_URL_SITES": "$PANDA_CRIC_SITES",
 	"CRIC_URL_TAGS": "$PANDA_CRIC_URLTAGS",
 	"RUCIO_RSE_USAGE": "/opt/panda/sandbox/rucio_rse_usage.json",
-        "backend": "postgres",
+        "backend": "$PANDA_DB_BACKEND",
         "schemaPANDA": "$PANDA_DB_SCHEMAPANDA",
         "schemaMETA": "$PANDA_DB_SCHEMAMETA",
         "schemaPANDAARCH": "$PANDA_DB_SCHEMAPANDAARCH",
