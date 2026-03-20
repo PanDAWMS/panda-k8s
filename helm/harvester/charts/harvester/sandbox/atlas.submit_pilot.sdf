@@ -1,0 +1,39 @@
+executable = {executableFile}
+arguments = "-s {computingSite} -r {computingSite} -q {pandaQueueName} -j {pilotJobLabel} -i {pilotType} {pilotPythonOption} -w generic --pilot-user ATLAS --url https://pandaserver-tb.cern.ch -d --baseurls https://pandaserver-tb.cern.ch --port 443 {pilotDebugOption} --harvester-submit-mode PUSH {pilotResourceTypeOption} --pilotversion {pilotVersion} {pilotUrlOption} {pilotArgs}"
+initialdir = {accessPoint}
+universe = grid
+log = {logDir}/{logSubdir}/grid.$(Cluster).$(Process).log
+output = {logDir}/{logSubdir}/grid.$(Cluster).$(Process).out
+error = {logDir}/{logSubdir}/grid.$(Cluster).$(Process).err
+transfer_executable = True
+x509userproxy = {x509UserProxy}
+environment = "PANDA_JSID=harvester-{harvesterID} HARVESTER_ID={harvesterID} HARVESTER_WORKER_ID={workerID} GTAG={gtag} APFMON=http://apfmon.lancs.ac.uk/api APFFID={harvesterID} APFCID=$(Cluster).$(Process) PANDA_AUTH_ORIGIN=Rubin.production PANDA_AUTH_TOKEN={pandaTokenFilename} PANDA_AUTH_TOKEN_KEY={pandaTokenKeyFilename}"
+transfer_input_files = pandaJobData.out,{pandaTokenPath},{pandaTokenKeyPath}
+
++harvesterID = "{harvesterID}"
+
+grid_resource = condor {ceHostname} {ceEndpoint}
+
++remote_jobuniverse = 5
++remote_ShouldTransferFiles = "YES"
++remote_WhenToTransferOutput = "ON_EXIT_OR_EVICT"
++remote_TransferOutput = ""
++ioIntensity = 0
++xcount = 1
++maxMemory = 2000
++remote_queue = "share"
++maxWallTime = 4800
+
+delegate_job_GSI_credentials_lifetime = 0
+
+periodic_remove = (JobStatus == 2 && (CurrentTime - EnteredCurrentStatus) > 604800)
++remote_PeriodicRemove = (JobStatus == 5 && (CurrentTime - EnteredCurrentStatus) > 3600) || (JobStatus == 1 && globusstatus =!= 1 && (CurrentTime - EnteredCurrentStatus) > 86400)
+
++ioIntensity = {ioIntensity}
++sdfPath = "{sdfPath}"
++ScitokensFile = "{tokenPath}"
+
++RequireGPUs = False
++RequestGPUs = 0
+
+queue 1
