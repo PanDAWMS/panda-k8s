@@ -5,6 +5,22 @@
 rest:
   replicaCount: 2
   iddsServer: panda-idds-tb.cern.ch
+  resources:
+    requests:
+      cpu: "1"
+      memory: 2Gi
+    limits:
+      cpu: "4"
+      memory: 6Gi
+
+postgres:
+  resources:
+    requests:
+      cpu: "500m"
+      memory: 1Gi
+    limits:
+      cpu: "2"
+      memory: 4Gi
 
   ingress:
     enabled: true
