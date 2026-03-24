@@ -70,3 +70,9 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# Custom MariaDB configuration appended to /opt/bitnami/mariadb/conf/my_custom.cnf
+customConfig: |-
+  [mysqld]
+  max_allowed_packet=128M
+  innodb_buffer_pool_size=512M
