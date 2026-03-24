@@ -12,6 +12,7 @@ spec:
     helm:
       valueFiles:
         - values.yaml
+        - values/values-atlas_testbed.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: default
