@@ -10,6 +10,8 @@ server:
     limits:
       cpu: "4"
       memory: 6Gi
+  persistentvolume:
+    size: 50Gi
   # use Route class for ingress
   route:
     enabled: false
@@ -35,6 +37,8 @@ jedi:
     limits:
       cpu: "4"
       memory: 6Gi
+  persistentvolume:
+    size: 50Gi
 
 postgres:
     enabled: false
