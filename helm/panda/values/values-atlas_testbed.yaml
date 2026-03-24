@@ -3,6 +3,13 @@
 # Declare variables to be passed into your templates.
 
 server:
+  resources:
+    requests:
+      cpu: "1"
+      memory: 2Gi
+    limits:
+      cpu: "4"
+      memory: 6Gi
   # use Route class for ingress
   route:
     enabled: false
@@ -19,6 +26,15 @@ server:
         hosts:
           - domain: cern.ch
             hostOverride: pandaserver-tb.cern.ch
+
+jedi:
+  resources:
+    requests:
+      cpu: "1"
+      memory: 2Gi
+    limits:
+      cpu: "4"
+      memory: 6Gi
 
 postgres:
     enabled: false
