@@ -6,6 +6,7 @@
 main:
   persistentvolume:
     create: true
+    size: 50Gi
 
   ingress:
     enabled: true

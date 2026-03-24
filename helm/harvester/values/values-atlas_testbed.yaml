@@ -2,6 +2,12 @@
 # This is a YAML-formatted file.
 
 harvester:
+  persistentvolume:
+    size: 50Gi
+  persistentvolumewdir:
+    size: 50Gi
+  persistentvolumecondor:
+    size: 50Gi
   resources:
     requests:
       cpu: "1"
