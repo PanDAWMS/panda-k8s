@@ -13,15 +13,6 @@ rest:
       cpu: "4"
       memory: 6Gi
 
-postgres:
-  resources:
-    requests:
-      cpu: "500m"
-      memory: 1Gi
-    limits:
-      cpu: "2"
-      memory: 4Gi
-
   ingress:
     enabled: true
     hosts:
@@ -35,3 +26,6 @@ postgres:
         hosts:
           - domain: cern.ch
             hostOverride: panda-idds-tb.cern.ch
+
+postgres:
+  enabled: false

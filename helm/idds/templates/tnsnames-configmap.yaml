@@ -1,0 +1,9 @@
+{{- if .Values.rest.enabled }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-tnsnames
+data:
+  tnsnames.ora: |-
+{{ .Files.Get "tnsnames.ora" | indent 4 }}
+{{- end }}
