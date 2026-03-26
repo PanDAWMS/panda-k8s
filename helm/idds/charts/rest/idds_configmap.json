@@ -3,7 +3,7 @@
         {"common":
             {"loglevel": "DEBUG"},
          "database":
-            {"default": "postgresql://${IDDS_DATABASE_USER}:${IDDS_DATABASE_PASSWORD}@${IDDS_DATABASE_HOST}:${IDDS_DATABASE_PORT}/${IDDS_DATABASE_NAME}?keepalives=1&keepalives_idle=30&keepalives_interval=5&keepalives_count=5",
+            {"default": "${IDDS_DATABASE_URL}",
              "schema": "${IDDS_DATABASE_SCHEMA}",
              "pool_size": 50,
              "pool_recycle": 3600,
@@ -95,7 +95,7 @@
         },
     "/opt/idds/config/idds/alembic.ini":
         {"alembic":
-            {"sqlalchemy.url": "postgresql://${IDDS_DATABASE_USER}:${IDDS_DATABASE_PASSWORD}@${IDDS_DATABASE_HOST}:${IDDS_DATABASE_PORT}/${IDDS_DATABASE_NAME}",
+            {"sqlalchemy.url": "${IDDS_DATABASE_URL}",
              "version_table_schema": "${IDDS_DATABASE_SCHEMA}"
             }
         },

@@ -117,7 +117,7 @@ spec:
           {{ if .Values.autoStart -}}
           command: ["/bin/sh", "-c"]
           args:
-            - until /usr/bin/pg_isready -h ${IDDS_DATABASE_HOST} -p ${IDDS_DATABASE_PORT}; do echo waiting for database; sleep 2; done;
+            - if [ "${IDDS_DB_BACKEND}" != "oracle" ]; then until /usr/bin/pg_isready -h ${IDDS_DATABASE_HOST} -p ${IDDS_DATABASE_PORT}; do echo waiting for database; sleep 2; done; fi;
               {{- if .Values.noRoot }}
               /opt/idds/bin/start-daemon.sh all
               {{- else }}
@@ -137,6 +137,8 @@ spec:
                 name: {{ include "rest.fullname" . }}-envs
             - secretRef:
                 name: {{ .Values.global.secret }}-idds-envs
+            - secretRef:
+                name: {{ .Values.global.secret }}-idds-db-envs
           env:
             - name: IDDS_REST_HOST
               value: "{{ .Values.restHost }}"
@@ -173,6 +175,8 @@ spec:
                   name: {{ include "rest.fullname" . }}-configmap
               - secret:
                   name: {{ .Values.global.secret }}-idds-auth
+              - configMap:
+                  name: {{ .Release.Name }}-tnsnames
         - name: {{ include "rest.fullname" . }}-certs
           secret:
               secretName: {{ .Values.global.secret }}-idds-certs
