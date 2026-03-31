@@ -3,6 +3,7 @@
 # Declare variables to be passed into your templates.
 
 server:
+  configFile: panda_server_config.atlas_testbed.json
   resources:
     requests:
       cpu: "1"
@@ -30,6 +31,7 @@ server:
             hostOverride: pandaserver-tb.cern.ch
 
 jedi:
+  configFile: panda_jedi_config.atlas_testbed.json
   resources:
     requests:
       cpu: "1"
