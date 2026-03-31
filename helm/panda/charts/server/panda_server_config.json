@@ -12,6 +12,7 @@
         "schemaMETA": "$PANDA_DB_SCHEMAMETA",
         "schemaPANDAARCH": "$PANDA_DB_SCHEMAPANDAARCH",
         "schemaJEDI": "$PANDA_DB_SCHEMAJEDI",
+        "schemaDEFT": "$PANDA_DB_SCHEMADEFT",
         "configurator_use_cert": "False",
         "production_dns": "iddssv1,Robot,Pilot",
 	"pilot_owners": "pilot",
