@@ -1,0 +1,89 @@
+{
+  "db": {
+    "backend": "$PANDA_DB_BACKEND",
+    "dbhost": "$PANDA_DB_HOST",
+    "dbport": "$PANDA_DB_PORT",
+    "dbpasswd": "$PANDA_DB_PASSWORD",
+    "dbuser": "$PANDA_DB_USER",
+    "dbname": "$PANDA_DB_NAME",
+    "schemaJEDI": "$PANDA_DB_SCHEMAJEDI",
+    "schemaDEFT": "$PANDA_DB_SCHEMADEFT",
+    "schemaPANDA": "$PANDA_DB_SCHEMAPANDA",
+    "schemaPANDAARCH": "$PANDA_DB_SCHEMAPANDAARCH",
+    "schemaMETA": "$PANDA_DB_SCHEMAMETA",
+    "nWorkers": "8"
+  },
+  "ddm": {
+    "modConfig": "atlas:6:pandajedi.jediddm.AtlasDDMClient:AtlasDDMClient",
+    "endpoints_json_path": "$PANDA_CRIC_URL_DDMENDPOINTS",
+    "voWithScope": "atlas"
+  },
+  "confeeder": {
+    "procConfig": ":managed|test|ptest|rc_test2:1;:user:1",
+    "nWorkers": "5",
+    "loopCycle": "20"
+  },
+  "postprocessor": {
+    "modConfig": "atlas:any:pandajedi.jedipprocess.AtlasProdPostProcessor:AtlasProdPostProcessor,atlas:user:pandajedi.jedipprocess.AtlasAnalPostProcessor:AtlasAnalPostProcessor",
+    "procConfig": ":managed|test|ptest|rc_test2:1;:user:1",
+    "nWorkers": "5",
+    "nTasks": "500",
+    "loopCycle": "20"
+  },
+  "watchdog": {
+    "modConfig": "atlas:any:pandajedi.jedidog.AtlasProdWatchDog:AtlasProdWatchDog,atlas:user:pandajedi.jedidog.AtlasAnalWatchDog:AtlasAnalWatchDog,atlas:managed:pandajedi.jedidog.AtlasDataLocalityUpdaterWatchDog:AtlasDataLocalityUpdaterWatchDog:DataLocalityUpdater,atlas:managed:pandajedi.jedidog.AtlasTaskWithholderWatchDog:AtlasTaskWithholderWatchDog:TaskWithholder,atlas:managed:pandajedi.jedidog.AtlasQueueFillerWatchDog:AtlasQueueFillerWatchDog:QueueFiller,atlas:user:pandajedi.jedidog.AtlasDataCarouselWatchDog:AtlasDataCarouselWatchDog:DataCarouselWatchDog",
+    "procConfig": "atlas:any:1;atlas:user:1:AtlasAnalWatchDog:60;atlas:managed:1:DataLocalityUpdater:43200;atlas:managed:1:TaskWithholder:300;atlas:managed:1:QueueFiller:600;atlas:user:1:DataCarouselWatchDog:300",
+    "loopCycle": "300",
+    "waitForPicked": "30",
+    "waitForPending": "20",
+    "timeoutForPending": "1",
+    "timeoutForPendingVoLabel": "atlas:managed:120",
+    "waitForLocked": "60",
+    "waitForThrottled": "120",
+    "waitForExhausted": "240",
+    "waitForAchieved": "60"
+  },
+  "taskbroker": {
+    "modConfig": "atlas:any:pandajedi.jedibrokerage.AtlasProdTaskBroker:AtlasProdTaskBroker",
+    "procConfig": "atlas:managed|test:1",
+    "nWorkers": "1",
+    "loopCycle": "60"
+  },
+  "tcommando": {
+    "procConfig": "::1",
+    "nWorkers": "5",
+    "loopCycle": "60"
+  },
+  "taskgen": {
+    "modConfig": "atlas:managed|test:pandajedi.jedigen.AtlasTaskGenerator:AtlasTaskGenerator"
+  },
+  "taskrefine": {
+    "modConfig": "atlas:any:pandajedi.jedirefine.AtlasProdTaskRefiner:AtlasProdTaskRefiner:any,atlas:user:pandajedi.jedirefine.AtlasAnalTaskRefiner:AtlasAnalTaskRefiner:any"
+  },
+  "jobbroker": {
+    "modConfig": "atlas:any:pandajedi.jedibrokerage.AtlasProdJobBroker:AtlasProdJobBroker,atlas:user:pandajedi.jedibrokerage.AtlasAnalJobBroker:AtlasAnalJobBroker"
+  },
+  "jobthrottle": {
+    "modConfig": "atlas:any:pandajedi.jedithrottle.AtlasProdJobThrottler:AtlasProdJobThrottler,atlas:user:pandajedi.jedithrottle.AtlasAnalJobThrottler:AtlasAnalJobThrottler"
+  },
+  "jobgen": {
+    "procConfig": "atlas:managed:2:WORLD:180;atlas:test:2:WORLD:180;atlas:ptest:2:WORLD:180;atlas:rc_test2:2:WORLD:180;atlas:user:1:any:180",
+    "nTasks": "40",
+    "nFiles": "2000",
+    "nFilesPerGroup": "atlas:managed:::1000",
+    "nTasksPerGroup": "atlas:managed:group::200,atlas:managed:group_data::200",
+    "nWorkers": "5",
+    "loopCycle": "30",
+    "typicalNumFile": ":::logmerge:1000000",
+    "lockProcess": "atlas:managed::;atlas:test::"
+  },
+  "tasksetup": {
+    "modConfig": "atlas:any:pandajedi.jedisetup.AtlasTaskSetupper:AtlasTaskSetupper"
+  },
+  "msgprocessor": {
+    "configFile": "/opt/panda/etc/panda/jedi_msg_proc_config.json"
+  },
+  "mq": {
+    "configFile": "/opt/panda/etc/panda/jedi_mq_config.json"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "server": {
+    "CRIC_URL_CM": "$PANDA_CRIC_CM",
+    "CRIC_URL_DDMBLACKLIST": "$PANDA_CRIC_DDMBLACKLIST",
+    "CRIC_URL_DDMENDPOINTS": "$PANDA_CRIC_DDMENDPOINTS",
+    "CRIC_URL_SCHEDCONFIG": "$PANDA_CRIC_SCHEDCONFIG",
+    "CRIC_URL_SITES": "$PANDA_CRIC_SITES",
+    "backend": "$PANDA_DB_BACKEND",
+    "schemaPANDA": "$PANDA_DB_SCHEMAPANDA",
+    "schemaMETA": "$PANDA_DB_SCHEMAMETA",
+    "schemaPANDAARCH": "$PANDA_DB_SCHEMAPANDAARCH",
+    "schemaJEDI": "$PANDA_DB_SCHEMAJEDI",
+    "schemaDEFT": "$PANDA_DB_SCHEMADEFT",
+    "configurator_use_cert": "False",
+    "pserveralias": "pandaserver-tb.cern.ch",
+    "pserverhost": "$PANDA_HOSTNAME",
+    "pserverport": "443",
+    "pserverportcache": "443",
+    "wn_script_base_url": "https://pandaserver-tb.cern.ch:443",
+    "disableHTTP": "True",
+    "dbhost": "$PANDA_DB_HOST",
+    "dbport": "$PANDA_DB_PORT",
+    "dbpasswd": "$PANDA_DB_PASSWORD",
+    "dbuser": "$PANDA_DB_USER",
+    "dbname": "$PANDA_DB_NAME",
+    "nDBConnection": "1",
+    "usedbtimeout": "True",
+    "dbtimeout": "300",
+    "dbbridgeverbose": "False",
+    "dump_sql": "False",
+    "useJEDI": "True",
+    "production_dns": "pandasv,atlpilo,atlact,Robot Pilot,Robot Harvester",
+    "pilot_owners": "/atlas/usatlas/Role=production,/atlas/Role=pilot,ATLAS Pilot1,ATLAS Pilot2,peter love,Andrej Filipcic,usathpc",
+    "adder_plugins": "local:dataservice.AdderDummyPlugin:AdderDummyPlugin",
+    "setupper_plugins": "local:dataservice.SetupperDummyPlugin:SetupperDummyPlugin",
+    "closer_plugins": "atlas:dataservice.closer_atlas_plugin:CloserAtlasPlugin",
+    "token_authType": "oidc",
+    "sandboxHostname": "$PANDA_HOSTNAME",
+    "mq_configFile": "/opt/panda/etc/panda/panda_mbproxy_config.json",
+    "cache_dir": "/var/log/panda/pandacache/",
+    "token_cache_config": "/data/panda/token_cache_config.json"
+  },
+  "daemon": {
+    "enable": "True",
+    "uname": "atlpan",
+    "gname": "zp",
+    "package": "pandaserver.daemons.scripts",
+    "n_proc": "8",
+    "proc_lifetime": "172800",
+    "n_dbconn": "1",
+    "config": {
+      "configurator": {
+        "enable": true,
+        "module": "configurator",
+        "period": 200,
+        "sync": true
+      }
+    }
+  }
+}

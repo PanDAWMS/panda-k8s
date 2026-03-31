@@ -5,7 +5,7 @@ metadata:
   name: {{ include "jedi.fullname" . }}-configjson
 data:
   panda_jedi_config.json: |-
-{{ .Files.Get "panda_jedi_config.json" | indent 4}}
+{{ .Files.Get (.Values.configFile | default "panda_jedi_config.json") | indent 4}}
 
 ---
 # sandbox
