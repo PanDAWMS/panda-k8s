@@ -11,7 +11,7 @@
 	    "nWorkers": "5"
     },
     "ddm": {
-        "modConfig": "wlcg:4:pandajedi.jediddm.GenDDMClient:GenDDMClient::off,wlcg:2:pandajedi.jediddm.AtlasDDMClient:AtlasDDMClient:sphenix",
+        "modConfig": "atlas:3:pandajedi.jediddm.AtlasDDMClient:AtlasDDMClient,wlcg:4:pandajedi.jediddm.GenDDMClient:GenDDMClient::off,wlcg:2:pandajedi.jediddm.AtlasDDMClient:AtlasDDMClient:sphenix",
         "endpoints_json_path": "$PANDA_CRIC_URL_DDMENDPOINTS",
         "voWithScope": "wlcg"
     },
@@ -19,22 +19,32 @@
         "nWorkers": "6"
     },
     "taskrefine": {
+        "modConfig": "atlas:any:pandajedi.jedirefine.AtlasProdTaskRefiner:AtlasProdTaskRefiner:any,atlas:user:pandajedi.jedirefine.AtlasAnalTaskRefiner:AtlasAnalTaskRefiner:any,wlcg:any:pandajedi.jedirefine.GenTaskRefiner:GenTaskRefiner",
         "nWorkers": "3"
+    },
+    "jobbroker": {
+        "modConfig": "atlas:any:pandajedi.jedibrokerage.AtlasProdJobBroker:AtlasProdJobBroker,atlas:user:pandajedi.jedibrokerage.AtlasAnalJobBroker:AtlasAnalJobBroker,wlcg:any:pandajedi.jedibrokerage.GenJobBroker:GenJobBroker",
+        "nWorkers": "3"
+    },
+    "jobthrottle": {
+        "modConfig": "atlas:any:pandajedi.jedithrottle.AtlasProdJobThrottler:AtlasProdJobThrottler,atlas:user:pandajedi.jedithrottle.AtlasAnalJobThrottler:AtlasAnalJobThrottler,wlcg:any:pandajedi.jedithrottle.GenJobThrottler:GenJobThrottler"
     },
     "jobgen": {
         "nWorkers": "6"
     },
     "postprocessor": {
+        "modConfig": "atlas:any:pandajedi.jedipprocess.AtlasProdPostProcessor:AtlasProdPostProcessor,atlas:user:pandajedi.jedipprocess.AtlasAnalPostProcessor:AtlasAnalPostProcessor,wlcg:any:pandajedi.jedipprocess.GenPostProcessor:GenPostProcessor",
         "nWorkers": "6"
     },
     "taskbroker": {
+        "modConfig": "atlas:managed|test:pandajedi.jedibrokerage.AtlasProdTaskBroker:AtlasProdTaskBroker",
         "nWorkers": "3"
     },
     "tcommando": {
         "nWorkers": "6"
     },
     "tasksetup": {
-        "modConfig": "wlcg:any:pandajedi.jedisetup.SimpleTaskSetupper:SimpleTaskSetupper"
+        "modConfig": "atlas:any:pandajedi.jedisetup.AtlasTaskSetupper:AtlasTaskSetupper,wlcg:any:pandajedi.jedisetup.SimpleTaskSetupper:SimpleTaskSetupper"
     },
     "msgprocessor": {
         "configFile": "/opt/panda/etc/panda/jedi_msg_proc_config.json"
@@ -43,7 +53,8 @@
         "configFile": "/opt/panda/etc/panda/jedi_mq_config.json"
     },
     "watchdog": {
+        "modConfig": "atlas:managed|test:pandajedi.jedidog.AtlasProdWatchDog:AtlasProdWatchDog,atlas:user:pandajedi.jedidog.AtlasAnalWatchDog:AtlasAnalWatchDog,wlcg:any:pandajedi.jedidog.GenWatchDog:GenWatchDog",
         "waitForPending": "1",
-	"loopCycle": "60"
+	    "loopCycle": "60"
     }
 }
