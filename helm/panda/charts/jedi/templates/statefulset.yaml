@@ -105,6 +105,8 @@ spec:
                 mountPath: /opt/panda/etc/config_json
               - name: {{ include "jedi.fullname" . }}-sandbox
                 mountPath: /opt/panda/sandbox
+              - name: {{ include "jedi.fullname" . }}-certs
+                mountPath: /opt/panda/etc/cert
           envFrom:
             - configMapRef:
                 name: {{ .Release.Name }}-server-env
@@ -127,6 +129,9 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
+        - name: {{ include "jedi.fullname" . }}-certs
+          secret:
+              secretName: {{ .Values.global.secret }}-panda-certs
         - name: {{ include "jedi.fullname" . }}-sandbox
           projected:
             sources:
