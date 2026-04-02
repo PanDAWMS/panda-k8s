@@ -18,6 +18,8 @@ server:
     enabled: false
   ingress:
     enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
     hosts:
       - domain: cern.ch
         hostOverride: pandaserver-tb.cern.ch
