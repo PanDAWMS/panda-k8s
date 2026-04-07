@@ -27,7 +27,7 @@
     "pandaURL": "${PANDA_URL_SSL}",
     "pandaURLSSL": "${PANDA_URL_SSL}",
     "cache_api_url_ssl": "${PANDA_URL_SSL}",
-    "server_api_url_ssl": "${PANDA_URL_SSL}",
+    "server_api_url_ssl": "${PANDA_API_URL_SSL}",
     "verbose": true
   },
   "apfmon": {
