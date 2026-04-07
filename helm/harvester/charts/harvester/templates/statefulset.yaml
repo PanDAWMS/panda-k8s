@@ -200,6 +200,8 @@ spec:
               chmod +x /data/harvester/run-harvester-crons;
               mkdir -p /opt/harvester/etc/auth_tokens;
               chmod 777 /opt/harvester/etc/auth_tokens;
+              mkdir -p /data/tokens;
+              chown atlpan:zp /data/tokens;
               echo "starting harvester service";
               {{- if .Values.noRoot }}
               /opt/harvester/etc/rc.d/init.d/run-harvester-services;
