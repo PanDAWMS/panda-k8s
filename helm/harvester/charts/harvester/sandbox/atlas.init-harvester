@@ -6,7 +6,7 @@ cp /opt/harvester/etc/auth/atlpilo1RFC.plain /data/harvester/run/atlpilo1RFC.pla
 chmod 600 /data/harvester/run/atlpilo1RFC.plain
 
 # create token directories for IamTokenCredManager
-mkdir -p /data/tokens/ce/pilot /data/tokens/ce/prod /data/tokens/pandaserver
+mkdir -p /data/harvester/tokens/ce/pilot /data/harvester/tokens/ce/prod /data/harvester/tokens/pandaserver /data/harvester/tokens/harvester_pandaserver
 
 # vomses file to refer to the atlas VOMS server
 echo '"atlas" "voms-atlas-auth.cern.ch" "443" "/DC=ch/DC=cern/OU=computers/CN=atlas-auth.cern.ch" "atlas" "24"' >> /etc/vomses

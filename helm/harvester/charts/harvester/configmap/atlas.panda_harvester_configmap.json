@@ -36,14 +36,14 @@
           "atlas-ce-prod": {
             "client_cred_file": "/opt/harvester/etc/auth/token_harvester-compute_client_prod.json",
             "target_type": "ce",
-            "out_dir": "/data/tokens/ce/prod",
+            "out_dir": "/data/harvester/tokens/ce/prod",
             "check_interval": 1800,
             "refresh_interval": 85500
           },
           "atlas-ce-pilot": {
             "client_cred_file": "/opt/harvester/etc/auth/token_harvester-compute_client_pilot.json",
             "target_type": "ce",
-            "out_dir": "/data/tokens/ce/pilot",
+            "out_dir": "/data/harvester/tokens/ce/pilot",
             "check_interval": 1800,
             "refresh_interval": 85500
           },
@@ -51,7 +51,7 @@
             "client_cred_file": "/opt/harvester/etc/auth/token_harvester-pilot_pandaserver.json",
             "target_type": "panda",
             "panda_token_filename": "panda_token",
-            "out_dir": "/data/tokens/pandaserver",
+            "out_dir": "/data/harvester/tokens/pandaserver",
             "check_interval": 1800,
             "refresh_interval": 3500
           },
@@ -59,7 +59,7 @@
             "client_cred_file": "/opt/harvester/etc/auth/token_harvester-harvester_pandaserver.json",
             "target_type": "panda",
             "panda_token_filename": "harvester_panda_token",
-            "out_dir": "/data/tokens/harvester_pandaserver",
+            "out_dir": "/data/harvester/tokens/harvester_pandaserver",
             "check_interval": 900,
             "refresh_interval": 1700
           }
