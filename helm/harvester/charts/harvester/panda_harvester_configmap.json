@@ -114,31 +114,6 @@
             "target_type": "common",
             "target_list": ["https://pandaserver-doma.cern.ch:25443"],
             "out_dir": "/opt/harvester/etc/auth_tokens/"
-          },
-          "ce-pilot": {
-            "client_cred_file": "/opt/harvester/etc/auth/token_harvester-compute_client_pilot.json",
-            "target_type": "ce",
-            "out_dir": "/data/tokens/ce/pilot",
-            "check_interval": 1800,
-            "refresh_interval": 85500
-          },
-          "pilot-pandaserver-token": {
-            "client_cred_file": "/opt/harvester/etc/auth/token_harvester-pilot_pandaserver.json",
-            "target_type": "panda",
-            "panda_token_filename": "panda_token",
-            "out_dir": "/data/tokens/pandaserver",
-            "check_interval": 1800,
-            "refresh_interval": 3500
-          }
-        }
-      },
-      {
-        "module": "pandaharvester.harvestercredmanager.no_voms_cred_manager",
-        "name": "NoVomsCredManager",
-        "configs": {
-          "pilot": {
-            "inCertFile": "/data/harvester/run/atlpilo1RFC.plain",
-            "outCertFile": "/data/harvester/run/x509up_u25606_pilot"
           }
         }
       }

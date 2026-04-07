@@ -6,6 +6,10 @@ metadata:
 data:
   panda_harvester_configmap.json: |-
 {{ .Files.Get "panda_harvester_configmap.json" | indent 4}}
+{{- range $path, $_ := .Files.Glob "configmap/*" }}
+  {{ base $path }}: |-
+{{ $.Files.Get $path | indent 4}}
+{{- end }}
 ---
 # queue config
 apiVersion: v1
