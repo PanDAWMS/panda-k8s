@@ -1,6 +1,8 @@
 # Default values for harvester - atlas testbed overrides.
 # This is a YAML-formatted file.
 
+experiment: atlas
+
 harvester:
   persistentvolume:
     size: 50Gi
