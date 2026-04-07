@@ -24,11 +24,6 @@ if [[ ! -f /opt/harvester/etc/queue_config/panda_queueconfig.json ]]; then
     fi
 fi
 
-# use experiment-specific harvester configmap if available
-if [[ ! -z "${EXPERIMENT}" ]] && [[ -f /opt/harvester/etc/configmap/${EXPERIMENT}.panda_harvester_configmap.json ]]; then
-    ln -sf /opt/harvester/etc/configmap/${EXPERIMENT}.panda_harvester_configmap.json /opt/harvester/etc/panda/panda_harvester_configmap.json
-fi
-
 if [[ ! -z "${EXPERIMENT}" ]]; then
     echo "init experiment ${EXPERIMENT}"
     CurrentDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"

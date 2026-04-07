@@ -5,10 +5,11 @@ metadata:
   name: {{ include "harvester.fullname" . }}-configjson
 data:
   panda_harvester_configmap.json: |-
+{{- $expCfg := printf "configmap/%s.panda_harvester_configmap.json" (.Values.experiment | default "") }}
+{{- if and .Values.experiment (.Files.Get $expCfg) }}
+{{ .Files.Get $expCfg | indent 4 }}
+{{- else }}
 {{ .Files.Get "panda_harvester_configmap.json" | indent 4}}
-{{- range $path, $_ := .Files.Glob "configmap/*" }}
-  {{ base $path }}: |-
-{{ $.Files.Get $path | indent 4}}
 {{- end }}
 ---
 # queue config
