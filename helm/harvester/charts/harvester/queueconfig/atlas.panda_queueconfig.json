@@ -407,7 +407,7 @@
   },
 
 "CERN": {
-        "templateQueueName": "production.push",
+        "templateQueueName": "production.pull",
         "queueStatus": "online",
         "prodSourceLabel": "user",
         "prodSourceLabelRandomWeightsPermille": {"rc_test":10, "rc_test2":10, "rc_alrb":10},        
