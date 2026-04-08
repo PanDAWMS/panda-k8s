@@ -2,7 +2,7 @@
   "db": {
     "engine": "mariadb",
     "useMySQLdb": true,
-    "syncMaxWorkerID": true,
+    "syncMaxWorkerID": false,
     "schema": "${MARIADB_DATABASE}",
     "host": "${HARVESTER_DB_HOST}",
     "password": "${MARIADB_PASSWORD}",
