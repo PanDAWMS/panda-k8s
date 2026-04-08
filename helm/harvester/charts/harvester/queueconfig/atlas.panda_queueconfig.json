@@ -26,8 +26,12 @@
       "templateFile": "/opt/harvester/sandbox/atlas.submit_pilot.sdf",
       "executableFile": "/opt/harvester/sandbox/runpilot2-wrapper.sh",
       "x509UserProxy": "/data/harvester/run/x509up_u25606_pilot",
+      "tokenDir": "/data/tokens/ce/pilot",
+      "pandaTokenFilename": "panda_token",
+      "pandaTokenDir": "/data/tokens/pandaserver",
+      "pandaTokenKeyPath": "/opt/harvester/etc/auth/panda_token_key",
       "logDir": "/var/log/condor_logs/condor_logs",
-      "logBaseURL": "https://bigpanda-tb.cern.ch/condor_logs/condor_logs",      
+      "logBaseURL": "https://bigpanda-tb.cern.ch/condor_logs/condor_logs",
       "nProcesses": 8
     },
     "workerMaker": {
