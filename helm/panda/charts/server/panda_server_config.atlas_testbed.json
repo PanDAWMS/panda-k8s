@@ -54,6 +54,11 @@
         "module": "configurator",
         "period": 200,
         "sync": true
+      },
+      "pilot_streaming": {
+        "enable": true,
+        "module": "pilotStreaming",
+        "period": 300
       }
     }
   }
