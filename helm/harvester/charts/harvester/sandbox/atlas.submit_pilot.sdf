@@ -1,5 +1,5 @@
 executable = {executableFile}
-arguments = "-s {computingSite} -r {computingSite} -q {pandaQueueName} -j {pilotJobLabel} -i {pilotType} {pilotPythonOption} -w generic --pilot-user ATLAS --url https://pandaserver-tb.cern.ch -d --baseurls https://pandaserver-tb.cern.ch --port 443 {pilotDebugOption} --harvester-submit-mode PUSH {pilotResourceTypeOption} --pilotversion {pilotVersion} {pilotUrlOption} {pilotArgs}"
+arguments = "-s {computingSite} -r {computingSite} -q {pandaQueueName} -j {pilotJobLabel} -i {pilotType} {pilotPythonOption} -w generic --pilot-user ATLAS --url https://pandaserver-tb.cern.ch -d --baseurls https://pandaserver-tb.cern.ch --port 443 {pilotDebugOption} --harvester-submit-mode PULL {pilotResourceTypeOption} --pilotversion {pilotVersion} {pilotUrlOption} {pilotArgs}"
 initialdir = {accessPoint}
 universe = grid
 log = {logDir}/{logSubdir}/grid.$(Cluster).$(Process).log
@@ -8,7 +8,7 @@ error = {logDir}/{logSubdir}/grid.$(Cluster).$(Process).err
 transfer_executable = True
 x509userproxy = {x509UserProxy}
 environment = "PANDA_JSID=harvester-{harvesterID} HARVESTER_ID={harvesterID} HARVESTER_WORKER_ID={workerID} GTAG={gtag} APFMON=http://apfmon.lancs.ac.uk/api APFFID={harvesterID} APFCID=$(Cluster).$(Process) PANDA_AUTH_ORIGIN=Rubin.production PANDA_AUTH_TOKEN={pandaTokenFilename} PANDA_AUTH_TOKEN_KEY={pandaTokenKeyFilename}"
-transfer_input_files = pandaJobData.out,{pandaTokenPath},{pandaTokenKeyPath}
+transfer_input_files = {pandaTokenPath},{pandaTokenKeyPath}
 
 +harvesterID = "{harvesterID}"
 
