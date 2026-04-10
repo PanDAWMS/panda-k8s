@@ -1,0 +1,53 @@
+{{- if .Values.ingress.enabled -}}
+{{- $fullName := include "harvester.fullname" . -}}
+{{- $globalSecret := .Values.global.secret -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "harvester.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if and .Values.ingress.className (semverCompare ">=1.18-0" .Capabilities.KubeVersion.GitVersion) }}
+  ingressClassName: {{ .Values.ingress.className }}
+  {{- end }}
+  {{- if .Values.ingress.tls }}
+  tls:
+    {{- range .Values.ingress.tls }}
+    - hosts:
+        {{- range .hosts }}
+        {{- if .hostOverride }}
+        - {{ .hostOverride | quote }}
+        {{- else }}
+        - {{ printf "%s.%s" $fullName .domain | quote }}
+        {{- end }}
+        {{- end }}
+      secretName: {{ $globalSecret }}-bigmon-tls-certs
+    {{- end }}
+  {{- end }}
+  rules:
+    {{- range .Values.ingress.hosts }}
+    {{- if .hostOverride }}
+    - host: {{ .hostOverride | quote }}
+    {{- else }}
+    - host: {{ printf "%s.%s" $fullName .domain | quote }}
+    {{- end }}
+      http:
+        paths:
+          {{- range .paths }}
+          - path: {{ .path }}
+            {{- if and .pathType (semverCompare ">=1.18-0" $.Capabilities.KubeVersion.GitVersion) }}
+            pathType: {{ .pathType }}
+            {{- end }}
+            backend:
+              service:
+                name: {{ $fullName }}
+                port:
+                  number: {{ $.Values.service.httpPort }}
+          {{- end }}
+    {{- end }}
+{{- end }}

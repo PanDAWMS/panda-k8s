@@ -3,6 +3,18 @@
 
 harvester:
   experiment: atlas
+  ingress:
+    enabled: true
+    hosts:
+      - domain: cern.ch
+        hostOverride: bigpanda-tb.cern.ch
+        paths:
+          - path: /condor_logs
+            pathType: Prefix
+    tls:
+      - hosts:
+          - domain: cern.ch
+            hostOverride: bigpanda-tb.cern.ch
   persistentvolume:
     size: 50Gi
   persistentvolumewdir:

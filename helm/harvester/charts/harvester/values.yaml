@@ -27,6 +27,22 @@ service:
   httpPort: 80
   httpsPort: 443
 
+ingress:
+  enabled: false
+  className: ""
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    spec.ingressClassName: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+  hosts:
+    - domain: cern.ch
+      hostOverride: ""
+      paths:
+        - path: /condor_logs
+          pathType: Prefix
+  tls: []
+
 persistentvolume:
   create: true
   class: manual

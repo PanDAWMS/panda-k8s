@@ -14,10 +14,6 @@ main:
       - domain: cern.ch
         hostOverride: bigpanda-tb.cern.ch
         paths:
-          - path: /condor_logs
-            pathType: Prefix
-            serviceName: panda-harvester
-            servicePort: 80
           - path: /
             pathType: Prefix
     tls:
