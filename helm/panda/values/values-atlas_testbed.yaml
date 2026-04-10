@@ -6,11 +6,11 @@ server:
   configFile: panda_server_config.atlas_testbed.json
   resources:
     requests:
-      cpu: "1"
-      memory: 2Gi
+      cpu: "2"
+      memory: 4Gi
     limits:
-      cpu: "4"
-      memory: 6Gi
+      cpu: "6"
+      memory: 8Gi
   persistentvolume:
     size: 50Gi
   # use Route class for ingress
@@ -36,11 +36,11 @@ jedi:
   configFile: panda_jedi_config.atlas_testbed.json
   resources:
     requests:
-      cpu: "1"
-      memory: 2Gi
+      cpu: "2"
+      memory: 4Gi
     limits:
-      cpu: "4"
-      memory: 6Gi
+      cpu: "6"
+      memory: 8Gi
   persistentvolume:
     size: 50Gi
 

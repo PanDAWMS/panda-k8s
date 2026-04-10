@@ -28,11 +28,11 @@ harvester:
     size: 50Gi
   resources:
     requests:
-      cpu: "1"
-      memory: 2Gi
+      cpu: "2"
+      memory: 4Gi
     limits:
-      cpu: "4"
-      memory: 6Gi
+      cpu: "6"
+      memory: 8Gi
 
 mariadb:
   resources:
