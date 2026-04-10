@@ -12,6 +12,9 @@ server:
       cpu: "6"
       memory: 8Gi
   persistentvolume:
+    create: false
+    class: manila-meyrin-cephfs
+    selector: false
     size: 50Gi
   # use Route class for ingress
   route:
@@ -42,6 +45,9 @@ jedi:
       cpu: "6"
       memory: 8Gi
   persistentvolume:
+    create: false
+    class: manila-meyrin-cephfs
+    selector: false
     size: 50Gi
 
 postgres:

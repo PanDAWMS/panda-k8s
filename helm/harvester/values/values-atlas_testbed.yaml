@@ -21,10 +21,16 @@ harvester:
           - domain: cern.ch
             hostOverride: bigpanda-tb.cern.ch
   persistentvolume:
+    create: false
+    class: manila-meyrin-cephfs
+    selector: false
     size: 50Gi
   persistentvolumewdir:
     size: 50Gi
   persistentvolumecondor:
+    create: false
+    class: manila-meyrin-cephfs
+    selector: false
     size: 50Gi
   resources:
     requests:
