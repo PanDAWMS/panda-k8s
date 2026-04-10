@@ -14,12 +14,12 @@ rest:
       memory: 6Gi
   persistentvolume:
     create: false
-    class: manila-meyrin-cephfs
+    class: manila-meyrin-cephfs-b
     selector: false
     size: 50Gi
   persistentvolumerequests:
     create: false
-    class: manila-meyrin-cephfs
+    class: manila-meyrin-cephfs-b
     selector: false
     size: 10Gi
 
