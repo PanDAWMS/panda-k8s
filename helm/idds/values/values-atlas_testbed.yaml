@@ -16,7 +16,7 @@ rest:
     create: false
     class: manila-meyrin-cephfs-b
     selector: false
-    size: 50Gi
+    size: 20Gi
   persistentvolumerequests:
     create: false
     class: manila-meyrin-cephfs-b
