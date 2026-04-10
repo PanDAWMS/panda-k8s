@@ -13,14 +13,14 @@ rest:
       cpu: "4"
       memory: 6Gi
   persistentvolume:
-    create: false
-    class: manila-meyrin-cephfs-b
-    selector: false
-    size: 20Gi
+    create: true
+    class: manual
+    selector: true
+    size: 5Gi
   persistentvolumerequests:
-    create: false
-    class: manila-meyrin-cephfs-b
-    selector: false
+    create: true
+    class: manual
+    selector: true
     size: 10Gi
 
   ingress:
