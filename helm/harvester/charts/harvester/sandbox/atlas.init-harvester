@@ -11,3 +11,8 @@ mkdir -p /data/tokens/pilot /data/tokens/ce/pilot /data/tokens/ce/prod /data/tok
 # vomses file to refer to the atlas VOMS server
 echo '"atlas" "voms-atlas-auth.cern.ch" "443" "/DC=ch/DC=cern/OU=computers/CN=atlas-auth.cern.ch" "atlas" "24"' >> /etc/vomses
 
+# disable httpd SSL config (cert/key mismatch in CERN testbed deployment)
+if [ -f /etc/httpd/conf.d/ssl-httpd.conf ]; then
+    mv /etc/httpd/conf.d/ssl-httpd.conf /etc/httpd/conf.d/ssl-httpd.conf.disabled
+fi
+
