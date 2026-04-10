@@ -1,5 +1,5 @@
 /var/log/panda/*log {
-    rotate 3
+    rotate 2
     daily
     compress
     missingok
