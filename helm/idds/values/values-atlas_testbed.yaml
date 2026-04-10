@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 rest:
-  replicaCount: 2
+  replicaCount: 1
   iddsServer: panda-idds-tb.cern.ch
   resources:
     requests:
@@ -12,6 +12,16 @@ rest:
     limits:
       cpu: "4"
       memory: 6Gi
+  persistentvolume:
+    create: false
+    class: manila-meyrin-cephfs
+    selector: false
+    size: 50Gi
+  persistentvolumerequests:
+    create: false
+    class: manila-meyrin-cephfs
+    selector: false
+    size: 10Gi
 
   ingress:
     enabled: true
