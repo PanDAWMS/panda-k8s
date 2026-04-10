@@ -6,12 +6,15 @@ server:
   configFile: panda_server_config.atlas_testbed.json
   resources:
     requests:
-      cpu: "1"
-      memory: 2Gi
+      cpu: "2"
+      memory: 4Gi
     limits:
-      cpu: "4"
-      memory: 6Gi
+      cpu: "6"
+      memory: 8Gi
   persistentvolume:
+    create: false
+    class: manila-meyrin-cephfs
+    selector: false
     size: 50Gi
   # use Route class for ingress
   route:
@@ -36,12 +39,15 @@ jedi:
   configFile: panda_jedi_config.atlas_testbed.json
   resources:
     requests:
-      cpu: "1"
-      memory: 2Gi
+      cpu: "2"
+      memory: 4Gi
     limits:
-      cpu: "4"
-      memory: 6Gi
+      cpu: "6"
+      memory: 8Gi
   persistentvolume:
+    create: false
+    class: manila-meyrin-cephfs
+    selector: false
     size: 50Gi
 
 postgres:
