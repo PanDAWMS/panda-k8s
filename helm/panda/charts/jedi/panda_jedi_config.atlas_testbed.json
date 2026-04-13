@@ -58,10 +58,12 @@
     "modConfig": "atlas:managed|test:pandajedi.jedigen.AtlasTaskGenerator:AtlasTaskGenerator"
   },
   "taskrefine": {
-    "modConfig": "atlas:any:pandajedi.jedirefine.AtlasProdTaskRefiner:AtlasProdTaskRefiner:any,atlas:user:pandajedi.jedirefine.AtlasAnalTaskRefiner:AtlasAnalTaskRefiner:any"
+    "modConfig": "atlas:any:pandajedi.jedirefine.AtlasProdTaskRefiner:AtlasProdTaskRefiner:any,atlas:user:pandajedi.jedirefine.AtlasAnalTaskRefiner:AtlasAnalTaskRefiner:any",
+    "procConfig": ":managed|test|ptest|rc_test2:1;:user:1"
   },
   "jobbroker": {
-    "modConfig": "atlas:any:pandajedi.jedibrokerage.AtlasProdJobBroker:AtlasProdJobBroker,atlas:user:pandajedi.jedibrokerage.AtlasAnalJobBroker:AtlasAnalJobBroker"
+    "modConfig": "atlas:any:pandajedi.jedibrokerage.AtlasProdJobBroker:AtlasProdJobBroker,atlas:user:pandajedi.jedibrokerage.AtlasAnalJobBroker:AtlasAnalJobBroker",
+    "NW_ACTIVE": "True"
   },
   "jobthrottle": {
     "modConfig": "atlas:any:pandajedi.jedithrottle.AtlasProdJobThrottler:AtlasProdJobThrottler,atlas:user:pandajedi.jedithrottle.AtlasAnalJobThrottler:AtlasAnalJobThrottler"

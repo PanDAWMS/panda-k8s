@@ -49,16 +49,73 @@
     "proc_lifetime": "172800",
     "n_dbconn": "1",
     "config": {
+      "add_main": {
+        "enable": true,
+        "period": 240,
+        "loop": true
+      },
+      "add_sub": {
+        "enable": true,
+        "period": 240
+      },
+      "copyArchive": {
+        "enable": true,
+        "period": 2400,
+        "sync": true
+      },
+      "datasetManager": {
+        "enable": true,
+        "period": 2400,
+        "sync": true
+      },
+      "process_workflow_files_daemon": {
+        "enable": true,
+        "period": 60
+      },
+      "proxyCache": {
+        "enable": true,
+        "module": "panda_activeusers_query",
+        "period": 600
+      },
+      "pilot_streaming": {
+        "enable": true,
+        "module": "pilotStreaming",
+        "period": 300
+      },
       "configurator": {
         "enable": true,
         "module": "configurator",
         "period": 200,
         "sync": true
       },
-      "pilot_streaming": {
+      "network_configurator": {
         "enable": true,
-        "module": "pilotStreaming",
+        "module": "configurator",
+        "arguments": ["--network"],
+        "period": 400,
+        "sync": true
+      },
+      "schedconfig_json": {
+        "enable": true,
+        "module": "configurator",
+        "arguments": ["--json_dump"],
+        "period": 200,
+        "sync": true
+      },
+      "sw_tags": {
+        "enable": true,
+        "module": "configurator",
+        "arguments": ["--sw_tags"],
+        "period": 200,
+        "sync": true
+      },
+      "cache_schedconfig": {
+        "enable": true,
         "period": 300
+      },
+      "cache_pilots": {
+        "enable": true,
+        "period": 3600
       }
     }
   }
