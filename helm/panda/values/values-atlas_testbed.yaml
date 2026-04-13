@@ -4,6 +4,15 @@
 
 server:
   configFile: panda_server_config.atlas_testbed.json
+  tolerations:
+    - key: "node.kubernetes.io/not-ready"
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 30
+    - key: "node.kubernetes.io/unreachable"
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 30
   resources:
     requests:
       cpu: "2"
@@ -37,6 +46,15 @@ server:
 
 jedi:
   configFile: panda_jedi_config.atlas_testbed.json
+  tolerations:
+    - key: "node.kubernetes.io/not-ready"
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 30
+    - key: "node.kubernetes.io/unreachable"
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 30
   resources:
     requests:
       cpu: "2"
