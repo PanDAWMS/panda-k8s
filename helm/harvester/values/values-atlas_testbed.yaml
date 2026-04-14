@@ -50,6 +50,11 @@ harvester:
       memory: 8Gi
 
 mariadb:
+  persistentvolume:
+    create: false
+    selector: false
+    existingClaim: panda-harvester-wdirs
+    subPath: mariadb-data
   resources:
     requests:
       cpu: "500m"

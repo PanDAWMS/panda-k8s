@@ -89,8 +89,14 @@ spec:
           volumeMounts:
             - mountPath: /var/lib/mysql
               name: {{ include "mariadb.fullname" . }}-data
+              {{- if .Values.persistentvolume.subPath }}
+              subPath: {{ .Values.persistentvolume.subPath }}
+              {{- end }}
             - mountPath: /bitnami/mariadb
               name: {{ include "mariadb.fullname" . }}-data
+              {{- if .Values.persistentvolume.subPath }}
+              subPath: {{ .Values.persistentvolume.subPath }}
+              {{- end }}
             - mountPath: /docker-entrypoint-initdb.d
               name: {{ include "mariadb.fullname" . }}-initdb
             - mountPath: /opt/bitnami/mariadb/conf/my_custom.cnf
@@ -110,7 +116,7 @@ spec:
       volumes:
         - name: {{ include "mariadb.fullname" . }}-data
           persistentVolumeClaim:
-            claimName: {{ include "mariadb.fullname" . }}
+            claimName: {{ .Values.persistentvolume.existingClaim | default (include "mariadb.fullname" .) }}
         - name: {{ include "mariadb.fullname" . }}-initdb
           secret:
             secretName: {{ .Values.global.secret }}-harvester-initdb
