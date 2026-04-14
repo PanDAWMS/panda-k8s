@@ -68,6 +68,9 @@ jedi:
     selector: false
     size: 50Gi
 
+nodeRecovery:
+  enabled: true
+
 postgres:
     enabled: false
 

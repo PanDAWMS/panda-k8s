@@ -108,3 +108,8 @@ postgres:
     requests:
       cpu: 4000m
       memory: 16Gi
+
+
+nodeRecovery:
+  enabled: false
+  image: "bitnami/kubectl:latest"
