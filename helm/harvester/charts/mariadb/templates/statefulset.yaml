@@ -1,4 +1,4 @@
-{{- if .Values.persistentvolume.create }}
+{{- if and .Values.persistentvolume.create (not .Values.persistentvolume.existingClaim) }}
 # pv
 kind: PersistentVolume
 apiVersion: v1
@@ -17,6 +17,7 @@ spec:
     path: {{ .Values.persistentvolume.path }}
 ---
 {{- end }}
+{{- if not .Values.persistentvolume.existingClaim }}
 # pv claim
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -37,6 +38,7 @@ spec:
       {{- include "mariadb.selectorLabels" . | nindent 6 }}
   {{- end }}
 ---
+{{- end }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
