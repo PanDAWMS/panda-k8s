@@ -94,6 +94,8 @@ spec:
                   ln -s /opt/panda/sandbox/panda_server-httpd.conf /opt/panda/etc/panda/panda_server-httpd.conf;
                fi;
               /opt/panda/bin/python /data/panda/process_template.py;
+              rm -f /etc/httpd/conf.d/ssl.conf;
+              /opt/panda/bin/panda_common-install_igtf_ca;
               /data/panda/run-panda-services;
               sleep infinity & wait
           {{- end }}
