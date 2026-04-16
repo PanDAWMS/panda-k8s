@@ -18,8 +18,8 @@ server:
       cpu: "2"
       memory: 4Gi
     limits:
-      cpu: "6"
-      memory: 8Gi
+      cpu: "4"
+      memory: 6Gi
   persistentvolume:
     create: false
     class: manila-meyrin-cephfs
@@ -60,8 +60,8 @@ jedi:
       cpu: "2"
       memory: 4Gi
     limits:
-      cpu: "6"
-      memory: 8Gi
+      cpu: "4"
+      memory: 6Gi
   persistentvolume:
     create: false
     class: manila-meyrin-cephfs
