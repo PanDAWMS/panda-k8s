@@ -44,6 +44,12 @@ harvester:
               matchLabels:
                 app.kubernetes.io/name: jedi
             topologyKey: kubernetes.io/hostname
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: rest
+            topologyKey: kubernetes.io/hostname
   persistentvolume:
     create: false
     class: manila-meyrin-cephfs
