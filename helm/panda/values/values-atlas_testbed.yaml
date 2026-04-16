@@ -14,6 +14,15 @@ server:
       effect: "NoExecute"
       tolerationSeconds: 30
   affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          preference:
+            matchExpressions:
+              - key: node.kubernetes.io/instance-type
+                operator: In
+                values:
+                  - m4.large
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
         - weight: 100
@@ -27,6 +36,18 @@ server:
             labelSelector:
               matchLabels:
                 app.kubernetes.io/name: harvester
+            topologyKey: kubernetes.io/hostname
+        - weight: 80
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: main
+            topologyKey: kubernetes.io/hostname
+        - weight: 80
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: rest
             topologyKey: kubernetes.io/hostname
   resources:
     requests:
