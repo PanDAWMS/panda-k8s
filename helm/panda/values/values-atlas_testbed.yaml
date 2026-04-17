@@ -55,7 +55,7 @@ server:
       memory: 4Gi
     limits:
       cpu: "4"
-      memory: 6Gi
+      memory: 10Gi
   persistentvolume:
     create: false
     class: manila-meyrin-cephfs
