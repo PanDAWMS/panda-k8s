@@ -92,6 +92,15 @@ jedi:
       effect: "NoExecute"
       tolerationSeconds: 30
   affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          preference:
+            matchExpressions:
+              - key: node.kubernetes.io/instance-type
+                operator: In
+                values:
+                  - m4.large
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
         - weight: 100
@@ -112,7 +121,7 @@ jedi:
       memory: 4Gi
     limits:
       cpu: "4"
-      memory: 6Gi
+      memory: 10Gi
   persistentvolume:
     create: false
     class: manila-meyrin-cephfs
