@@ -49,6 +49,11 @@ server:
               matchLabels:
                 app.kubernetes.io/name: rest
             topologyKey: kubernetes.io/hostname
+  extraEnv:
+    PANDA_SERVER_CONF_MIN_WORKERS: "4"
+    PANDA_SERVER_CONF_MAX_WORKERS: "100"
+    PANDA_SERVER_CONF_NUM_WSGI: "8"
+    PANDA_SERVER_CONF_NUM_WSGI_THREAD: "2"
   resources:
     requests:
       cpu: "2"
