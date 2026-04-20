@@ -35,6 +35,9 @@ data:
   {{- if .Values.noRoot }}
   PANDA_NO_ROOT: "1"
   {{- end }}
+  {{- range $key, $value := .Values.extraEnv }}
+  {{ $key }}: "{{ $value }}"
+  {{- end }}
 
 ---
 # sandbox
