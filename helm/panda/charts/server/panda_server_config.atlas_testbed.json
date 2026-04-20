@@ -29,7 +29,7 @@
     "dbbridgeverbose": "False",
     "dump_sql": "False",
     "useJEDI": "True",
-    "production_dns": "pandasv,atlpilo,atlact,Robot Pilot,Robot Harvester,/atlas/Role=production",
+    "production_dns": "pandasv,atlpilo,atlact,Robot Pilot,Robot Harvester,prodsys,Robot: ATLAS ProdSys",
     "pilot_owners": "/atlas/usatlas/Role=production,/atlas/Role=pilot,ATLAS Pilot1,ATLAS Pilot2,peter love,Andrej Filipcic,usathpc",
     "adder_plugins": "local:dataservice.AdderDummyPlugin:AdderDummyPlugin",
     "setupper_plugins": "local:dataservice.SetupperDummyPlugin:SetupperDummyPlugin",
