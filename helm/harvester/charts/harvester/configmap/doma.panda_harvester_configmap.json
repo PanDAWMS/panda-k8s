@@ -1,0 +1,164 @@
+{
+  "db": {
+    "engine": "mariadb",
+    "useMySQLdb": true,
+    "syncMaxWorkerID": true,
+    "schema": "${MARIADB_DATABASE}",
+    "host": "${HARVESTER_DB_HOST}",
+    "password": "${MARIADB_PASSWORD}",
+    "verbose": true
+  },
+  "master": {
+    "gname": "zp",
+    "harvester_id": "${HARVESTER_ID}",
+    "uname": "atlpan"
+  },
+  "credmanager": {
+    "moduleName": [],
+    "pluginConfigs": [
+      {
+        "module": "pandaharvester.harvestercredmanager.iam_token_cred_manager",
+        "name": "IamTokenCredManager",
+        "configs": {
+          "doma-pilot": {
+            "client_cred_file": "/opt/harvester/etc/auth/..data/token_harvester-doma_pilot.json",
+            "target_type": "common",
+            "out_dir": "/data/tokens/pilot",
+            "target_list": [
+              "pandaserver-doma.cern.ch"
+            ],
+            "check_interval": 1800,
+            "refresh_interval": 3600
+          },
+          "doma-ce-prod": {
+            "client_cred_file": "/opt/harvester/etc/auth/..data/token_harvester-compute_client_prod.json",
+            "target_type": "ce",
+            "out_dir": "/data/tokens/ce/prod",
+            "check_interval": 1800,
+            "refresh_interval": 85500
+          },
+          "doma-ce-pilot": {
+            "client_cred_file": "/opt/harvester/etc/auth/..data/token_harvester-compute_client_pilot.json",
+            "target_type": "ce",
+            "out_dir": "/data/tokens/ce/pilot",
+            "check_interval": 1800,
+            "refresh_interval": 85500
+          },
+          "pilot-pandaserver-token": {
+            "client_cred_file": "/opt/harvester/etc/auth/..data/token_harvester-pilot_pandaserver.json",
+            "target_type": "panda",
+            "panda_token_filename": "panda_token",
+            "out_dir": "/data/tokens/pandaserver",
+            "check_interval": 1800,
+            "refresh_interval": 3500
+          },
+          "harvester-pandaserver-token": {
+            "client_cred_file": "/opt/harvester/etc/auth/..data/token_harvester-harvester_pandaserver.json",
+            "target_type": "panda",
+            "panda_token_filename": "harvester_panda_token",
+            "out_dir": "/data/tokens/harvester_pandaserver",
+            "check_interval": 900,
+            "refresh_interval": 1700
+          }
+        }
+      },
+      {
+        "module": "pandaharvester.harvestercredmanager.token_key_cred_manager",
+        "name": "TokenKeyCredManager",
+        "configs": {
+          "pilot-panda-token-key": {
+            "token_key_file": "/opt/harvester/etc/auth/panda_token_key",
+            "client_name": "Rubin.production"
+          }
+        }
+      },
+      {
+        "module": "pandaharvester.harvestercredmanager.no_voms_cred_manager",
+        "name": "NoVomsCredManager",
+        "configs": {
+          "production": {
+            "inCertFile": "/data/harvester/run/atlpilo1RFC.plain",
+            "outCertFile": "/data/harvester/run/x509up_u25606_prod",
+            "voms": "atlas:/atlas/Role=production"
+          },
+          "pilot": {
+            "inCertFile": "/data/harvester/run/atlpilo1RFC.plain",
+            "outCertFile": "/data/harvester/run/x509up_u25606_pilot",
+            "voms": "atlas:/atlas/Role=pilot"
+          }
+        }
+      }
+    ],
+    "sleepTime": 1800
+  },
+  "payload_interaction": {
+    "jobSpecFile": "pandaJobData.out",
+    "workerAttributesFile": "worker_attributes.json",
+    "jobReportFile": "jobReport.json",
+    "jobRequestFile": "worker_requestjob.json",
+    "xmlPoolCatalogFile": "PoolFileCatalog_H.xml",
+    "pandaIDsFile": "worker_pandaids.json",
+    "killWorkerFile": "kill_worker.json",
+    "heartbeatFile": "worker_heartbeat.json"
+  },
+  "pandacon": {
+    "ca_cert": false,
+    "auth_type": "oidc",
+    "auth_token": "${PANDA_AUTH_ID_TOKEN}",
+    "auth_origin": "${PANDA_AUTH_VO}",
+    "pandaURL": "${PANDA_URL_SSL}",
+    "pandaURLSSL": "${PANDA_URL_SSL}",
+    "server_api_url_ssl": "${PANDA_API_URL_SSL}",
+    "verbose": true
+  },
+  "frontend": {
+    "type": "apache"
+  },
+  "jobfetcher": {
+    "lookupTime": 30,
+    "sleepTime": 10
+  },
+  "propagator": {
+    "maxJobs": 1000,
+    "maxWorkers": 1000,
+    "nWorkersInBulk": 100,
+    "sleepTime": 5
+  },
+  "preparator": {
+    "maxJobsToCheck": 1000,
+    "maxJobsToTrigger": 1000,
+    "checkInterval": 30,
+    "triggerInterval": 30,
+    "sleepTime": 10
+  },
+  "submitter": {
+    "nQueues": 30,
+    "lookupTime": 30,
+    "maxNewWorkers": 1000,
+    "sleepTime": 10
+  },
+  "monitor": {
+    "nThreads": 10,
+    "checkInterval": 30,
+    "lookupTime": 30,
+    "sleepTime": 10
+  },
+  "service_monitor": {
+    "pidfile": "/var/run/panda/panda_harvester.pid"
+  },
+  "qconf": {
+    "configFile": "/opt/harvester/etc/panda/panda_queueconfig.json",
+    "queueList": [
+      "ALL"
+    ]
+  },
+  "cacher": {
+    "data": [
+      "resource_types.json||panda_server:get_resource_types",
+      "job_statistics.json||panda_server:get_job_stats",
+      "ddmendpoints_objectstores.json||$HARVESTER_CRIC_OS",
+      "panda_queues.json||$HARVESTER_CRIC_SCHEDCONFIG",
+      "agis_ddmendpoints.json||$HARVESTER_CRIC_DDMENDPOINTS"
+    ]
+  }
+}
