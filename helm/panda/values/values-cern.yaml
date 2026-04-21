@@ -19,7 +19,15 @@ server:
         hosts:
           - domain: cern.ch
             hostOverride: pandaserver-doma.cern.ch
+  persistentvolume:
+    create: false
+    selector: false
+    size: 50Gi
   configFile: "panda_server_config.cern.json"
 
 jedi:
+  persistentvolume:
+    create: false
+    selector: false
+    size: 50Gi
   configFile: "panda_jedi_config.cern.json"

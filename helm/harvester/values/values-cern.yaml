@@ -8,15 +8,15 @@ harvester:
   persistentvolume:
     create: false
     selector: false
-    size: 5Gi
+    size: 50Gi
   persistentvolumewdir:
     create: false
     selector: false
-    size: 5Gi
+    size: 50Gi
   persistentvolumecondor:
     create: false
     selector: false
-    size: 5Gi
+    size: 50Gi
 
   resources:
     requests:
