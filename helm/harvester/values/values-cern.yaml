@@ -1,0 +1,40 @@
+# Default values for harvester - DOMA overrides.
+# This is a YAML-formatted file.
+
+harvester:
+  experiment: doma
+
+  # DOMA uses pre-existing static PVs (storageclass: manual)
+  persistentvolume:
+    create: false
+    selector: false
+    size: 5Gi
+  persistentvolumewdir:
+    create: false
+    selector: false
+    size: 5Gi
+  persistentvolumecondor:
+    create: false
+    selector: false
+    size: 5Gi
+
+  resources:
+    requests:
+      cpu: "1"
+      memory: 2Gi
+    limits:
+      cpu: "4"
+      memory: 8Gi
+
+mariadb:
+  persistentvolume:
+    create: false
+    selector: false
+    size: 5Gi
+  resources:
+    requests:
+      cpu: "250m"
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 2Gi

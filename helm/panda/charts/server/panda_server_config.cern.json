@@ -1,0 +1,34 @@
+{
+    "server": {
+        "CRIC_URL_CM": "$PANDA_CRIC_CM",
+        "CRIC_URL_DDMBLACKLIST": "$PANDA_CRIC_DDMBLACKLIST",
+        "CRIC_URL_DDMENDPOINTS": "$PANDA_CRIC_DDMENDPOINTS",
+        "CRIC_URL_SCHEDCONFIG": "$PANDA_CRIC_SCHEDCONFIG",
+        "CRIC_URL_SITES": "$PANDA_CRIC_SITES",
+        "backend": "$PANDA_DB_BACKEND",
+        "schemaPANDA": "$PANDA_DB_SCHEMAPANDA",
+        "schemaMETA": "$PANDA_DB_SCHEMAMETA",
+        "configurator_use_cert": "False",
+        "production_dns": "iddssv1",
+        "pserveralias": "pandaserver-doma.cern.ch",
+        "pserverhost": "$PANDA_HOSTNAME",
+        "pserverport": "443",
+        "pserverportcache": "443",
+        "disableHTTP": "True",
+        "dbhost": "$PANDA_DB_HOST",
+        "dbport": "$PANDA_DB_PORT",
+        "dbpasswd": "$PANDA_DB_PASSWORD",
+        "dbuser": "$PANDA_DB_USER",
+        "dbname": "$PANDA_DB_NAME",
+        "adder_plugins": "wlcg:dataservice.adder_dummy_plugin:AdderDummyPlugin,wlcg:dataservice.adder_simple_plugin:AdderSimplePlugin:sphenix",
+        "setupper_plugins": "wlcg:dataservice.setupper_dummy_plugin:SetupperDummyPlugin",
+        "token_authType": "oidc",
+        "sandboxHostname": "$PANDA_HOSTNAME",
+        "mq_configFile": "/opt/panda/etc/panda/panda_mbproxy_config.json",
+        "cache_dir": "/var/log/panda/pandacache/",
+        "token_cache_config": "/data/panda/token_cache_config.json"
+    },
+    "daemon": {
+        "enable": "True"
+    }
+}

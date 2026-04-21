@@ -19,3 +19,7 @@ server:
         hosts:
           - domain: cern.ch
             hostOverride: pandaserver-doma.cern.ch
+  configFile: "panda_server_config.cern.json"
+
+jedi:
+  configFile: "panda_jedi_config.cern.json"
