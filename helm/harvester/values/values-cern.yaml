@@ -4,18 +4,19 @@
 harvester:
   experiment: doma
 
+  # DOMA uses pre-existing static PVs (storageclass: manual)
   persistentvolume:
     create: false
-    class: manila-meyrin-cephfs
     selector: false
-    size: 50Gi
+    size: 5Gi
   persistentvolumewdir:
-    size: 50Gi
+    create: false
+    selector: false
+    size: 5Gi
   persistentvolumecondor:
     create: false
-    class: manila-meyrin-cephfs
     selector: false
-    size: 50Gi
+    size: 5Gi
 
   resources:
     requests:
@@ -28,9 +29,8 @@ harvester:
 mariadb:
   persistentvolume:
     create: false
-    class: manila-meyrin-cephfs
     selector: false
-    size: 10Gi
+    size: 5Gi
   resources:
     requests:
       cpu: "250m"
