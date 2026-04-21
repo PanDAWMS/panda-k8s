@@ -1,0 +1,40 @@
+# Default values for harvester - DOMA overrides.
+# This is a YAML-formatted file.
+
+harvester:
+  experiment: doma
+
+  persistentvolume:
+    create: false
+    class: manila-meyrin-cephfs
+    selector: false
+    size: 50Gi
+  persistentvolumewdir:
+    size: 50Gi
+  persistentvolumecondor:
+    create: false
+    class: manila-meyrin-cephfs
+    selector: false
+    size: 50Gi
+
+  resources:
+    requests:
+      cpu: "1"
+      memory: 2Gi
+    limits:
+      cpu: "4"
+      memory: 8Gi
+
+mariadb:
+  persistentvolume:
+    create: false
+    class: manila-meyrin-cephfs
+    selector: false
+    size: 10Gi
+  resources:
+    requests:
+      cpu: "250m"
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 2Gi

@@ -1,0 +1,28 @@
+{
+    "db": {
+        "backend": "$PANDA_DB_BACKEND",
+        "dbhost": "$PANDA_DB_HOST",
+        "dbport": "$PANDA_DB_PORT",
+        "dbpasswd": "$PANDA_DB_PASSWORD",
+        "dbuser": "$PANDA_DB_USER",
+        "dbname": "$PANDA_DB_NAME"
+    },
+    "ddm": {
+        "modConfig": "wlcg:4:pandajedi.jediddm.GenDDMClient:GenDDMClient::off,wlcg:2:pandajedi.jediddm.AtlasDDMClient:AtlasDDMClient:sphenix",
+        "endpoints_json_path": "$PANDA_CRIC_URL_DDMENDPOINTS",
+        "voWithScope": "wlcg"
+    },
+    "tasksetup": {
+        "modConfig": "wlcg:any:pandajedi.jedisetup.SimpleTaskSetupper:SimpleTaskSetupper"
+    },
+    "msgprocessor": {
+        "configFile": "/opt/panda/etc/panda/jedi_msg_proc_config.json"
+    },
+    "mq": {
+        "configFile": "/opt/panda/etc/panda/jedi_mq_config.json"
+    },
+    "watchdog": {
+        "waitForPending": "1",
+        "loopCycle": "60"
+    }
+}
