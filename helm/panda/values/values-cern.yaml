@@ -24,6 +24,13 @@ server:
     selector: false
     size: 50Gi
   configFile: "panda_server_config.cern.json"
+  resources:
+    requests:
+      cpu: "1"
+      memory: 2Gi
+    limits:
+      cpu: "4"
+      memory: 8Gi
 
 jedi:
   persistentvolume:
@@ -31,3 +38,19 @@ jedi:
     selector: false
     size: 50Gi
   configFile: "panda_jedi_config.cern.json"
+  resources:
+    requests:
+      cpu: "1"
+      memory: 2Gi
+    limits:
+      cpu: "4"
+      memory: 8Gi
+
+postgres:
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: "2"
+      memory: 2Gi
