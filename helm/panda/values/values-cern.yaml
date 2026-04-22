@@ -47,10 +47,4 @@ jedi:
       memory: 8Gi
 
 postgres:
-  resources:
-    requests:
-      cpu: 500m
-      memory: 512Mi
-    limits:
-      cpu: "2"
-      memory: 2Gi
+  enabled: false

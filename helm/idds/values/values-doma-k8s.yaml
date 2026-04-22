@@ -29,7 +29,7 @@ rest:
             hostOverride: panda-idds-doma.cern.ch
 
 postgres:
-  enabled: true
+  enabled: false
 
   resources:
     limits:
