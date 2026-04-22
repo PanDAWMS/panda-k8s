@@ -20,10 +20,4 @@ main:
     size: 5Gi
 
 mariadb:
-  enabled: true
-  fullnameOverride: "iam-mariadb"
-  persistentvolume:
-    create: true
-    class: manual
-    path: "/mnt/iam-data"
-    size: 5Gi
+  enabled: false
