@@ -23,3 +23,9 @@ spec:
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true
+  ignoreDifferences:
+    - group: ""
+      kind: ConfigMap
+      name: panda-external-sandbox
+      jsonPointers:
+        - /binaryData
