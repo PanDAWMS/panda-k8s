@@ -5,7 +5,9 @@
 
 main:
   persistentvolume:
-    create: true
+    create: false
+    selector: false
+    size: 50Gi
 
   ingress:
     enabled: true
