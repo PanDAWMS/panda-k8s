@@ -5,8 +5,9 @@
 
 main:
   persistentvolume:
-    create: false
-    selector: false
+    create: true
+    class: manual
+    path: "/mnt/bigmon-main-logs"
     size: 50Gi
 
   ingress:
