@@ -4,19 +4,25 @@
 harvester:
   experiment: doma
 
-  # DOMA uses pre-existing static PVs (storageclass: manual)
+  # DOMA uses static hostPath PVs on node-3
   persistentvolume:
-    create: false
+    create: true
+    class: manual
+    path: "/mnt/harvester-logs"
     selector: false
     size: 50Gi
   persistentvolumewdir:
-    create: false
     selector: false
     size: 50Gi
   persistentvolumecondor:
-    create: false
+    create: true
+    class: manual
+    path: "/mnt/harvester-logs"
     selector: false
-    size: 50Gi
+    size: 5Gi
+
+  nodeSelector:
+    kubernetes.io/hostname: panda-doma-k8s-3bv7ya4fx76z-node-3
 
   resources:
     requests:
@@ -28,9 +34,15 @@ harvester:
 
 mariadb:
   persistentvolume:
-    create: false
+    create: true
+    class: manual
+    path: "/mnt/harvester-data"
     selector: false
     size: 5Gi
+
+  nodeSelector:
+    kubernetes.io/hostname: panda-doma-k8s-3bv7ya4fx76z-node-3
+
   resources:
     requests:
       cpu: "250m"
