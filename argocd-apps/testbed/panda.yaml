@@ -30,3 +30,13 @@ spec:
       name: panda-external-sandbox
       jsonPointers:
         - /binaryData
+    - group: apps
+      kind: StatefulSet
+      name: panda-server
+      jsonPointers:
+        - /spec/volumeClaimTemplates
+    - group: apps
+      kind: StatefulSet
+      name: panda-jedi
+      jsonPointers:
+        - /spec/volumeClaimTemplates
