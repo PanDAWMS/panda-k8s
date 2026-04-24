@@ -107,6 +107,12 @@ spec:
                 mountPath: /opt/panda/sandbox
               - name: {{ include "jedi.fullname" . }}-certs
                 mountPath: /opt/panda/etc/cert
+              {{- if .Values.cvmfs.enabled }}
+              {{- range .Values.cvmfs.repositories }}
+              - name: cvmfs-{{ .name }}
+                mountPath: /cvmfs/{{ .repository }}
+              {{- end }}
+              {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ .Release.Name }}-server-env
@@ -150,6 +156,14 @@ spec:
                   name: {{ include "jedi.fullname" . }}-configjson
               - configMap:
                   name: {{ .Release.Name }}-server-configjson
+        {{- if .Values.cvmfs.enabled }}
+        {{- range .Values.cvmfs.repositories }}
+        - name: cvmfs-{{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ include "jedi.fullname" $ }}-cvmfs-{{ .name }}
+            readOnly: true
+        {{- end }}
+        {{- end }}
   {{- if .Values.persistentvolume.create }}
         - name: {{ include "jedi.fullname" . }}-logs
           persistentVolumeClaim:

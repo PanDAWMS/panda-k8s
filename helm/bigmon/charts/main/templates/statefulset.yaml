@@ -100,6 +100,12 @@ spec:
                 mountPath: /data/bigmon/configmap
               - name: {{ include "main.fullname" . }}-certs
                 mountPath: /opt/bigmon/etc/cert
+              {{- if .Values.cvmfs.enabled }}
+              {{- range .Values.cvmfs.repositories }}
+              - name: cvmfs-{{ .name }}
+                mountPath: /cvmfs/{{ .repository }}
+              {{- end }}
+              {{- end }}
           envFrom:
             - secretRef:
                 name: {{ .Values.global.secret }}-bigmon-envs
@@ -138,6 +144,14 @@ spec:
           secret:
               secretName: {{ .Values.global.secret }}-bigmon-certs
           {{- end }}
+        {{- if .Values.cvmfs.enabled }}
+        {{- range .Values.cvmfs.repositories }}
+        - name: cvmfs-{{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ include "main.fullname" $ }}-cvmfs-{{ .name }}
+            readOnly: true
+        {{- end }}
+        {{- end }}
   {{- if .Values.persistentvolume.create }}
         - name: {{ include "main.fullname" . }}-logs
           persistentVolumeClaim:

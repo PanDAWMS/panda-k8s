@@ -17,6 +17,13 @@ rest:
     class: manual
     selector: true
     size: 5Gi
+  cvmfs:
+    enabled: true
+    repositories:
+      - name: atlas
+        repository: atlas.cern.ch
+      - name: atlas-condb
+        repository: atlas-condb.cern.ch
   persistentvolumerequests:
     create: true
     class: manual

@@ -16,6 +16,13 @@ main:
   persistentvolume:
     create: true
     size: 50Gi
+  cvmfs:
+    enabled: true
+    repositories:
+      - name: atlas
+        repository: atlas.cern.ch
+      - name: atlas-condb
+        repository: atlas-condb.cern.ch
 
   ingress:
     enabled: true
