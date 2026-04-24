@@ -413,9 +413,9 @@
 "CERN": {
         "templateQueueName": "production.pull",
         "queueStatus": "online",
-        "prodSourceLabel": "unified",
-        "prodSourceLabelRandomWeightsPermille": {"rc_test":10, "rc_test2":10, "rc_alrb":10},
-        "maxWorkers": 250
+        "prodSourceLabel": "user",
+        "prodSourceLabelRandomWeightsPermille": {"rc_test":10, "rc_test2":10, "rc_alrb":10},        
+	"maxWorkers": 250
   }
 
 }
