@@ -252,6 +252,12 @@ spec:
             - name: {{ include "harvester.fullname" . }}-special-data
               mountPath: {{ .Values.persistentvolumespecial.path }}
             {{- end }}
+            {{- if .Values.cvmfs.enabled }}
+            {{- range .Values.cvmfs.repositories }}
+            - name: cvmfs-{{ .name }}
+              mountPath: /cvmfs/{{ .repository }}
+            {{- end }}
+            {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "harvester.fullname" . }}-env
@@ -309,6 +315,14 @@ spec:
         - name: {{ include "harvester.fullname" . }}-wdirs
           persistentVolumeClaim:
             claimName: {{ include "harvester.fullname" . }}-wdirs
+        {{- if .Values.cvmfs.enabled }}
+        {{- range .Values.cvmfs.repositories }}
+        - name: cvmfs-{{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ include "harvester.fullname" $ }}-cvmfs-{{ .name }}
+            readOnly: true
+        {{- end }}
+        {{- end }}
   {{- if .Values.persistentvolume.create }}
         - name: {{ include "harvester.fullname" . }}-logs
           persistentVolumeClaim:

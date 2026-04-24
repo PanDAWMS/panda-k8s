@@ -55,6 +55,13 @@ harvester:
     class: manila-meyrin-cephfs
     selector: false
     size: 50Gi
+  cvmfs:
+    enabled: true
+    repositories:
+      - name: atlas
+        repository: atlas.cern.ch
+      - name: atlas-condb
+        repository: atlas-condb.cern.ch
   persistentvolumewdir:
     size: 50Gi
   persistentvolumecondor:

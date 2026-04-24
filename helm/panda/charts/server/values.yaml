@@ -191,3 +191,11 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+cvmfs:
+  enabled: false
+  repositories: []
+  # - name: atlas
+  #   repository: atlas.cern.ch
+  # - name: atlas-condb
+  #   repository: atlas-condb.cern.ch

@@ -132,6 +132,12 @@ spec:
              - name: {{ include "server.fullname" . }}-cache
                mountPath: /var/log/panda/pandacache
              {{- end }}
+             {{- if .Values.cvmfs.enabled }}
+             {{- range .Values.cvmfs.repositories }}
+             - name: cvmfs-{{ .name }}
+               mountPath: /cvmfs/{{ .repository }}
+             {{- end }}
+             {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ include "server.fullname" . }}-env
@@ -195,6 +201,14 @@ spec:
         - name: {{ include "server.fullname" . }}-cache
           persistentVolumeClaim:
             claimName: {{ include "server.fullname" . }}
+        {{- end }}
+        {{- if .Values.cvmfs.enabled }}
+        {{- range .Values.cvmfs.repositories }}
+        - name: cvmfs-{{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ include "server.fullname" $ }}-cvmfs-{{ .name }}
+            readOnly: true
+        {{- end }}
         {{- end }}
   {{- if .Values.persistentvolume.create }}
         - name: {{ include "server.fullname" . }}-logs

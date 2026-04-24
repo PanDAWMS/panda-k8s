@@ -1,0 +1,34 @@
+{{- if .Values.cvmfs.enabled }}
+{{- range .Values.cvmfs.repositories }}
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "main.fullname" $ }}-cvmfs-{{ .name }}
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadOnlyMany
+  storageClassName: cvmfs
+  persistentVolumeReclaimPolicy: Retain
+  csi:
+    driver: cvmfs.csi.cern.ch
+    volumeHandle: {{ include "main.fullname" $ }}-cvmfs-{{ .name }}
+    volumeAttributes:
+      repository: {{ .repository }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "main.fullname" $ }}-cvmfs-{{ .name }}
+spec:
+  accessModes:
+    - ReadOnlyMany
+  storageClassName: cvmfs
+  volumeName: {{ include "main.fullname" $ }}-cvmfs-{{ .name }}
+  resources:
+    requests:
+      storage: 1Gi
+{{- end }}
+{{- end }}

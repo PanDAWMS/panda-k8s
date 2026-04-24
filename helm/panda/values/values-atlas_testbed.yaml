@@ -66,6 +66,13 @@ server:
     class: manila-meyrin-cephfs
     selector: false
     size: 50Gi
+  cvmfs:
+    enabled: true
+    repositories:
+      - name: atlas
+        repository: atlas.cern.ch
+      - name: atlas-condb
+        repository: atlas-condb.cern.ch
   # use Route class for ingress
   route:
     enabled: false
@@ -132,6 +139,13 @@ jedi:
     class: manila-meyrin-cephfs
     selector: false
     size: 50Gi
+  cvmfs:
+    enabled: true
+    repositories:
+      - name: atlas
+        repository: atlas.cern.ch
+      - name: atlas-condb
+        repository: atlas-condb.cern.ch
 
 nodeRecovery:
   enabled: true
