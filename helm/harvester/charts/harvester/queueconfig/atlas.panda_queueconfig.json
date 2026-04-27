@@ -67,6 +67,76 @@
     }
   },
 
+"production.pull_ups": {
+    "isTemplateQueue": true,
+    "prodSourceLabel": "managed",
+    "runMode": "slave",
+    "nQueueLimitWorkerRatio": 50,
+    "nQueueLimitWorkerMin": 100,
+    "nQueueLimitWorkerMax": 10000,
+    "maxWorkers": 10,
+    "maxNewWorkersPerCycle": 100,
+    "mapType": "NoJob",
+    "truePilot": true,
+    "maxSubmissionAttempts": 3,
+    "walltimeLimit": 1209600,
+    "prefetchEvents": false,
+    "preparator": {
+      "name": "DummyPreparator",
+      "module": "pandaharvester.harvesterpreparator.dummy_preparator"
+    },
+    "submitter": {
+      "name": "HTCondorSubmitter",
+      "module": "pandaharvester.harvestersubmitter.htcondor_submitter",
+      "useSpool": false,
+      "useCRICGridCE": true,
+      "useCRIC": true,
+      "templateFile": "/opt/harvester/sandbox/atlas.submit_pilot.sdf",
+      "executableFile": "/opt/harvester/sandbox/runpilot2-wrapper.sh",
+      "x509UserProxy": "/data/harvester/run/x509up_u25606_prod",
+      "x509UserProxyAnalysis": "/data/harvester/run/x509up_u25606_pilot",
+      "tokenDir": "/data/tokens/ce/prod",
+      "tokenDirAnalysis": "/data/tokens/ce/pilot",
+      "pandaTokenFilename": "panda_token",
+      "pandaTokenDir": "/data/tokens/pandaserver",
+      "pandaTokenKeyPath": "/opt/harvester/etc/auth/panda_token_key",
+      "logDir": "/var/log/condor_logs/condor_logs",
+      "logBaseURL": "https://bigpanda-tb.cern.ch/condor_logs/condor_logs",
+      "nProcesses": 8
+    },
+    "workerMaker": {
+      "name": "SimpleWorkerMaker",
+      "module": "pandaharvester.harvesterworkermaker.simple_worker_maker",
+      "jobAttributesToUse": [
+        "nCore"
+      ],
+      "pilotTypeRandomWeightsPermille": {
+        "RC": 10,
+        "ALRB": 10,
+        "PT": 10
+      }
+    },
+    "messenger": {
+      "name": "SharedFileMessenger",
+      "module": "pandaharvester.harvestermessenger.shared_file_messenger",
+      "jobSpecFileFormat": "cgi",
+      "accessPoint": "/var/log/condor_logs/harvester_wdirs/${harvesterID}/${_workerID_3.2}/${_workerID_1.0}/${workerID}"
+    },
+    "stager": {
+      "name": "DummyStager",
+      "module": "pandaharvester.harvesterstager.dummy_stager"
+    },
+    "monitor": {
+      "name": "HTCondorMonitor",
+      "module": "pandaharvester.harvestermonitor.htcondor_monitor",
+      "cancelUnknown": false
+    },
+    "sweeper": {
+      "name": "HTCondorSweeper",
+      "module": "pandaharvester.harvestersweeper.htcondor_sweeper"
+    }
+  },
+
 "production.push": {
     "isTemplateQueue": true,
     "prodSourceLabel": "user",
@@ -411,11 +481,12 @@
   },
 
 "CERN": {
-        "templateQueueName": "production.pull",
+        "templateQueueName": "production.pull_ups",
         "queueStatus": "online",
-        "prodSourceLabel": "user",
-        "prodSourceLabelRandomWeightsPermille": {"rc_test":10, "rc_test2":10, "rc_alrb":10},        
-	"maxWorkers": 250
+        "prodSourceLabel": "managed",
+        "runMode": "slave",
+        "prodSourceLabelRandomWeightsPermille": {"rc_test":10, "rc_test2":10, "rc_alrb":10},
+        "maxWorkers": 250
   }
 
 }
