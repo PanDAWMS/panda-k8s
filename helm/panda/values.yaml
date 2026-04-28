@@ -11,7 +11,7 @@ jedi:
 
   # container image and tag
   image:
-    tag: "0.7.2"
+    tag: "0.8.1"
     # tag: "master"
 
   # PV with selector support
@@ -32,7 +32,7 @@ server:
 
   # container image and tag
   image:
-    tag: "0.7.2"
+    tag: "0.8.1"
     # tag: "master"
 
   # PV with selector support
