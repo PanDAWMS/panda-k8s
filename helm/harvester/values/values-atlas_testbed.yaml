@@ -65,10 +65,14 @@ harvester:
   persistentvolumewdir:
     size: 50Gi
   persistentvolumecondor:
-    create: false
-    class: manila-meyrin-cephfs
-    selector: false
+    existingClaim: panda-shared-logs
+    subPath: condor_logs
+  sharedLogs:
+    create: true
+    name: panda-shared-logs
     size: 50Gi
+    shareID: c94d44ca-e58e-4012-bb8d-3bd58242af90
+    shareAccessID: a914f98d-2d71-407c-b291-33e37c34b862
   resources:
     requests:
       cpu: "2"

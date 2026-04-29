@@ -50,6 +50,15 @@ persistentvolumecondor:
   path: "/mnt/harvester-condor-logs"
   size: 5Gi
   selector: true
+  existingClaim: ""
+  subPath: ""
+
+sharedLogs:
+  create: false
+  name: ""
+  size: 50Gi
+  shareID: ""
+  shareAccessID: ""
 
 persistentvolumespecial:
   mount: false
