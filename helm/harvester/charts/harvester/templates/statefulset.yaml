@@ -95,6 +95,7 @@ spec:
     path: {{ .Values.persistentvolumecondor.path }}
 ---
 {{- end }}
+{{- if not .Values.persistentvolumecondor.existingClaim }}
 # pv claim for condor logs
 kind: PersistentVolumeClaim
 apiVersion: v1
@@ -115,6 +116,55 @@ spec:
       {{- include "harvester.selectorLabels-condor-logs" . | nindent 6 }}
   {{- end }}
 ---
+{{- end }}
+{{- if .Values.sharedLogs.create }}
+# shared logs pv
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ .Values.sharedLogs.name }}
+spec:
+  storageClassName: manila-meyrin-cephfs
+  capacity:
+    storage: {{ .Values.sharedLogs.size }}
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  claimRef:
+    namespace: {{ .Release.Namespace }}
+    name: {{ .Values.sharedLogs.name }}
+  csi:
+    driver: cephfs.manila.csi.openstack.org
+    volumeHandle: {{ .Values.sharedLogs.shareID }}
+    nodeStageSecretRef:
+      name: os-trustee
+      namespace: kube-system
+    nodePublishSecretRef:
+      name: os-trustee
+      namespace: kube-system
+    controllerExpandSecretRef:
+      name: os-trustee
+      namespace: kube-system
+    volumeAttributes:
+      shareID: {{ .Values.sharedLogs.shareID }}
+      shareAccessID: {{ .Values.sharedLogs.shareAccessID }}
+      cephfs-mounter: fuse
+---
+# shared logs pvc
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.sharedLogs.name }}
+spec:
+  storageClassName: manila-meyrin-cephfs
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: {{ .Values.sharedLogs.size }}
+  volumeName: {{ .Values.sharedLogs.name }}
+---
+{{- end }}
 
 # special mount data
 {{- if .Values.persistentvolumespecial.mount }}
@@ -234,6 +284,9 @@ spec:
               mountPath: /var/log/harvester_wdirs/
             - name: {{ include "harvester.fullname" . }}-condor-logs
               mountPath: /var/log/condor_logs/
+              {{- if .Values.persistentvolumecondor.subPath }}
+              subPath: {{ .Values.persistentvolumecondor.subPath }}
+              {{- end }}
             - name: {{ include "harvester.fullname" . }}-configjson
               mountPath: /opt/harvester/etc/configmap
             - name: {{ include "harvester.fullname" . }}-queueconfig
@@ -297,7 +350,7 @@ spec:
               secretName: {{ .Values.global.secret }}-harvester-auth
         - name: {{ include "harvester.fullname" . }}-condor-logs
           persistentVolumeClaim:
-            claimName: {{ include "harvester.fullname" . }}-condor-logs
+            claimName: {{ .Values.persistentvolumecondor.existingClaim | default (printf "%s-condor-logs" (include "harvester.fullname" .)) }}
         {{- if .Values.persistentvolumespecial.mount }}
         - name: {{ include "harvester.fullname" . }}-special-data
           persistentVolumeClaim:

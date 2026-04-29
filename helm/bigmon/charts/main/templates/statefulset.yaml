@@ -96,6 +96,9 @@ spec:
           volumeMounts:
               - name: {{ include "main.fullname" . }}-logs
                 mountPath: /data/bigmon/logs
+                {{- if .Values.persistentvolume.subPath }}
+                subPath: {{ .Values.persistentvolume.subPath }}
+                {{- end }}
               - name: {{ include "main.fullname" . }}-sandbox
                 mountPath: /data/bigmon/configmap
               - name: {{ include "main.fullname" . }}-certs
@@ -156,6 +159,10 @@ spec:
         - name: {{ include "main.fullname" . }}-logs
           persistentVolumeClaim:
             claimName: {{ include "main.fullname" . }}
+  {{- else if .Values.persistentvolume.sharedPvcName }}
+        - name: {{ include "main.fullname" . }}-logs
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistentvolume.sharedPvcName }}
   {{- else }}
   volumeClaimTemplates:
     - metadata:

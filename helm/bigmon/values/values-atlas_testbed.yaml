@@ -14,7 +14,9 @@ main:
       effect: "NoExecute"
       tolerationSeconds: 30
   persistentvolume:
-    create: true
+    create: false
+    sharedPvcName: panda-shared-logs
+    subPath: bigmon-logs
     size: 50Gi
   cvmfs:
     enabled: true

@@ -13,10 +13,12 @@ image:
 autoStart: true
 
 persistentvolume:
-  create: false  
+  create: false
   path: "/mnt/bigmon-main-logs"
   size: 5Gi
   selector: true
+  sharedPvcName: ""
+  subPath: ""
 
 # hostname for external access
 hostName: "FIXME"
