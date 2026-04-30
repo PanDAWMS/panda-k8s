@@ -21,6 +21,8 @@ persistentvolume:
   path: "/mnt/panda-jedi-logs"
   size: 5Gi
   selector: true
+  sharedPvcName: ""
+  subPath: ""
 
 
 server: {}
