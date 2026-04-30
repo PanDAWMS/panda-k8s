@@ -65,6 +65,7 @@ harvester:
   persistentvolumewdir:
     size: 50Gi
   persistentvolumecondor:
+    create: false
     existingClaim: panda-shared-logs
     subPath: condor_logs
   sharedLogs:
