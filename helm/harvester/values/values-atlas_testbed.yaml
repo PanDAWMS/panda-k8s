@@ -52,8 +52,8 @@ harvester:
             topologyKey: kubernetes.io/hostname
   persistentvolume:
     create: false
-    class: manila-meyrin-cephfs
-    selector: false
+    existingClaim: panda-shared-logs
+    subPath: harvester-logs
     size: 50Gi
   cvmfs:
     enabled: true
@@ -71,7 +71,7 @@ harvester:
   sharedLogs:
     create: true
     name: panda-shared-logs
-    size: 50Gi
+    size: 200Gi
     shareID: c94d44ca-e58e-4012-bb8d-3bd58242af90
     shareAccessID: a914f98d-2d71-407c-b291-33e37c34b862
   resources:
