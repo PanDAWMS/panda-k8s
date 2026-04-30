@@ -63,8 +63,8 @@ server:
       memory: 10Gi
   persistentvolume:
     create: false
-    class: manila-meyrin-cephfs
-    selector: false
+    sharedPvcName: panda-shared-logs
+    subPath: server-logs
     size: 50Gi
   cvmfs:
     enabled: true
@@ -136,8 +136,8 @@ jedi:
       memory: 10Gi
   persistentvolume:
     create: false
-    class: manila-meyrin-cephfs
-    selector: false
+    sharedPvcName: panda-shared-logs
+    subPath: jedi-logs
     size: 50Gi
   cvmfs:
     enabled: true
