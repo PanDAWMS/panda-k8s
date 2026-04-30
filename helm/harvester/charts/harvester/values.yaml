@@ -36,6 +36,8 @@ persistentvolume:
   path: "/mnt/harvester-logs"
   size: 5Gi
   selector: true
+  existingClaim: ""
+  subPath: ""
 
 persistentvolumewdir:
   create: true
@@ -43,6 +45,8 @@ persistentvolumewdir:
   path: "/mnt/harvester-condor-logs"
   size: 5Gi
   selector: true
+  existingClaim: ""
+  subPath: ""
 
 persistentvolumecondor:
   create: true
@@ -59,6 +63,7 @@ sharedLogs:
   size: 50Gi
   shareID: ""
   shareAccessID: ""
+  storageClass: ""
 
 persistentvolumespecial:
   mount: false

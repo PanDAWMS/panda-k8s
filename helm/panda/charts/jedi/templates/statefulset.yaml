@@ -101,6 +101,9 @@ spec:
           volumeMounts:
               - name: {{ include "jedi.fullname" . }}-logs
                 mountPath: /var/log/panda
+                {{- if .Values.persistentvolume.subPath }}
+                subPath: {{ .Values.persistentvolume.subPath }}
+                {{- end }}
               - name: {{ include "jedi.fullname" . }}-configjson
                 mountPath: /opt/panda/etc/config_json
               - name: {{ include "jedi.fullname" . }}-sandbox
@@ -168,6 +171,10 @@ spec:
         - name: {{ include "jedi.fullname" . }}-logs
           persistentVolumeClaim:
             claimName: {{ include "jedi.fullname" . }}
+  {{- else if .Values.persistentvolume.sharedPvcName }}
+        - name: {{ include "jedi.fullname" . }}-logs
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistentvolume.sharedPvcName }}
   {{- else }}
   volumeClaimTemplates:
     - metadata:

@@ -30,6 +30,8 @@ persistentvolume:
   path: "/mnt/panda-server-logs"
   size: 5Gi
   selector: true
+  sharedPvcName: ""
+  subPath: ""
 
 imagePullSecrets: []
 nameOverride: ""

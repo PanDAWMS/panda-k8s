@@ -117,6 +117,9 @@ spec:
           volumeMounts:
              - name: {{ include "server.fullname" . }}-logs
                mountPath: /var/log/panda
+               {{- if .Values.persistentvolume.subPath }}
+               subPath: {{ .Values.persistentvolume.subPath }}
+               {{- end }}
              - name: {{ include "server.fullname" . }}-configjson
                mountPath: /opt/panda/etc/config_json
              - name: {{ include "server.fullname" . }}-auth
@@ -213,6 +216,10 @@ spec:
         - name: {{ include "server.fullname" . }}-logs
           persistentVolumeClaim:
             claimName: {{ include "server.fullname" . }}
+  {{- else if .Values.persistentvolume.sharedPvcName }}
+        - name: {{ include "server.fullname" . }}-logs
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistentvolume.sharedPvcName }}
   {{- else }}
   volumeClaimTemplates:
     - metadata:
