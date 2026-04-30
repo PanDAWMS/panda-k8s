@@ -82,7 +82,7 @@ spec:
               mv /data/bigmon/config/rucio.cfg /opt/bigmon/etc/ ;
               {{- if .Values.autoStart }}
               if [ "${PANDA_DB_BACKEND}" != "oracle" ]; then until /usr/pgsql-*/bin/pg_isready -h ${PANDA_DB_HOST} -p ${PANDA_DB_PORT}; do echo waiting for database; sleep 2; done; fi;
-              chmod 777 /data/bigmon/logs;
+              chmod -R 777 /data/bigmon/logs;
               start-daemon.sh all
               {{- else }}
               sleep infinity & wait
