@@ -5,9 +5,9 @@
 
 main:
   persistentvolume:
-    create: false
-    sharedPvcName: panda-shared-logs
-    subPath: bigmon-logs
+    create: true
+    class: manual
+    path: "/mnt/bigmon-main-logs"
     size: 50Gi
 
   ingress:
