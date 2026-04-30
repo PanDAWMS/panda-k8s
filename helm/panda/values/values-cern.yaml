@@ -23,8 +23,7 @@ server:
     create: false
     selector: false
     size: 50Gi
-    sharedPvcName: panda-shared-logs
-    subPath: server-logs
+    sharedPvcName: panda-server-logs
   configFile: "panda_server_config.cern.json"
   resources:
     requests:
@@ -39,8 +38,7 @@ jedi:
     create: false
     selector: false
     size: 50Gi
-    sharedPvcName: panda-shared-logs
-    subPath: jedi-logs
+    sharedPvcName: panda-jedi-logs
   configFile: "panda_jedi_config.cern.json"
   resources:
     requests:
