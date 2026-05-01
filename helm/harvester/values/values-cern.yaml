@@ -4,11 +4,11 @@
 harvester:
   experiment: doma
 
-  # DOMA uses static hostPath PVs on node-3
   persistentvolume:
-    create: true
-    class: manual
-    path: "/mnt/harvester-logs"
+    create: false
+    class: manila-meyrin-cephfs
+    existingClaim: panda-shared-logs
+    subPath: harvester-logs
     selector: false
     size: 50Gi
   persistentvolumewdir:
@@ -20,6 +20,11 @@ harvester:
     path: "/mnt/harvester-logs"
     selector: false
     size: 5Gi
+  sharedLogs:
+    create: true
+    name: panda-shared-logs
+    size: 200Gi
+    storageClass: manila-meyrin-cephfs
 
   nodeSelector:
     kubernetes.io/hostname: panda-doma-k8s-3bv7ya4fx76z-node-3
@@ -34,11 +39,10 @@ harvester:
 
 mariadb:
   persistentvolume:
-    create: true
-    class: manual
-    path: "/mnt/harvester-data"
+    create: false
     selector: false
-    size: 5Gi
+    existingClaim: panda-harvester-wdirs
+    subPath: mariadb-data
 
   nodeSelector:
     kubernetes.io/hostname: panda-doma-k8s-3bv7ya4fx76z-node-3
