@@ -23,7 +23,7 @@ harvester:
   sharedLogs:
     create: true
     name: panda-shared-logs
-    size: 100Gi
+    size: 200Gi
     storageClass: manila-meyrin-cephfs
 
   nodeSelector:
@@ -39,11 +39,10 @@ harvester:
 
 mariadb:
   persistentvolume:
-    create: true
-    class: manual
-    path: "/mnt/harvester-data"
+    create: false
     selector: false
-    size: 5Gi
+    existingClaim: panda-harvester-wdirs
+    subPath: mariadb-data
 
   nodeSelector:
     kubernetes.io/hostname: panda-doma-k8s-3bv7ya4fx76z-node-3
