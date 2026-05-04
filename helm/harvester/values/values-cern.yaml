@@ -40,6 +40,9 @@ harvester:
       memory: 8Gi
 
 mariadb:
+  podSecurityContext:
+    fsGroup: 1001
+
   persistentvolume:
     create: false
     selector: false
