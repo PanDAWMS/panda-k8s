@@ -4,6 +4,10 @@
 #
 
 main:
+  image:
+    tag: "latest"
+    pullPolicy: Always
+
   tolerations:
     - key: "node.kubernetes.io/not-ready"
       operator: "Exists"

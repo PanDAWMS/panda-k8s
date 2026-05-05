@@ -4,6 +4,10 @@
 #
 
 main:
+  image:
+    tag: "v1.0.5"
+    pullPolicy: Always
+
   persistentvolume:
     create: false
     sharedPvcName: panda-shared-logs
