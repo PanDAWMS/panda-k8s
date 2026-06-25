@@ -32,10 +32,10 @@ rest:
 
   resources:
     limits:
-      cpu: 4000m
+      cpu: 8000m
       memory: 32Gi
     requests:
-      cpu: 4000m
+      cpu: 8000m
       memory: 32Gi
 
   restHost: "https://rubin-panda-idds-dev.slac.stanford.edu:8443"

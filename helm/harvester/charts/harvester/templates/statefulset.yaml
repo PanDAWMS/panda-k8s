@@ -249,6 +249,7 @@ spec:
             {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.enableProbe }}
           livenessProbe:
             exec:
               command:
@@ -256,6 +257,7 @@ spec:
                 - /var/log/panda/harvester_healthy
             initialDelaySeconds: 1800
             periodSeconds: 600
+          {{- end }}
           {{- if .Values.autoStart }}
           command: ["/bin/sh", "-c"]
           args:
