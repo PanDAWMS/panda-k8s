@@ -4,6 +4,8 @@
 
 rest:
   replicaCount: 1
+  image:
+    tag: "2.6.11"
   iddsServer: panda-idds-doma.cern.ch
 
   resources:
