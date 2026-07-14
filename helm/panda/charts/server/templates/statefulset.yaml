@@ -12,7 +12,7 @@ spec:
     storage: {{ .Values.persistentvolume.size }}
   accessModes:
     - ReadWriteMany
-  persistentVolumeReclaimPolicy: Delete
+  persistentVolumeReclaimPolicy: {{ .Values.persistentvolume.reclaimPolicy | default "Retain" }}
   hostPath:
     path: {{ .Values.persistentvolume.path }}
 ---
@@ -81,7 +81,9 @@ spec:
           command: [ "/bin/sh", "-c" ]
           args:
             - |
-              until /usr/pgsql-*/bin/pg_isready -h ${PANDA_DB_HOST} -p ${PANDA_DB_PORT}; do echo waiting for database; sleep 2; done;
+              if [ "${PANDA_DB_BACKEND}" = "postgres" ]; then
+                until /usr/pgsql-*/bin/pg_isready -h ${PANDA_DB_HOST} -p ${PANDA_DB_PORT}; do echo waiting for database; sleep 2; done;
+              fi;
               cp /opt/panda/sandbox/* /data/panda/;
               chmod +x /data/panda/init-panda;
               chmod +x /data/panda/run-panda-crons;
@@ -92,6 +94,7 @@ spec:
                   ln -s /opt/panda/sandbox/panda_server-httpd.conf /opt/panda/etc/panda/panda_server-httpd.conf;
                fi;
               /opt/panda/bin/python /data/panda/process_template.py;
+              /opt/panda/bin/panda_common-install_igtf_ca;
               /data/panda/run-panda-services;
               sleep infinity & wait
           {{- end }}
@@ -109,11 +112,20 @@ spec:
                 - /tmp/panda_server_start.log
             initialDelaySeconds: 5
             periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 25080
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            failureThreshold: 3
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
              - name: {{ include "server.fullname" . }}-logs
                mountPath: /var/log/panda
+               {{- if .Values.persistentvolume.subPath }}
+               subPath: {{ .Values.persistentvolume.subPath }}
+               {{- end }}
              - name: {{ include "server.fullname" . }}-configjson
                mountPath: /opt/panda/etc/config_json
              - name: {{ include "server.fullname" . }}-auth
@@ -127,6 +139,12 @@ spec:
              {{- if and .Values.sharedCache (not .Values.persistentvolume.create) }}
              - name: {{ include "server.fullname" . }}-cache
                mountPath: /var/log/panda/pandacache
+             {{- end }}
+             {{- if .Values.cvmfs.enabled }}
+             {{- range .Values.cvmfs.repositories }}
+             - name: cvmfs-{{ .name }}
+               mountPath: /cvmfs/{{ .repository }}
+             {{- end }}
              {{- end }}
           envFrom:
             - configMapRef:
@@ -168,8 +186,21 @@ spec:
               - secret:
                   name: {{ .Values.global.secret }}-panda-token-cache
         - name: {{ include "server.fullname" . }}-certs
+          {{- if .Values.global.existingTlsSecret }}
+          secret:
+              secretName: {{ .Values.global.existingTlsSecret }}
+              items:
+                # Map the TLS keys to the filenames panda expects
+                - key: tls.crt
+                  path: hostcert.pem
+                - key: tls.key
+                  path: hostkey.pem
+                - key: tls.crt
+                  path: chain.pem
+          {{- else }}
           secret:
               secretName: {{ .Values.global.secret }}-panda-certs
+          {{- end }}
         - name: {{ include "server.fullname" . }}-cric-jsons-volume
           secret:
               secretName: {{ .Values.global.secret }}-cric-jsons
@@ -179,10 +210,22 @@ spec:
           persistentVolumeClaim:
             claimName: {{ include "server.fullname" . }}
         {{- end }}
+        {{- if .Values.cvmfs.enabled }}
+        {{- range .Values.cvmfs.repositories }}
+        - name: cvmfs-{{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ include "server.fullname" $ }}-cvmfs-{{ .name }}
+            readOnly: true
+        {{- end }}
+        {{- end }}
   {{- if .Values.persistentvolume.create }}
         - name: {{ include "server.fullname" . }}-logs
           persistentVolumeClaim:
             claimName: {{ include "server.fullname" . }}
+  {{- else if .Values.persistentvolume.sharedPvcName }}
+        - name: {{ include "server.fullname" . }}-logs
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistentvolume.sharedPvcName }}
   {{- else }}
   volumeClaimTemplates:
     - metadata:

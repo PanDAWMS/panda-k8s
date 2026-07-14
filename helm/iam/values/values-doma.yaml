@@ -1,0 +1,23 @@
+main:
+  ingress:
+    enabled: true
+    hosts:
+      - domain: cern.ch
+        hostOverride: panda-iam-doma.cern.ch
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: panda-secrets-iam-tls-certs
+        hosts:
+          - domain: cern.ch
+            hostOverride: panda-iam-doma.cern.ch
+
+  persistentvolume:
+    create: true
+    class: manual
+    path: "/mnt/iam-logs"
+    size: 5Gi
+
+mariadb:
+  enabled: false

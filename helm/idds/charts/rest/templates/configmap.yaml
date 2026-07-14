@@ -32,6 +32,21 @@ data:
   no_proxy: "localhost,{{ include "rest.fullname" . }},{{ .Release.Name }}-daemon,{{ .Release.Name }}-postgres"
   {{- end}}
   {{- end }}
+  {{- if .Values.serverConf.minWorkers }}
+  IDDS_SERVER_CONF_MIN_WORKERS: "{{ .Values.serverConf.minWorkers }}"
+  {{- end }}
+  {{- if .Values.serverConf.maxWorkers }}
+  IDDS_SERVER_CONF_MAX_WORKERS: "{{ .Values.serverConf.maxWorkers }}"
+  {{- end }}
+  {{- if .Values.serverConf.numWsgi }}
+  IDDS_SERVER_CONF_NUM_WSGI: "{{ .Values.serverConf.numWsgi }}"
+  {{- end }}
+  {{- if .Values.serverConf.numWsgiThread }}
+  IDDS_SERVER_CONF_NUM_WSGI_THREAD: "{{ .Values.serverConf.numWsgiThread }}"
+  {{- end }}
+  {{- if .Values.serverConf.maxBacklog }}
+  IDDS_SERVER_CONF_MAX_BACKLOG: "{{ .Values.serverConf.maxBacklog }}"
+  {{- end }}
 
 
 ---

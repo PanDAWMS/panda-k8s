@@ -1,0 +1,50 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: panda
+  namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: server=ghcr.io/pandawms/panda-server:latest,jedi=ghcr.io/pandawms/panda-server:latest
+    argocd-image-updater.argoproj.io/server.update-strategy: digest
+    argocd-image-updater.argoproj.io/server.helm.image-name: server.image.repository
+    argocd-image-updater.argoproj.io/server.helm.image-tag: server.image.tag
+    argocd-image-updater.argoproj.io/jedi.update-strategy: digest
+    argocd-image-updater.argoproj.io/jedi.helm.image-name: jedi.image.repository
+    argocd-image-updater.argoproj.io/jedi.helm.image-tag: jedi.image.tag
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/PanDAWMS/panda-k8s.git
+    targetRevision: main
+    path: helm/panda
+    helm:
+      valueFiles:
+        - values.yaml
+        - values/values-atlas_testbed.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true
+      - RespectIgnoreDifferences=true
+  ignoreDifferences:
+    - group: ""
+      kind: ConfigMap
+      name: panda-external-sandbox
+      jsonPointers:
+        - /binaryData
+    - group: apps
+      kind: StatefulSet
+      name: panda-server
+      jsonPointers:
+        - /spec/volumeClaimTemplates
+    - group: apps
+      kind: StatefulSet
+      name: panda-jedi
+      jsonPointers:
+        - /spec/volumeClaimTemplates

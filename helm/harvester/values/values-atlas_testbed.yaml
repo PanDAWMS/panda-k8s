@@ -1,0 +1,97 @@
+# Default values for harvester - atlas testbed overrides.
+# This is a YAML-formatted file.
+
+harvester:
+  experiment: atlas
+  tolerations:
+    - key: "node.kubernetes.io/not-ready"
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 30
+    - key: "node.kubernetes.io/unreachable"
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 30
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+      spec.ingressClassName: nginx
+      nginx.ingress.kubernetes.io/ssl-redirect: "true"
+      nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    hosts:
+      - domain: cern.ch
+        hostOverride: bigpanda-tb.cern.ch
+        paths:
+          - path: /condor_logs
+            pathType: Prefix
+    tls:
+      - hosts:
+          - domain: cern.ch
+            hostOverride: bigpanda-tb.cern.ch
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: server
+            topologyKey: kubernetes.io/hostname
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: jedi
+            topologyKey: kubernetes.io/hostname
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: rest
+            topologyKey: kubernetes.io/hostname
+  persistentvolume:
+    create: false
+    class: manila-meyrin-cephfs
+    selector: false
+    size: 50Gi
+  cvmfs:
+    enabled: true
+    repositories:
+      - name: atlas
+        repository: atlas.cern.ch
+      - name: atlas-condb
+        repository: atlas-condb.cern.ch
+  persistentvolumewdir:
+    size: 50Gi
+  persistentvolumecondor:
+    create: false
+    existingClaim: panda-shared-logs
+    subPath: condor_logs
+  sharedLogs:
+    create: true
+    name: panda-shared-logs
+    size: 200Gi
+    shareID: c94d44ca-e58e-4012-bb8d-3bd58242af90
+    shareAccessID: a914f98d-2d71-407c-b291-33e37c34b862
+  resources:
+    requests:
+      cpu: "2"
+      memory: 4Gi
+    limits:
+      cpu: "6"
+      memory: 8Gi
+
+mariadb:
+  persistentvolume:
+    create: false
+    selector: false
+    existingClaim: panda-harvester-wdirs
+    subPath: mariadb-data
+  resources:
+    requests:
+      cpu: "500m"
+      memory: 1Gi
+    limits:
+      cpu: "2"
+      memory: 4Gi

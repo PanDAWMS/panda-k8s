@@ -34,10 +34,13 @@ rest:
   resources:
     limits:
       cpu: 4000m
-      memory: 32Gi
+      memory: 48Gi
     requests:
       cpu: 4000m
       memory: 32Gi
+
+  restHost: "https://usdf-panda-idds.slac.stanford.edu:8443"
+  bigmonURL: "https://usdf-panda-bigmon.slac.stanford.edu:8443/"
 
   ingress:
     enabled: true

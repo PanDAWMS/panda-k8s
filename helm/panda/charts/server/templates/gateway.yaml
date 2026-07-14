@@ -1,0 +1,101 @@
+# Gateway and Routes with Gateway API. TLS termination on HTTPS port at the gateway.
+
+{{- if .Values.gateway.enabled -}}
+
+# Gateway
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: {{ include "server.fullname" . }}-gateway
+  labels:
+    {{- include "server.labels" . | nindent 4 }}
+spec:
+  gatewayClassName: {{ .Values.gateway.className }}
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 80
+    - name: https
+      protocol: HTTPS
+      port: 443
+      tls:
+        mode: Terminate
+        # TLS certificates for the gateway
+        certificateRefs:
+          - kind: Secret
+            group: ""
+            name: {{ .Values.global.secret }}-panda-tls-certs
+---
+
+# HTTP Route
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ include "server.fullname" . }}-route
+spec:
+  parentRefs:
+    - name: {{ include "server.fullname" . }}-gateway
+      port: 80
+  hostnames:
+    - {{ .Values.hostName }}
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: "/"
+      backendRefs:
+        - name: {{ include "server.fullname" . }}
+          kind: Service
+          port: {{ .Values.service.httpPort }}
+---
+
+# HTTPS Route
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ include "server.fullname" . }}-route-https
+spec:
+  parentRefs:
+    - name: {{ include "server.fullname" . }}-gateway
+      port: 443
+  hostnames:
+    - {{ .Values.hostName }}
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: "/"
+      backendRefs:
+        - name: {{ include "server.fullname" . }}
+          kind: Service
+          port: {{ .Values.service.httpsPort }}
+---
+
+{{- if eq .Values.gateway.implementation "envoy" }}
+
+# Envoy ClientTrafficPolicy to enforce mTLS and add Subject=DN to x-forwarded-client-cert header
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: ClientTrafficPolicy
+metadata:
+  name: {{ include "server.fullname" . }}-gateway-policy
+spec:
+  targetRef:
+    kind: Gateway
+    name: {{ include "server.fullname" . }}-gateway
+    group: gateway.networking.k8s.io
+    sectionName: https
+  headers:
+    xForwardedClientCert:
+      mode: SanitizeSet
+      certDetailsToAdd:
+        - Subject
+  tls:
+    clientValidation:
+      # CA certificates to validate client certificates
+      caCertificateRefs:
+       - kind: ConfigMap
+         name: {{ .Values.global.secret }}-panda-client-cas
+         group: ""
+{{- end }}
+
+{{- end }}

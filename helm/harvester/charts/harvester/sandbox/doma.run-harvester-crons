@@ -1,0 +1,5 @@
+#!/bin/bash
+
+# renew vomsproxy
+while true; do bash /opt/harvester/sandbox/doma.vomsproxy-renew; sleep 3600; done &
+

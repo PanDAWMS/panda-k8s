@@ -11,7 +11,7 @@ jedi:
 
   # container image and tag
   image:
-    tag: "0.4.5"
+    tag: "1.0.0"
     # tag: "master"
 
   # PV with selector support
@@ -32,8 +32,7 @@ server:
 
   # container image and tag
   image:
-    tag: "0.4.2"
-    # tag: "0.5.3"
+    tag: "1.0.0"
     # tag: "master"
 
   # PV with selector support
@@ -51,6 +50,10 @@ server:
   route:
     enabled: false
 
+  # use Gateway class to expose the service
+  gateway:
+    enabled: false
+    className: "FIXME"
     
   # use Ingress class to expose the service  
   ingress:
@@ -91,7 +94,7 @@ postgres:
 
   # container image and tag
   image:
-    tag: "0.0.39"
+    tag: "0.1.5-2"
     #tag: "main"
 
   # PV with selector support
@@ -105,3 +108,8 @@ postgres:
     requests:
       cpu: 4000m
       memory: 16Gi
+
+
+nodeRecovery:
+  enabled: false
+  image: "bitnami/kubectl:latest"

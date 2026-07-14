@@ -32,9 +32,9 @@
       "pandaTokenFilename": "48975ff1c8b067b9dcea54d5cdd28cc8",
       "logDir": "/var/log/condor_logs/${hostname}",
       "logBaseURL": "https://rubin-panda-bigmon-dev.slac.stanford.edu:8443/condor_logs/${hostname}",
-      "condorPoolOld": "${hostname}",
-      "condorSchedd": ["harvester-dev-0.harvester-dev.panda.svc.cluster.local","harvester-dev-1.harvester-dev.panda.svc.cluster.local","harvester-dev-2.harvester-dev.panda.svc.cluster.local"],
-      "condorPool": ["harvester-dev-0.harvester-dev.panda.svc.cluster.local:9618","harvester-dev-1.harvester-dev.panda.svc.cluster.local:9618","harvester-dev-2.harvester-dev.panda.svc.cluster.local:9618"],
+      "condorPool": "${hostname}",
+      "condorScheddNew": ["harvester-dev-0.harvester-dev.panda.svc.cluster.local","harvester-dev-1.harvester-dev.panda.svc.cluster.local","harvester-dev-2.harvester-dev.panda.svc.cluster.local"],
+      "condorPoolNew": ["harvester-dev-0.harvester-dev.panda.svc.cluster.local:9618","harvester-dev-1.harvester-dev.panda.svc.cluster.local:9618","harvester-dev-2.harvester-dev.panda.svc.cluster.local:9618"],
       "nProcesses": 8
     },
     "workerMaker": {
@@ -73,7 +73,7 @@
       "module": "pandaharvester.harvesterthrottler.tiny_throttler",
       "logicType": "OR",
       "rulesForMissed": [{"level": "site", "timeWindow": 10, "maxMissed": 50}],
-      "rulesForSiteFamilySubmittedRunning":[{"level": "cores", "maxCores": 1000}]
+      "rulesForSiteFamilySubmittedRunning":[{"level": "cores", "maxCores": 150}]
     }
   },
 
@@ -108,9 +108,9 @@
       "pandaTokenFilename": "48975ff1c8b067b9dcea54d5cdd28cc8",
       "logDir": "/var/log/condor_logs/${hostname}",
       "logBaseURL": "https://rubin-panda-bigmon-dev.slac.stanford.edu:8443/condor_logs/${hostname}",
-      "condorPoolOld": "${hostname}",
-      "condorSchedd": ["harvester-dev-0.harvester-dev.panda.svc.cluster.local","harvester-dev-1.harvester-dev.panda.svc.cluster.local","harvester-dev-2.harvester-dev.panda.svc.cluster.local"],
-      "condorPool": ["harvester-dev-0.harvester-dev.panda.svc.cluster.local:9618","harvester-dev-1.harvester-dev.panda.svc.cluster.local:9618","harvester-dev-2.harvester-dev.panda.svc.cluster.local:9618"],
+      "condorPool": "${hostname}",
+      "condorScheddNew": ["harvester-dev-0.harvester-dev.panda.svc.cluster.local","harvester-dev-1.harvester-dev.panda.svc.cluster.local","harvester-dev-2.harvester-dev.panda.svc.cluster.local"],
+      "condorPoolNew": ["harvester-dev-0.harvester-dev.panda.svc.cluster.local:9618","harvester-dev-1.harvester-dev.panda.svc.cluster.local:9618","harvester-dev-2.harvester-dev.panda.svc.cluster.local:9618"],
       "nProcesses": 8
     },
     "workerMaker": {
@@ -184,11 +184,11 @@
       "x509UserProxy": "/data/harvester/run/x509up_u25606",
       "pandaTokenDir": "/opt/harvester/etc/auth_tokens/",
       "pandaTokenFilename": "48975ff1c8b067b9dcea54d5cdd28cc8",
-      "logDir": "/var/log/condor_logs/$hostname",
-      "logBaseURL": "https://rubin-panda-bigmon-dev.slac.stanford.edu:8443/condor_logs/$hostname",
-      "condorPoolOld": "${hostname}",
-      "condorSchedd": ["harvester-dev-0.harvester-dev.panda.svc.cluster.local","harvester-dev-1.harvester-dev.panda.svc.cluster.local","harvester-dev-2.harvester-dev.panda.svc.cluster.local"],
-      "condorPool": ["harvester-dev-0.harvester-dev.panda.svc.cluster.local:9618","harvester-dev-1.harvester-dev.panda.svc.cluster.local:9618","harvester-dev-2.harvester-dev.panda.svc.cluster.local:9618"],
+      "logDir": "/var/log/condor_logs/${hostname}",
+      "logBaseURL": "https://rubin-panda-bigmon-dev.slac.stanford.edu:8443/condor_logs/${hostname}",
+      "condorPool": "${hostname}",
+      "condorScheddNew": ["harvester-dev-0.harvester-dev.panda.svc.cluster.local","harvester-dev-1.harvester-dev.panda.svc.cluster.local","harvester-dev-2.harvester-dev.panda.svc.cluster.local"],
+      "condorPoolNew": ["harvester-dev-0.harvester-dev.panda.svc.cluster.local:9618","harvester-dev-1.harvester-dev.panda.svc.cluster.local:9618","harvester-dev-2.harvester-dev.panda.svc.cluster.local:9618"],
       "nProcesses": 8
     },
     "workerMaker": {
@@ -428,7 +428,7 @@
     "submitter": {
 	  "nCore": -1,
           "nCorePerNode": 1,
-	  "nCoreFactor": 8,
+	  "nCoreFactor": 4,
 	  "noPilotsWhenNoActiveJobs": true,
           "submitMode": "PULL",
 	  "useCRICGridCE": true,
@@ -459,7 +459,7 @@
     "submitter": {
 	  "nCore": 1,
           "nCorePerNode": 1,
-	  "nCoreFactor": 4,
+	  "nCoreFactor": 2,
 	  "noPilotsWhenNoActiveJobs": true,
           "submitMode": "PULL",
 	  "useCRICGridCE": true,
@@ -490,7 +490,7 @@
     "submitter": {
 	  "nCore": 1,
           "nCorePerNode": 1,
-	  "nCoreFactor": 4,
+	  "nCoreFactor": 2,
 	  "noPilotsWhenNoActiveJobs": true,
           "submitMode": "PULL",
 	  "useCRICGridCE": true,
@@ -704,7 +704,7 @@
 
     "submitter": {
           "nCore":-1,
-          "nCorePerNode": 1,
+          "nCorePerNode": 0,
           "submitMode": "PUSH",
           "ceQueueName": "rubin_multi",
           "ceARCGridType": "arc",
@@ -793,7 +793,7 @@
       "submitter": {
 	  "nCore": 1,
           "nCorePerNode": 1,
-	  "nCoreFactor": 8,
+	  "nCoreFactor": 4,
 	  "nCoreFactor1": {"Any": {"SCORE": 8, "SCORE_U2G": 8, "SCORE_U4G": 8, "SCORE_U8G": 4, "SCORE_U12G": 3, "SCORE_U16G": 2, "SCORE_U20G": 1, "SCORE_U24G": 1,"SCORE_U28G": 1,"SCORE_U32G": 1, "Undefined": 8}},
 	  "noPilotsWhenNoActiveJobs": true,
           "submitMode": "PULL",
@@ -825,7 +825,7 @@
     "submitter": {
           "nCore": 1,
           "nCorePerNode": 1,
-	  "nCoreFactor": 4,
+	  "nCoreFactor": 2,
 	  "noPilotsWhenNoActiveJobs": true,
           "submitMode": "PULL",
 	  "useCRICGridCE": true,
@@ -856,7 +856,7 @@
     "submitter": {
           "nCore": 1,
           "nCorePerNode": 1,
-	  "nCoreFactor": 4,
+	  "nCoreFactor": 2,
 	  "noPilotsWhenNoActiveJobs": true,
           "submitMode": "PULL",
 	  "useCRICGridCE": true,
@@ -1070,7 +1070,7 @@
 
     "submitter": {
           "nCore": -1,
-          "nCorePerNode": 1,
+          "nCorePerNode": 0,
           "submitMode": "PUSH",
 	  "useCRICGridCE": true,
           "ceQueueName": "lsst",
@@ -1158,7 +1158,7 @@
       "submitter": {
 	  "nCore": 1,
           "nCorePerNode": 1,
-	  "nCoreFactor": 8,
+	  "nCoreFactor": 4,
 	  "nCoreFactor1": {"Any": {"SCORE": 8, "SCORE_U2G": 8, "SCORE_U4G": 8, "SCORE_U8G": 4, "SCORE_U12G": 3, "SCORE_U16G": 2, "SCORE_U20G": 1, "SCORE_U24G": 1,"SCORE_U28G": 1,"SCORE_U32G": 1, "Undefined": 8}},
 	  "noPilotsWhenNoActiveJobs": true,
           "submitMode": "PULL",
@@ -1189,7 +1189,7 @@
     "submitter": {
           "nCore": 1,
           "nCorePerNode": 1,
-	  "nCoreFactor": 4,
+	  "nCoreFactor": 2,
 	  "noPilotsWhenNoActiveJobs": true,
           "submitMode": "PULL",
 	  "useCRICGridCE": true,
@@ -1219,7 +1219,7 @@
     "submitter": {
           "nCore": 1,
           "nCorePerNode": 1,
-	  "nCoreFactor": 4,
+	  "nCoreFactor": 2,
 	  "noPilotsWhenNoActiveJobs": true,
           "submitMode": "PULL",
 	  "useCRICGridCE": true,
@@ -1426,7 +1426,7 @@
 
     "submitter": {
           "nCore": -1,
-          "nCorePerNode": 1,
+          "nCorePerNode": 0,
           "submitMode": "PUSH",
 	  "useCRICGridCE": true,
           "ceQueueName": "grid",
@@ -1797,7 +1797,7 @@
 
     "submitter": {
           "nCore": -1,
-          "nCorePerNode": 1,
+          "nCorePerNode": 0,
           "submitMode": "PUSH",
 	  "useCRICGridCE": true,
           "ceQueueName": "EL9",

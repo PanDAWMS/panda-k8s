@@ -11,6 +11,8 @@ main:
 
   hostName: "rubin-panda-bigmon-dev.slac.stanford.edu"
 
+  installedAppsList: "core.art,core.buildmonitor,core.compare,core.errorsscattering,core.globalshares,core.grafana,core.iDDS,core.reports,core.runningprod,core.panda_client"
+
   ingress:
     enabled: true
     hosts:

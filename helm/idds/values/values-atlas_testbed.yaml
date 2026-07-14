@@ -1,0 +1,56 @@
+# Default values for idds.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+rest:
+  replicaCount: 1
+  image:
+    tag: "2.6.11"
+  iddsServer: panda-idds-tb.cern.ch
+  resources:
+    requests:
+      cpu: "1"
+      memory: 2Gi
+    limits:
+      cpu: "4"
+      memory: 4Gi
+  persistentvolume:
+    create: true
+    class: manual
+    selector: true
+    size: 5Gi
+  cvmfs:
+    enabled: true
+    repositories:
+      - name: atlas
+        repository: atlas.cern.ch
+      - name: atlas-condb
+        repository: atlas-condb.cern.ch
+  persistentvolumerequests:
+    create: true
+    class: manual
+    selector: true
+    size: 10Gi
+  serverConf:
+    minWorkers: "4"
+    maxWorkers: "8"
+    numWsgi: "2"
+    numWsgiThread: "4"
+    maxBacklog: "50"
+
+  ingress:
+    enabled: true
+    hosts:
+      - domain: cern.ch
+        hostOverride: panda-idds-tb.cern.ch
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: "default"
+        hosts:
+          - domain: cern.ch
+            hostOverride: panda-idds-tb.cern.ch
+
+postgres:
+  enabled: false

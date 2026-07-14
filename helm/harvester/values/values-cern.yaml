@@ -1,0 +1,59 @@
+# Default values for harvester - DOMA overrides.
+# This is a YAML-formatted file.
+
+harvester:
+  experiment: doma
+
+  persistentvolume:
+    create: false
+    class: manila-meyrin-cephfs
+    existingClaim: panda-shared-logs
+    subPath: harvester-logs
+    selector: false
+    size: 50Gi
+  persistentvolumewdir:
+    selector: false
+    size: 50Gi
+  persistentvolumecondor:
+    create: true
+    class: manual
+    path: "/mnt/harvester-logs"
+    selector: false
+    size: 5Gi
+  sharedLogs:
+    create: true
+    name: panda-shared-logs
+    size: 200Gi
+    storageClass: manila-meyrin-cephfs
+
+  nodeSelector:
+    kubernetes.io/hostname: panda-doma-k8s-3bv7ya4fx76z-node-3
+
+  resources:
+    requests:
+      cpu: "1"
+      memory: 2Gi
+    limits:
+      cpu: "4"
+      memory: 8Gi
+
+mariadb:
+  podSecurityContext:
+    fsGroup: 1001
+
+  persistentvolume:
+    create: false
+    selector: false
+    existingClaim: panda-shared-logs
+    subPath: mariadb-data
+
+  nodeSelector:
+    kubernetes.io/hostname: panda-doma-k8s-3bv7ya4fx76z-node-3
+
+  resources:
+    requests:
+      cpu: "250m"
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 2Gi

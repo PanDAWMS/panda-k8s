@@ -32,9 +32,9 @@
       "pandaTokenFilename": "48975ff1c8b067b9dcea54d5cdd28cc8",
       "logDir": "/var/log/condor_logs/${hostname}",
       "logBaseURL": "https://usdf-panda-bigmon.slac.stanford.edu:8443/condor_logs/${hostname}",
-      "condorPoolOld": "${hostname}",
-      "condorSchedd": ["harvester-0.harvester.panda.svc.cluster.local","harvester-1.harvester.panda.svc.cluster.local","harvester-2.harvester.panda.svc.cluster.local"],
-      "condorPool": ["harvester-0.harvester.panda.svc.cluster.local:9618","harvester-1.harvester.panda.svc.cluster.local:9618","harvester-2.harvester.panda.svc.cluster.local:9618"],
+      "condorPool": "${hostname}",
+      "condorScheddNew": ["harvester-0.harvester.panda.svc.cluster.local","harvester-1.harvester.panda.svc.cluster.local","harvester-2.harvester.panda.svc.cluster.local"],
+      "condorPoolNew": ["harvester-0.harvester.panda.svc.cluster.local:9618","harvester-1.harvester.panda.svc.cluster.local:9618","harvester-2.harvester.panda.svc.cluster.local:9618"],
       "nProcesses": 8
     },
     "workerMaker": {
@@ -108,9 +108,9 @@
       "pandaTokenFilename": "48975ff1c8b067b9dcea54d5cdd28cc8",
       "logDir": "/var/log/condor_logs/${hostname}",
       "logBaseURL": "https://usdf-panda-bigmon.slac.stanford.edu:8443/condor_logs/${hostname}",
-      "condorPoolOld": "${hostname}",
-      "condorSchedd": ["harvester-0.harvester.panda.svc.cluster.local","harvester-1.harvester.panda.svc.cluster.local","harvester-2.harvester.panda.svc.cluster.local"],
-      "condorPool": ["harvester-0.harvester.panda.svc.cluster.local:9618","harvester-1.harvester.panda.svc.cluster.local:9618","harvester-2.harvester.panda.svc.cluster.local:9618"],
+      "condorPool": "${hostname}",
+      "condorScheddNew": ["harvester-0.harvester.panda.svc.cluster.local","harvester-1.harvester.panda.svc.cluster.local","harvester-2.harvester.panda.svc.cluster.local"],
+      "condorPoolNew": ["harvester-0.harvester.panda.svc.cluster.local:9618","harvester-1.harvester.panda.svc.cluster.local:9618","harvester-2.harvester.panda.svc.cluster.local:9618"],
       "nProcesses": 8
     },
     "workerMaker": {
@@ -184,11 +184,11 @@
       "x509UserProxy": "/data/harvester/run/x509up_u25606",
       "pandaTokenDir": "/opt/harvester/etc/auth_tokens/",
       "pandaTokenFilename": "48975ff1c8b067b9dcea54d5cdd28cc8",
-      "logDir": "/var/log/condor_logs/$hostname",
-      "logBaseURL": "https://usdf-panda-bigmon.slac.stanford.edu:8443/condor_logs/$hostname",
-      "condorPoolOld": "${hostname}",
-      "condorSchedd": ["harvester-0.harvester.panda.svc.cluster.local","harvester-1.harvester.panda.svc.cluster.local","harvester-2.harvester.panda.svc.cluster.local"],
-      "condorPool": ["harvester-0.harvester.panda.svc.cluster.local:9618","harvester-1.harvester.panda.svc.cluster.local:9618","harvester-2.harvester.panda.svc.cluster.local:9618"],
+      "logDir": "/var/log/condor_logs/${hostname}",
+      "logBaseURL": "https://usdf-panda-bigmon.slac.stanford.edu:8443/condor_logs/${hostname}",
+      "condorPool": "${hostname}",
+      "condorScheddNew": ["harvester-0.harvester.panda.svc.cluster.local","harvester-1.harvester.panda.svc.cluster.local","harvester-2.harvester.panda.svc.cluster.local"],
+      "condorPoolNew": ["harvester-0.harvester.panda.svc.cluster.local:9618","harvester-1.harvester.panda.svc.cluster.local:9618","harvester-2.harvester.panda.svc.cluster.local:9618"],
       "nProcesses": 8
     },
     "workerMaker": {
@@ -430,7 +430,7 @@
     "submitter": {
 	  "nCore": -1,
           "nCorePerNode": 1,
-	  "nCoreFactor": 8,
+	  "nCoreFactor": 4,
 	  "nCoreFactor1": {"Any": {"SCORE": 8, "SCORE_U2G": 8, "SCORE_U4G": 8, "SCORE_U8G": 4, "SCORE_U12G": 3, "SCORE_U16G": 2, "SCORE_U20G": 1, "SCORE_U24G": 1,"SCORE_U28G": 1,"SCORE_U32G": 1, "Undefined": 8}},
           "noPilotsWhenNoActiveJobs": true,
           "submitMode": "PULL",
@@ -462,8 +462,8 @@
     "submitter": {
 	  "nCore": -1,
           "nCorePerNode": 1,
-	  "nCoreFactor": 4,
-          "activateWorkerFactor": 0.25,
+	  "nCoreFactor": 2,
+          "activateWorkerFactor": 0.5,
 	  "noPilotsWhenNoActiveJobs": false,
           "submitMode": "PULL",
           "ceQueueName": "arc_usdf_8G",
@@ -494,8 +494,8 @@
     "submitter": {
 	  "nCore": -1,
           "nCorePerNode": 1,
-	  "nCoreFactor": 4,
-          "activateWorkerFactor": 0.25,
+	  "nCoreFactor": 2,
+          "activateWorkerFactor": 0.5,
 	  "noPilotsWhenNoActiveJobs": false,
           "submitMode": "PULL",
           "ceQueueName": "arc_usdf_12G",
@@ -714,7 +714,7 @@
 
     "submitter": {
           "nCore": -1,
-          "nCorePerNode": 1,
+          "nCorePerNode": 0,
           "submitMode": "PUSH",
           "ceQueueName": "arc_usdf_multi",
           "ceARCGridType": "arc",
@@ -803,7 +803,7 @@
       "submitter": {
 	  "nCore": -1,
           "nCorePerNode": 1,
-	  "nCoreFactor": 8,
+	  "nCoreFactor": 4,
           "nCoreFactor1": {"Any": {"SCORE": 8, "SCORE_U2G": 8, "SCORE_U4G": 8, "SCORE_U8G": 4, "SCORE_U12G": 3, "SCORE_U16G": 2, "SCORE_U20G": 1, "SCORE_U24G": 1,"SCORE_U28G": 1,"SCORE_U32G": 1, "Undefined": 8}},
           "noPilotsWhenNoActiveJobs": true,
 	  "submitMode": "PULL",
@@ -835,8 +835,8 @@
     "submitter": {
           "nCore": -1,
           "nCorePerNode": 1,
-	  "nCoreFactor": 4,
-          "activateWorkerFactor": 0.25,
+	  "nCoreFactor": 2,
+          "activateWorkerFactor": 0.5,
 	  "noPilotsWhenNoActiveJobs": true,
           "submitMode": "PULL",
           "ceQueueName": "lsst",
@@ -867,8 +867,8 @@
     "submitter": {
           "nCore": -1,
           "nCorePerNode": 1,
-	  "nCoreFactor": 4,
-          "activateWorkerFactor": 0.25,
+	  "nCoreFactor": 2,
+          "activateWorkerFactor": 0.5,
 	  "noPilotsWhenNoActiveJobs": true,
           "submitMode": "PULL",
           "ceQueueName": "lsst",
@@ -1087,7 +1087,7 @@
 
     "submitter": {
           "nCore": -1,
-          "nCorePerNode": 1,
+          "nCorePerNode": 0,
           "submitMode": "PUSH",
           "ceQueueName": "lsst",
           "ceARCGridType": "arc",
@@ -1175,7 +1175,7 @@
       "submitter": {
 	  "nCore": -1,
           "nCorePerNode": 1,
-	  "nCoreFactor": 8,
+	  "nCoreFactor": 4,
           "nCoreFactor1": {"Any": {"SCORE": 8, "SCORE_U2G": 8, "SCORE_U4G": 8, "SCORE_U8G": 4, "SCORE_U12G": 3, "SCORE_U16G": 2, "SCORE_U20G": 1, "SCORE_U24G": 1,"SCORE_U28G": 1,"SCORE_U32G": 1, "Undefined": 8}},
           "noPilotsWhenNoActiveJobs": true,
 	  "submitMode": "PULL",
@@ -1206,8 +1206,8 @@
     "submitter": {
           "nCore": -1,
           "nCorePerNode": 1,
-	  "nCoreFactor": 4,
-          "activateWorkerFactor": 0.25,
+	  "nCoreFactor": 2,
+          "activateWorkerFactor": 0.5,
 	  "noPilotsWhenNoActiveJobs": true,
           "submitMode": "PULL",
           "ceQueueName": "grid",
@@ -1238,7 +1238,7 @@
           "nCore": -1,
           "nCorePerNode": 1,
 	  "nCoreFactor": 4,
-          "activateWorkerFactor": 0.25,
+          "activateWorkerFactor": 0.5,
 	  "noPilotsWhenNoActiveJobs": true,
           "submitMode": "PULL",
           "ceQueueName": "grid",
@@ -1450,7 +1450,7 @@
 
     "submitter": {
           "nCore": -1,
-          "nCorePerNode": 1,
+          "nCorePerNode": 0,
           "submitMode": "PUSH",
           "ceQueueName": "grid",
           "ceARCGridType": "arc",
@@ -1814,7 +1814,7 @@
 
     "submitter": {
           "nCore": -1,
-          "nCorePerNode": 1,
+          "nCorePerNode": 0,
           "submitMode": "PUSH",
           "ceQueueName": "EL9",
           "ceARCGridType": "arc",

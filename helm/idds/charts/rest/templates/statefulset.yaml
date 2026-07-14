@@ -117,7 +117,7 @@ spec:
           {{ if .Values.autoStart -}}
           command: ["/bin/sh", "-c"]
           args:
-            - until /usr/bin/pg_isready -h ${IDDS_DATABASE_HOST} -p ${IDDS_DATABASE_PORT}; do echo waiting for database; sleep 2; done;
+            - if [ "${IDDS_DB_BACKEND}" != "oracle" ]; then until /usr/bin/pg_isready -h ${IDDS_DATABASE_HOST} -p ${IDDS_DATABASE_PORT}; do echo waiting for database; sleep 2; done; fi;
               {{- if .Values.noRoot }}
               /opt/idds/bin/start-daemon.sh all
               {{- else }}
@@ -125,13 +125,6 @@ spec:
               runuser -u atlpan -g zp -- /opt/idds/bin/start-daemon.sh all
               {{- end}}
           {{ end -}}
-          livenessProbe:
-            exec:
-              command:
-                - cat
-                - /var/log/idds/idds_health
-            initialDelaySeconds: 600
-            periodSeconds: 600
           ports:
             - name: https
               containerPort: 8443
@@ -139,11 +132,30 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: 8443
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            tcpSocket:
+              port: 8443
+            initialDelaySeconds: 120
+            periodSeconds: 30
+            failureThreshold: 3
           envFrom:
             - configMapRef:
                 name: {{ include "rest.fullname" . }}-envs
             - secretRef:
                 name: {{ .Values.global.secret }}-idds-envs
+            - secretRef:
+                name: {{ .Values.global.secret }}-idds-db-envs
+          env:
+            - name: IDDS_REST_HOST
+              value: "{{ .Values.restHost }}"
+            - name: PANDAMON_URL
+              value: "{{ .Values.bigmonURL }}"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
@@ -155,6 +167,12 @@ spec:
                 mountPath: /opt/idds/certs
               - name: {{ include "rest.fullname" . }}-requests
                 mountPath: {{ .Values.persistentvolumerequests.path }}
+              {{- if .Values.cvmfs.enabled }}
+              {{- range .Values.cvmfs.repositories }}
+              - name: cvmfs-{{ .name }}
+                mountPath: /cvmfs/{{ .repository }}
+              {{- end }}
+              {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -175,12 +193,22 @@ spec:
                   name: {{ include "rest.fullname" . }}-configmap
               - secret:
                   name: {{ .Values.global.secret }}-idds-auth
+              - configMap:
+                  name: {{ .Release.Name }}-tnsnames
         - name: {{ include "rest.fullname" . }}-certs
           secret:
               secretName: {{ .Values.global.secret }}-idds-certs
         - name: {{ include "rest.fullname" . }}-requests
           persistentVolumeClaim:
               claimName: {{ include "rest.fullname" . }}-requests
+        {{- if .Values.cvmfs.enabled }}
+        {{- range .Values.cvmfs.repositories }}
+        - name: cvmfs-{{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ include "rest.fullname" $ }}-cvmfs-{{ .name }}
+            readOnly: true
+        {{- end }}
+        {{- end }}
   {{- if .Values.persistentvolume.create }}
         - name: {{ include "rest.fullname" . }}-logs
           persistentVolumeClaim:

@@ -1,0 +1,161 @@
+# Default values for panda.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+server:
+  image:
+    tag: "latest"
+  configFile: panda_server_config.atlas_testbed.json
+  tolerations:
+    - key: "node.kubernetes.io/not-ready"
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 30
+    - key: "node.kubernetes.io/unreachable"
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 30
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          preference:
+            matchExpressions:
+              - key: node.kubernetes.io/instance-type
+                operator: In
+                values:
+                  - m4.large
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: jedi
+            topologyKey: kubernetes.io/hostname
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: harvester
+            topologyKey: kubernetes.io/hostname
+        - weight: 80
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: main
+            topologyKey: kubernetes.io/hostname
+        - weight: 80
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: rest
+            topologyKey: kubernetes.io/hostname
+  extraEnv:
+    PANDA_SERVER_CONF_MIN_WORKERS: "4"
+    PANDA_SERVER_CONF_MAX_WORKERS: "100"
+    PANDA_SERVER_CONF_NUM_WSGI: "8"
+    PANDA_SERVER_CONF_NUM_WSGI_THREAD: "2"
+  resources:
+    requests:
+      cpu: "2"
+      memory: 4Gi
+    limits:
+      cpu: "4"
+      memory: 10Gi
+  persistentvolume:
+    create: false
+    sharedPvcName: panda-shared-logs
+    subPath: server-logs
+    size: 50Gi
+  cvmfs:
+    enabled: true
+    repositories:
+      - name: atlas
+        repository: atlas.cern.ch
+      - name: atlas-condb
+        repository: atlas-condb.cern.ch
+  # use Route class for ingress
+  route:
+    enabled: false
+  ingress:
+    enabled: true
+    annotations:
+      nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    hosts:
+      - domain: cern.ch
+        hostOverride: pandaserver-tb.cern.ch
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: default
+        hosts:
+          - domain: cern.ch
+            hostOverride: pandaserver-tb.cern.ch
+
+jedi:
+  image:
+    tag: "latest"
+  configFile: panda_jedi_config.atlas_testbed.json
+  tolerations:
+    - key: "node.kubernetes.io/not-ready"
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 30
+    - key: "node.kubernetes.io/unreachable"
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 30
+  affinity:
+    nodeAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          preference:
+            matchExpressions:
+              - key: node.kubernetes.io/instance-type
+                operator: In
+                values:
+                  - m4.large
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: server
+            topologyKey: kubernetes.io/hostname
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: harvester
+            topologyKey: kubernetes.io/hostname
+  resources:
+    requests:
+      cpu: "2"
+      memory: 4Gi
+    limits:
+      cpu: "4"
+      memory: 10Gi
+  persistentvolume:
+    create: false
+    sharedPvcName: panda-shared-logs
+    subPath: jedi-logs
+    size: 50Gi
+  cvmfs:
+    enabled: true
+    repositories:
+      - name: atlas
+        repository: atlas.cern.ch
+      - name: atlas-condb
+        repository: atlas-condb.cern.ch
+
+nodeRecovery:
+  enabled: true
+
+postgres:
+    enabled: false
+
+    persistentvolume:
+      create: false

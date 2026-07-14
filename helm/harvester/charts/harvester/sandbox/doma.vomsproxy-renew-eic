@@ -1,0 +1,6 @@
+voms-proxy-fake -rfc -voms eic -out /data/harvester/run/x509up_u25606 -hours 96 \
+   -cert=/data/harvester/run/pilot_usercert.pem -key=/data/harvester/run/pilot_userkey.pem \
+   -hostcert /data/harvester/run/eic_voms/eicvoms.sdcc.bnl.gov.crt \
+   -hostkey /data/harvester/run/eic_voms/eicvoms.sdcc.bnl.gov.key \
+   -fqan "/eic/Role=pilot/Capability=NULL" \
+   -uri hcvoms.sdcc.bnl.gov:15001 

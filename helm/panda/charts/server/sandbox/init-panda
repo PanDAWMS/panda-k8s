@@ -32,7 +32,3 @@ if [[ -z "${PANDA_NO_ROOT}" ]]; then
 else
   ${tmpExe}
 fi
-
-# make pandacache dir
-mkdir /var/log/panda/pandacache
-chmod 777 /var/log/panda/pandacache

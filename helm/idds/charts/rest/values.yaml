@@ -61,6 +61,9 @@ service:
   httpsPort: 8443
   httpPort: 8080
 
+restHost: "https://idds-rest:8443"
+bigmonURL: "https://bigmon"
+
 ingress:
   enabled: true
   className: ""
@@ -139,3 +142,18 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+cvmfs:
+  enabled: false
+  repositories: []
+  # - name: atlas
+  #   repository: atlas.cern.ch
+  # - name: atlas-condb
+  #   repository: atlas-condb.cern.ch
+
+serverConf:
+  minWorkers: ""
+  maxWorkers: ""
+  numWsgi: ""
+  numWsgiThread: ""
+  maxBacklog: ""

@@ -13,10 +13,12 @@ image:
 autoStart: true
 
 persistentvolume:
-  create: false  
+  create: false
   path: "/mnt/bigmon-main-logs"
   size: 5Gi
   selector: true
+  sharedPvcName: ""
+  subPath: ""
 
 # hostname for external access
 hostName: "FIXME"
@@ -24,6 +26,8 @@ hostName: "FIXME"
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
+
+installedAppsList: ""
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -121,3 +125,11 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+cvmfs:
+  enabled: false
+  repositories: []
+  # - name: atlas
+  #   repository: atlas.cern.ch
+  # - name: atlas-condb
+  #   repository: atlas-condb.cern.ch

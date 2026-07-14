@@ -27,12 +27,17 @@ service:
   httpPort: 80
   httpsPort: 443
 
+ingress:
+  enabled: false
+
 persistentvolume:
   create: true
   class: manual
   path: "/mnt/harvester-logs"
   size: 5Gi
   selector: true
+  existingClaim: ""
+  subPath: ""
 
 persistentvolumewdir:
   create: true
@@ -40,6 +45,8 @@ persistentvolumewdir:
   path: "/mnt/harvester-condor-logs"
   size: 5Gi
   selector: true
+  existingClaim: ""
+  subPath: ""
 
 persistentvolumecondor:
   create: true
@@ -47,6 +54,16 @@ persistentvolumecondor:
   path: "/mnt/harvester-condor-logs"
   size: 5Gi
   selector: true
+  existingClaim: ""
+  subPath: ""
+
+sharedLogs:
+  create: false
+  name: ""
+  size: 50Gi
+  shareID: ""
+  shareAccessID: ""
+  storageClass: ""
 
 persistentvolumespecial:
   mount: false
@@ -109,3 +126,11 @@ affinity: {}
 
 route:
   enabled: false
+
+cvmfs:
+  enabled: false
+  repositories: []
+  # - name: atlas
+  #   repository: atlas.cern.ch
+  # - name: atlas-condb
+  #   repository: atlas-condb.cern.ch

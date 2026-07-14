@@ -4,15 +4,23 @@
 
 rest:
   replicaCount: 1
+  image:
+    tag: "2.6.11"
   iddsServer: panda-idds-doma.cern.ch
 
   resources:
     limits:
       cpu: 2000m
-      memory: 8Gi
+      memory: 4Gi
     requests:
-      cpu: 2000m
-      memory: 8Gi
+      cpu: 1000m
+      memory: 1Gi
+  serverConf:
+    minWorkers: "4"
+    maxWorkers: "8"
+    numWsgi: "2"
+    numWsgiThread: "4"
+    maxBacklog: "50"
 
   ingress:
     enabled: true
@@ -29,7 +37,7 @@ rest:
             hostOverride: panda-idds-doma.cern.ch
 
 postgres:
-  enabled: true
+  enabled: false
 
   resources:
     limits:

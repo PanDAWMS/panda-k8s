@@ -12,7 +12,7 @@ spec:
     storage: {{ .Values.persistentvolume.size }}
   accessModes:
     - ReadWriteMany
-  persistentVolumeReclaimPolicy: Delete
+  persistentVolumeReclaimPolicy: {{ .Values.persistentvolume.reclaimPolicy | default "Retain" }}
   hostPath:
     path: {{ .Values.persistentvolume.path }}
 ---
@@ -77,7 +77,10 @@ spec:
           {{- if .Values.autoStart }}
           command: ["/bin/sh", "-c"]
           args:
-            - until  /usr/pgsql-*/bin/pg_isready -h ${PANDA_DB_HOST} -p ${PANDA_DB_PORT}; do echo waiting for database; sleep 2; done;
+            - |
+              if [ "${PANDA_DB_BACKEND}" = "postgres" ]; then
+                until /usr/pgsql-*/bin/pg_isready -h ${PANDA_DB_HOST} -p ${PANDA_DB_PORT}; do echo waiting for database; sleep 2; done;
+              fi;
               cp /opt/panda/sandbox/* /data/panda/;
               chmod +x /data/panda/init-jedi;
               chmod +x /data/panda/run-jedi-crons;
@@ -93,15 +96,43 @@ spec:
             - name: https
               containerPort: 25443
               protocol: TCP
+          readinessProbe:
+            exec:
+              command:
+                - test
+                - -f
+                - /var/log/panda/panda_jedi_stdout.log
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - "test -f /var/run/panda/panda_jedi.pid && kill -0 $(cat /var/run/panda/panda_jedi.pid)"
+            initialDelaySeconds: 120
+            periodSeconds: 60
+            failureThreshold: 3
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
               - name: {{ include "jedi.fullname" . }}-logs
                 mountPath: /var/log/panda
+                {{- if .Values.persistentvolume.subPath }}
+                subPath: {{ .Values.persistentvolume.subPath }}
+                {{- end }}
               - name: {{ include "jedi.fullname" . }}-configjson
                 mountPath: /opt/panda/etc/config_json
               - name: {{ include "jedi.fullname" . }}-sandbox
                 mountPath: /opt/panda/sandbox
+              - name: {{ include "jedi.fullname" . }}-certs
+                mountPath: /opt/panda/etc/cert
+              {{- if .Values.cvmfs.enabled }}
+              {{- range .Values.cvmfs.repositories }}
+              - name: cvmfs-{{ .name }}
+                mountPath: /cvmfs/{{ .repository }}
+              {{- end }}
+              {{- end }}
           envFrom:
             - configMapRef:
                 name: {{ .Release.Name }}-server-env
@@ -124,6 +155,9 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
+        - name: {{ include "jedi.fullname" . }}-certs
+          secret:
+              secretName: {{ .Values.global.secret }}-panda-certs
         - name: {{ include "jedi.fullname" . }}-sandbox
           projected:
             sources:
@@ -133,6 +167,8 @@ spec:
                   name: {{ .Release.Name }}-external-sandbox
               - configMap:
                   name: {{ .Release.Name }}-server-sandbox
+              - secret:
+                  name: {{ .Values.global.secret }}-panda-token-cache
         - name: {{ include "jedi.fullname" . }}-configjson
           projected:
             sources:
@@ -140,10 +176,22 @@ spec:
                   name: {{ include "jedi.fullname" . }}-configjson
               - configMap:
                   name: {{ .Release.Name }}-server-configjson
+        {{- if .Values.cvmfs.enabled }}
+        {{- range .Values.cvmfs.repositories }}
+        - name: cvmfs-{{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ include "jedi.fullname" $ }}-cvmfs-{{ .name }}
+            readOnly: true
+        {{- end }}
+        {{- end }}
   {{- if .Values.persistentvolume.create }}
         - name: {{ include "jedi.fullname" . }}-logs
           persistentVolumeClaim:
             claimName: {{ include "jedi.fullname" . }}
+  {{- else if .Values.persistentvolume.sharedPvcName }}
+        - name: {{ include "jedi.fullname" . }}-logs
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistentvolume.sharedPvcName }}
   {{- else }}
   volumeClaimTemplates:
     - metadata:

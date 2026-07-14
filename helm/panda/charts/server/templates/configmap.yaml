@@ -5,7 +5,7 @@ metadata:
   name: {{ include "server.fullname" . }}-configjson
 data:
   panda_server_config.json: |-
-{{ .Files.Get "panda_server_config.json" | indent 4}}
+{{ .Files.Get (.Values.configFile | default "panda_server_config.json") | indent 4}}
 
 ---
 # server env variables
@@ -34,6 +34,9 @@ data:
   {{- end }}
   {{- if .Values.noRoot }}
   PANDA_NO_ROOT: "1"
+  {{- end }}
+  {{- range $key, $value := .Values.extraEnv }}
+  {{ $key }}: "{{ $value }}"
   {{- end }}
 
 ---

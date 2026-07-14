@@ -1,0 +1,33 @@
+#!/bin/bash
+
+proxy_path=/opt/harvester/etc/auth
+new_proxy_path=/data/harvester/run
+proxy_user=iddssv1
+
+proxy_cert=${proxy_path}/pilot_usercert.pem
+proxy_key=${proxy_path}/pilot_userkey.pem
+
+proxy=${new_proxy_path}/x509up_u25606
+
+cp  $proxy_cert $new_proxy_path
+cp $proxy_key $new_proxy_path
+new_proxy_cert=${new_proxy_path}/pilot_usercert.pem
+new_proxy_key=${new_proxy_path}/pilot_userkey.pem
+chmod 600 $new_proxy_cert
+chmod 600 $new_proxy_key
+
+#voms-proxy-init2 -valid 96:00 -rfc -voms sphenix -q -cert $new_proxy_cert -key $new_proxy_key -out $proxy 
+
+voms-proxy-fake -rfc -voms eic -out /data/harvester/run/x509up_u25606 -hours 96 \
+   -cert=/data/harvester/run/pilot_usercert.pem -key=/data/harvester/run/pilot_userkey.pem \
+   -hostcert /opt/harvester/sandbox/eicvoms.sdcc.bnl.gov.crt \
+   -hostkey /opt/harvester/sandbox/eicvoms.sdcc.bnl.gov.key \
+   -fqan "/eic/Role=pilot/Capability=NULL" \
+   -uri hcvoms.sdcc.bnl.gov:15001
+
+#check lifetime of certificate
+voms-proxy-info2 -exists -hours 11 -file $proxy
+
+if [ $? -ne 0 ]; then
+  echo $proxy expires in 11 hours on `hostname`, Please check| mail -s "[VOMS_PROXY]WARNING : Grid proxy for Rubin k8s expires soon on `hostname`" atlas-adc-idds-k8s@cern.ch
+fi

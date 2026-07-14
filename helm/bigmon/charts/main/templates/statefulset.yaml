@@ -81,8 +81,8 @@ spec:
               mv /data/bigmon/config/idds.cfg /opt/bigmon/etc/idds/ ;
               mv /data/bigmon/config/rucio.cfg /opt/bigmon/etc/ ;
               {{- if .Values.autoStart }}
-              until /usr/pgsql-*/bin/pg_isready -h ${PANDA_DB_HOST} -p ${PANDA_DB_PORT}; do echo waiting for database; sleep 2; done;
-              chmod 777 /data/bigmon/logs;
+              if [ "${PANDA_DB_BACKEND}" != "oracle" ]; then until /usr/pgsql-*/bin/pg_isready -h ${PANDA_DB_HOST} -p ${PANDA_DB_PORT}; do echo waiting for database; sleep 2; done; fi;
+              chmod -R 777 /data/bigmon/logs;
               start-daemon.sh all
               {{- else }}
               sleep infinity & wait
@@ -91,18 +91,44 @@ spec:
             - name: https
               containerPort: 8443
               protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: 8443
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 3
+          livenessProbe:
+            tcpSocket:
+              port: 8443
+            initialDelaySeconds: 120
+            periodSeconds: 30
+            failureThreshold: 3
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
               - name: {{ include "main.fullname" . }}-logs
                 mountPath: /data/bigmon/logs
+                {{- if .Values.persistentvolume.subPath }}
+                subPath: {{ .Values.persistentvolume.subPath }}
+                {{- end }}
               - name: {{ include "main.fullname" . }}-sandbox
                 mountPath: /data/bigmon/configmap
               - name: {{ include "main.fullname" . }}-certs
                 mountPath: /opt/bigmon/etc/cert
+              {{- if .Values.cvmfs.enabled }}
+              {{- range .Values.cvmfs.repositories }}
+              - name: cvmfs-{{ .name }}
+                mountPath: /cvmfs/{{ .repository }}
+              {{- end }}
+              {{- end }}
           envFrom:
             - secretRef:
                 name: {{ .Values.global.secret }}-bigmon-envs
+          {{- if .Values.installedAppsList }}
+          env:
+            - name: BIGMON_INSTALLED_APPS_LIST
+              value: "{{ .Values.installedAppsList }}"
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -120,12 +146,35 @@ spec:
           configMap:
               name: {{ include "main.fullname" . }}-sandbox
         - name: {{ include "main.fullname" . }}-certs
+          {{- if .Values.global.existingTlsSecret }}
+          secret:
+              secretName: {{ .Values.global.existingTlsSecret }}
+              items:
+                # Map the TLS keys to the filenames bigmon expects
+                - key: tls.crt
+                  path: hostcert.pem
+                - key: tls.key
+                  path: hostkey.pem
+          {{- else }}
           secret:
               secretName: {{ .Values.global.secret }}-bigmon-certs
+          {{- end }}
+        {{- if .Values.cvmfs.enabled }}
+        {{- range .Values.cvmfs.repositories }}
+        - name: cvmfs-{{ .name }}
+          persistentVolumeClaim:
+            claimName: {{ include "main.fullname" $ }}-cvmfs-{{ .name }}
+            readOnly: true
+        {{- end }}
+        {{- end }}
   {{- if .Values.persistentvolume.create }}
         - name: {{ include "main.fullname" . }}-logs
           persistentVolumeClaim:
             claimName: {{ include "main.fullname" . }}
+  {{- else if .Values.persistentvolume.sharedPvcName }}
+        - name: {{ include "main.fullname" . }}-logs
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistentvolume.sharedPvcName }}
   {{- else }}
   volumeClaimTemplates:
     - metadata:

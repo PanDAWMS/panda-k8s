@@ -10,9 +10,9 @@
         }
     },
     "queues": {
-        "jedi_taskstatus": {
+        "jedi_jobtaskstatus": {
             "server": "internal_mb",
-            "destination": "/queue/self.jedi_taskstatus"
+            "destination": "/queue/self.jedi_jobtaskstatus"
         },
 	        "jedi_contents_feeder": {
             "server": "internal_mb",

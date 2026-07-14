@@ -3,6 +3,8 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: {{ .Release.Name }}-external-sandbox
+  annotations:
+    argocd.argoproj.io/sync-options: Replace=true
 binaryData:
   {{- range $path, $_ := .Files.Glob "sandbox/*" }}
   {{ base $path }}: |-

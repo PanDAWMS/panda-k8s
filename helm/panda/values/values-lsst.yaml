@@ -53,7 +53,7 @@ server:
           - domain: slac.stanford.edu
             hostOverride: rubin-panda-server-dev.slac.stanford.edu
   ingress_big:
-    enabled: true
+    enabled: false
     hosts:
       - domain: slac.stanford.edu
         hostOverride: rubin-panda-server-big-dev.slac.stanford.edu

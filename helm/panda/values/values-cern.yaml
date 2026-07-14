@@ -1,0 +1,54 @@
+# Default values for panda.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+server:
+  # use Route class for ingress
+  route:
+    enabled: false
+  ingress:
+    enabled: true
+    hosts:
+      - domain: cern.ch
+        hostOverride: pandaserver-doma.cern.ch
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: default
+        hosts:
+          - domain: cern.ch
+            hostOverride: pandaserver-doma.cern.ch
+  persistentvolume:
+    create: false
+    selector: false
+    size: 50Gi
+    sharedPvcName: panda-shared-logs
+    subPath: server-logs
+  configFile: "panda_server_config.cern.json"
+  resources:
+    requests:
+      cpu: "1"
+      memory: 2Gi
+    limits:
+      cpu: "4"
+      memory: 8Gi
+
+jedi:
+  persistentvolume:
+    create: false
+    selector: false
+    size: 50Gi
+    sharedPvcName: panda-shared-logs
+    subPath: jedi-logs
+  configFile: "panda_jedi_config.cern.json"
+  resources:
+    requests:
+      cpu: "1"
+      memory: 2Gi
+    limits:
+      cpu: "4"
+      memory: 8Gi
+
+postgres:
+  enabled: false

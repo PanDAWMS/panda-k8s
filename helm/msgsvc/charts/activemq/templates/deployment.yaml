@@ -86,6 +86,18 @@ spec:
             - name: activemq-port
               containerPort: 61613
               protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 61613
+            initialDelaySeconds: 60
+            periodSeconds: 30
+            failureThreshold: 3
+          readinessProbe:
+            tcpSocket:
+              port: 61613
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 3
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:

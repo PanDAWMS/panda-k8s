@@ -38,6 +38,9 @@ rest:
       cpu: 4000m
       memory: 32Gi
 
+  restHost: "https://rubin-panda-idds-dev.slac.stanford.edu:8443"
+  bigmonURL: "https://rubin-panda-bigmon-dev.slac.stanford.edu:8443/"
+
   ingress:
     enabled: true
     hosts:

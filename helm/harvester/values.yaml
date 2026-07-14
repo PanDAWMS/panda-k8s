@@ -10,7 +10,8 @@ harvester:
   enabled: true
   # container image and tag
   image:
-    tag: "v0.6.1"
+    tag: "v0.6.5"
+    # tag: "v0.6.1"
     # tag: "master"
 
   # PV with selector support
@@ -45,6 +46,12 @@ mariadb:
   #persistentvolume:
   #    selector: false
 
+  image:
+      repository: bitnami/mariadb
+      pullPolicy: IfNotPresent
+      # tag: "10.11.11"
+      tag: "latest"
+ 
   resources:
     limits:
       cpu: 4000m

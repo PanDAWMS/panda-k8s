@@ -15,6 +15,7 @@ chmod 777 /var/log/panda/condor_logs
 mkdir -p /var/log/condor_logs/$(hostname)/log
 mkdir -p /var/log/condor_logs/$(hostname)/spool
 mkdir -p /var/log/condor_logs/$(hostname)/execute
+mkdir -p /var/log/condor_logs/condor_logs
 
 # setup the queueconfig
 mkdir -p /opt/harvester/etc/queue_config
