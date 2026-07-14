@@ -12,7 +12,7 @@ main:
   enabled: true
 
   image:
-    tag: "v1.1.2"
+    tag: "v1.1.7"
 
   autoStart: true
 
