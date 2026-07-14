@@ -27,11 +27,13 @@ db:
   vendor: oracle  # options: oracle, postgresql
 
 persistentVolume:
-  create: true
+  create: false
   class: manual
   path: "/mnt/panda-ui-backend-logs"
-  size: 5Gi
+  size: 50Gi
   selector: true
+  sharedPvcName: ""
+  subPath: ""
 
 # expected paths inside the container from backend Dockerfile
 paths:

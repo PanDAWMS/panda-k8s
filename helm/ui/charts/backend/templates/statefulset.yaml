@@ -97,6 +97,10 @@ spec:
         - name: {{ include "backend.fullname" . }}-logs
           persistentVolumeClaim:
             claimName: {{ include "backend.fullname" . }}
+  {{- else if .Values.persistentVolume.sharedPvcName }}
+        - name: {{ include "backend.fullname" . }}-logs
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistentVolume.sharedPvcName }}
   {{- else }}
   volumeClaimTemplates:
     - metadata:
