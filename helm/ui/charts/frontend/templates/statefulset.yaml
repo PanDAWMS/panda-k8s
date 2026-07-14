@@ -23,19 +23,24 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: {{ .Values.service.containerPort }}
-              name: http
+              name: https
               protocol: TCP
           volumeMounts:
             - name: app-config
               mountPath: /usr/share/nginx/html/assets/app-config.json
               subPath: app-config.json
               readOnly: true
+            - name: {{ include "frontend.fullname" . }}-certs
+              mountPath: {{ .Values.paths.certs }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
         - name: app-config
           configMap:
             name: {{ include "frontend.fullname" . }}-config
+        - name: {{ include "frontend.fullname" . }}-certs
+          secret:
+              secretName: {{ .Values.global.secret }}-ui-certs
       imagePullSecrets:
         {{- toYaml .Values.imagePullSecrets | nindent 8 }}
       securityContext:

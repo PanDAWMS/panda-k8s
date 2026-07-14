@@ -7,9 +7,9 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - name: http
+    - name: https
       port: {{ .Values.service.port }}
-      targetPort: http
+      targetPort: 443
       protocol: TCP
   selector:
     {{- include "backend.selectorLabels" . | nindent 4 }}

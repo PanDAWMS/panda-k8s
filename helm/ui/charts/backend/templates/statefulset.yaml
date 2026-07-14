@@ -50,7 +50,7 @@ spec:
               sleep infinity & wait
               {{- end }}
           ports:
-            - name: http
+            - name: https
               containerPort: {{ .Values.service.containerPort }}
               protocol: TCP
           resources:

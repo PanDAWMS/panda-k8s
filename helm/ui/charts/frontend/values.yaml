@@ -5,8 +5,12 @@ image:
 
 service:
   type: ClusterIP
-  port: 80
-  containerPort: 80
+  port: 443
+  containerPort: 443
+
+paths:
+  certs: /opt/pandaui/etc/cert # from panda-ui-frontend Dockerfile
+
 
 resources: {}
 
