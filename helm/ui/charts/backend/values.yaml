@@ -28,7 +28,7 @@ db:
 
 persistentVolume:
   create: false
-  class: manual
+  class: ""
   path: "/mnt/panda-ui-backend-logs"
   size: 50Gi
   selector: true
