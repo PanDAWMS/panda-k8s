@@ -14,8 +14,8 @@ Application URLs via Ingress:
 
 Example curl command to test backend API:
 curl -vk \
-  -H "Host: {{ (index .Values.ingress.hosts 0).hostOverride }}" \
-  https://{{ (index .Values.ingress.hosts 0).hostOverride }}/api/
+  -H "Host: {{ if .Values.global.hostOverwrite }}{{ .Values.global.hostOverwrite }}{{ else }}{{ (index .Values.ingress.hosts 0).domain }}{{ end }}" \
+  https://{{ if .Values.global.hostOverwrite }}{{ .Values.global.hostOverwrite }}{{ else }}{{ (index .Values.ingress.hosts 0).domain }}{{ end }}/api/
 
 {{- else if contains "NodePort" .Values.backend.service.type }}
 # NodePort access (internal/testing)
