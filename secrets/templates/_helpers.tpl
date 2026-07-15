@@ -101,6 +101,10 @@ Add affix to instance reference names
 {{- include "add_affix" (list .Values.affix "bigmon") }}
 {{- end }}
 
+{{- define "ui_ref" }}
+{{- include "add_affix" (list .Values.affix "ui") }}
+{{- end }}
+
 
 {{/*
 Set Proxies

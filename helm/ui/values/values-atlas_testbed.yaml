@@ -1,0 +1,55 @@
+# Default values for PanDA UI.
+# # This is a YAML-formatted file.
+# # Declare variables to be passed into your templates.
+#
+global:
+  vo: ATLAS
+  hostOverwrite: panda-ui-tb.cern.ch
+  logLevel: INFO
+
+backend:
+  image:
+    tag: "latest"
+  tolerations:
+    - key: "node.kubernetes.io/not-ready"
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 30
+    - key: "node.kubernetes.io/unreachable"
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 30
+  persistentvolume:
+    create: false
+    sharedPvcName: panda-shared-logs
+    subPath: ui-backend-logs
+    size: 10Gi
+
+  resources:
+    requests:
+      cpu: "1"
+      memory: 2Gi
+    limits:
+      cpu: "4"
+      memory: 6Gi
+
+frontend:
+  image:
+    tag: "latest"
+  tolerations:
+    - key: "node.kubernetes.io/not-ready"
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 30
+    - key: "node.kubernetes.io/unreachable"
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 30
+
+  resources:
+    requests:
+      cpu: "1"
+      memory: 2Gi
+    limits:
+      cpu: "2"
+      memory: 4Gi

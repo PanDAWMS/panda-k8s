@@ -1,0 +1,20 @@
+image:
+  repository: "ghcr.io/pandawms/panda-ui-frontend"
+  tag: "latest"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 443
+  containerPort: 443
+
+paths:
+  certs: /opt/pandaui/etc/cert # from panda-ui-frontend Dockerfile
+
+
+resources: {}
+
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+imagePullSecrets: []
