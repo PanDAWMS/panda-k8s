@@ -23,14 +23,11 @@ spec:
   tls:
     {{- range .Values.ingress.tls }}
     - hosts:
-        {{- range .hosts }}
         {{- if $host }}
         - {{ $host | quote }}
         {{- else }}
         - {{ printf "%s.%s" $fullName .domain | quote }}
         {{- end }}
-        {{- end }}
-      # secretName: {{ .secretName }}
       secretName: {{ $globalSecret }}-ui-tls-certs
     {{- end }}
   {{- end }}
