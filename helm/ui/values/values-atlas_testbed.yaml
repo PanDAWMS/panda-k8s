@@ -19,7 +19,7 @@ backend:
       operator: "Exists"
       effect: "NoExecute"
       tolerationSeconds: 30
-  persistentVolume:
+  persistentvolume:
     create: false
     sharedPvcName: panda-shared-logs
     subPath: ui-backend-logs

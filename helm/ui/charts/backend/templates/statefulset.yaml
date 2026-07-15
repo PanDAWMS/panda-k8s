@@ -97,24 +97,24 @@ spec:
         - name: {{ include "backend.fullname" . }}-certs
           secret:
               secretName: {{ .Values.global.secret }}-ui-certs
-  {{- if .Values.persistentVolume.create }}
+  {{- if .Values.persistentvolume.create }}
         - name: {{ include "backend.fullname" . }}-logs
           persistentVolumeClaim:
             claimName: {{ include "backend.fullname" . }}
-  {{- else if .Values.persistentVolume.sharedPvcName }}
+  {{- else if .Values.persistentvolume.sharedPvcName }}
         - name: {{ include "backend.fullname" . }}-logs
           persistentVolumeClaim:
-            claimName: {{ .Values.persistentVolume.sharedPvcName }}
+            claimName: {{ .Values.persistentvolume.sharedPvcName }}
   {{- else }}
   volumeClaimTemplates:
     - metadata:
         name: {{ include "backend.fullname" . }}-logs
       spec:
-        storageClassName: {{ .Values.persistentVolume.class }}
+        storageClassName: {{ .Values.persistentvolume.class }}
         accessModes:
           - "ReadWriteOnce"
         resources:
           requests:
-            storage: {{ .Values.persistentVolume.size }}
+            storage: {{ .Values.persistentvolume.size }}
   {{- end }}
 

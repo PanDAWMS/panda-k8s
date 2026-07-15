@@ -4,7 +4,7 @@ global:
   logLevel: WARN
 
 backend:
-  persistentVolume:
+  persistentvolume:
     create: true
 
 autoscaling:

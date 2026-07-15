@@ -26,7 +26,7 @@ db:
   deployment: external  # options: external, kubernetes
   vendor: oracle  # options: oracle, postgresql
 
-persistentVolume:
+persistentvolume:
   create: false
   class: ""
   path: "/mnt/panda-ui-backend-logs"
