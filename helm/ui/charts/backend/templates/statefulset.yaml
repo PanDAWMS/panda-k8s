@@ -58,6 +58,9 @@ spec:
           volumeMounts:
               - name: {{ include "backend.fullname" . }}-logs
                 mountPath: {{ .Values.paths.logs }}
+                {{- if .Values.persistentvolume.subPath }}
+                subPath: {{ .Values.persistentvolume.subPath }}
+                {{- end }}
               - name: {{ include "backend.fullname" . }}-sandbox
                 mountPath: {{ .Values.paths.sandbox }}
               - name: {{ include "backend.fullname" . }}-certs
