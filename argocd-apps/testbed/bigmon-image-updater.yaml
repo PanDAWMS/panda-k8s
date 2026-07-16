@@ -1,0 +1,9 @@
+apiVersion: argocd-image-updater.argoproj.io/v1alpha1
+kind: ImageUpdater
+metadata:
+  name: bigmon-image-updater
+  namespace: argocd
+spec:
+  applicationRefs:
+    - namePattern: panda-bigmon
+      useAnnotations: true

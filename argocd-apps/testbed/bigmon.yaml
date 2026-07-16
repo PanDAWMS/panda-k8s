@@ -3,6 +3,11 @@ kind: Application
 metadata:
   name: panda-bigmon
   namespace: argocd
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: bigmon=ghcr.io/pandawms/panda-bigmon-core:latest
+    argocd-image-updater.argoproj.io/bigmon.update-strategy: digest
+    argocd-image-updater.argoproj.io/bigmon.helm.image-name: main.image.repository
+    argocd-image-updater.argoproj.io/bigmon.helm.image-tag: main.image.tag
 spec:
   project: default
   source:
