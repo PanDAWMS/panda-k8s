@@ -3,6 +3,8 @@
 # Declare variables to be passed into your templates.
 
 server:
+  image:
+    tag: "1.0.2"
   # use Route class for ingress
   route:
     enabled: false
@@ -35,6 +37,8 @@ server:
       memory: 8Gi
 
 jedi:
+  image:
+    tag: "1.0.2"
   persistentvolume:
     create: false
     selector: false

@@ -4,6 +4,8 @@
 #
 
 main:
+  image:
+    tag: "v1.1.7"
   persistentvolume:
     create: false
     sharedPvcName: panda-shared-logs
