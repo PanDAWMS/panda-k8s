@@ -305,11 +305,19 @@ spec:
               {{- if .Values.persistentvolumewdir.subPath }}
               subPath: {{ .Values.persistentvolumewdir.subPath }}
               {{- end }}
+            {{- if and .Values.persistentvolumecondor.existingClaim (eq .Values.persistentvolumecondor.existingClaim .Values.persistentvolume.existingClaim) }}
+            - name: {{ include "harvester.fullname" . }}-logs
+              mountPath: /var/log/condor_logs/
+              {{- if .Values.persistentvolumecondor.subPath }}
+              subPath: {{ .Values.persistentvolumecondor.subPath }}
+              {{- end }}
+            {{- else }}
             - name: {{ include "harvester.fullname" . }}-condor-logs
               mountPath: /var/log/condor_logs/
               {{- if .Values.persistentvolumecondor.subPath }}
               subPath: {{ .Values.persistentvolumecondor.subPath }}
               {{- end }}
+            {{- end }}
             - name: {{ include "harvester.fullname" . }}-configjson
               mountPath: /opt/harvester/etc/configmap
             - name: {{ include "harvester.fullname" . }}-queueconfig
@@ -371,9 +379,11 @@ spec:
         - name: {{ include "harvester.fullname" . }}-auth
           secret:
               secretName: {{ .Values.global.secret }}-harvester-auth
+        {{- if not (and .Values.persistentvolumecondor.existingClaim (eq .Values.persistentvolumecondor.existingClaim .Values.persistentvolume.existingClaim)) }}
         - name: {{ include "harvester.fullname" . }}-condor-logs
           persistentVolumeClaim:
             claimName: {{ .Values.persistentvolumecondor.existingClaim | default (printf "%s-condor-logs" (include "harvester.fullname" .)) }}
+        {{- end }}
         {{- if .Values.persistentvolumespecial.mount }}
         - name: {{ include "harvester.fullname" . }}-special-data
           persistentVolumeClaim:
