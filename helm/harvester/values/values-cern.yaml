@@ -15,19 +15,46 @@ harvester:
     selector: false
     size: 50Gi
   persistentvolumecondor:
-    create: true
-    class: manual
-    path: "/mnt/harvester-logs"
+    create: false
+    existingClaim: panda-shared-logs
+    subPath: condor_logs
     selector: false
-    size: 5Gi
   sharedLogs:
     create: true
     name: panda-shared-logs
     size: 200Gi
     storageClass: manila-meyrin-cephfs
 
-  nodeSelector:
-    kubernetes.io/hostname: panda-doma-k8s-3bv7ya4fx76z-node-3
+  affinity:
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: server
+            topologyKey: kubernetes.io/hostname
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: jedi
+            topologyKey: kubernetes.io/hostname
+        - weight: 100
+          podAffinityTerm:
+            labelSelector:
+              matchLabels:
+                app.kubernetes.io/name: rest
+            topologyKey: kubernetes.io/hostname
+  tolerations:
+    - key: "node.kubernetes.io/not-ready"
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 30
+    - key: "node.kubernetes.io/unreachable"
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 30
 
   resources:
     requests:
@@ -46,9 +73,6 @@ mariadb:
     selector: false
     existingClaim: panda-shared-logs
     subPath: mariadb-data
-
-  nodeSelector:
-    kubernetes.io/hostname: panda-doma-k8s-3bv7ya4fx76z-node-3
 
   resources:
     requests:
