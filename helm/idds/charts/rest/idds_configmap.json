@@ -5,7 +5,7 @@
          "database":
             {"default": "${IDDS_DATABASE_URL}",
              "schema": "${IDDS_DATABASE_SCHEMA}",
-             "pool_size": 50,
+             "pool_size": 10,
              "pool_recycle": 3600,
              "echo": 0,
              "pool_reset_on_return": "rollback"
@@ -15,7 +15,14 @@
              "additional_storage": "/data/idds-requests/panda_jobs/panda/idds-requests"
 	    },
 	 "clerk":
-	    {"cache_expire_seconds": 300},
+	    {"cache_expire_seconds": 300,
+	     "update_poll_period": 120,
+	     "update_command_poll_period": 120},
+	 "transformer":
+	    {"num_threads": 8,
+	     "max_number_workers": 8,
+             "update_poll_period": 180,
+	     "poll_operation_time_period": 180},
 	 "carrier":
 	    {"receiver_num_threads": 16,
              "enable_executors": true,
@@ -33,11 +40,11 @@
                                                       "username": "${IDDS_RECEIVER_USERNAME}",
                                                       "password": "${IDDS_RECEIVER_PASSWORD}",
                                                       "broker_timeout": 600}},
-	     "domapandawork.poll_panda_jobs_chunk_size": 2000,
+	     "domapandawork.poll_panda_jobs_chunk_size": 1000,
 	     "domapandawork.site_to_cloud": "SLAC:US,LANCS:EU,CC-IN2P3:EU,RAL:EU",
 	     "domapandawork.dispatch_ext_content": false,
 	     "domapandawork.additional_task_parameters": {},
-	     "domapandawork.additional_task_parameters_per_site1": {"SLAC": {"noLoopingCheck": 1}},
+	     "domapandawork.additional_task_parameters_per_site": {"SLAC": {"noLoopingCheck": 0}, "CC-IN2P3": {"noLoopingCheck": 1}},
              "domapandawork.core_to_queues": {"1": {"queues": ["Rubin", "Rubin_Extra_Himem"], "processing_type": ""},
                                               "Rubin_Multi": {"queues": ["Rubin_Multi"], "processing_type": "Rubin_Multi"},
                                               "Rubin_Merge": {"queues": ["Rubin_Merge"], "processing_type": "Rubin_Merge"},

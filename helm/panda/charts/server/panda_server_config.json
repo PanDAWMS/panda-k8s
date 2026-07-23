@@ -25,16 +25,17 @@
         "dbpasswd": "$PANDA_DB_PASSWORD",
 	"dbuser": "$PANDA_DB_USER",
 	"dbname": "$PANDA_DB_NAME",
+	"nJobsInGetJob": "30",
         "adder_plugins": "wlcg:dataservice.adder_dummy_plugin:AdderDummyPlugin,wlcg:dataservice.adder_simple_plugin:AdderSimplePlugin:sphenix",
         "setupper_plugins": "wlcg:dataservice.setupper_dummy_plugin:SetupperDummyPlugin",
         "token_authType": "oidc",
         "sandboxHostname": "$PANDA_HOSTNAME",
-        "mq_configFile": "/data/panda/etc/panda/panda_mbproxy_config.json",
+        "mq_configFile": "/opt/panda/etc/panda/panda_mbproxy_config.json",
         "token_cache_config": "/data/panda/token_cache_config.json"
     },
     "daemon": {
         "enable": "True",
-        "n_proc": "6",
-        "n_dbconn": "1"
+        "n_proc": "12",
+        "n_dbconn": "4"
     }
 }
