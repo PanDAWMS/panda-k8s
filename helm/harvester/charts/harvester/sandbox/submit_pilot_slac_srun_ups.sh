@@ -24,7 +24,7 @@ export PANDA_JSID=harvester-{harvesterID}
 export HARVESTER_ID={harvesterID}
 export HARVESTER_WORKER_ID={workerID}
 
-# Overide umask of execution node (sometime values are really strange)
+# Override umask of execution node (sometimes values are really strange)
 umask 077
 
 # export HARVESTER_WORKDIR=/sdf/home/l/lsstsvc1/harvester_workdir
