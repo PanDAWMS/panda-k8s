@@ -81,24 +81,31 @@ Add affix to instance reference names
 {{- include "add_affix" (list .Values.affix "iam") }}
 {{- end }}
 
-{{- define "msgsvc_ref" }}
-{{- include "add_affix" (list .Values.affix "msgsvc") }}
-{{- end }}
-
 {{- define "panda_ref" }}
 {{- include "add_affix" (list .Values.affix "panda") }}
 {{- end }}
 
+{{/*
+msgsvc, idds, bigmon, and harvester are each deployed as their own ArgoCD Application
+named "panda-<component>" (e.g. "panda-msgsvc"), unlike the panda-server/jedi Application,
+which is simply named "panda". So these refs derive from panda_ref plus their own component
+name, rather than affixing the component name directly - otherwise they render one "panda-"
+short of the real Service names (e.g. "msgsvc-activemq" instead of "panda-msgsvc-activemq").
+*/}}
+{{- define "msgsvc_ref" }}
+{{- include "panda_ref" . }}-msgsvc
+{{- end }}
+
 {{- define "idds_ref" }}
-{{- include "add_affix" (list .Values.affix "idds") }}
+{{- include "panda_ref" . }}-idds
 {{- end }}
 
 {{- define "harvester_ref" }}
-{{- include "add_affix" (list .Values.affix "harvester") }}
+{{- include "panda_ref" . }}-harvester
 {{- end }}
 
 {{- define "bigmon_ref" }}
-{{- include "add_affix" (list .Values.affix "bigmon") }}
+{{- include "panda_ref" . }}-bigmon
 {{- end }}
 
 {{- define "ui_ref" }}
