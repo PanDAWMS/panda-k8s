@@ -161,6 +161,9 @@ spec:
           volumeMounts:
               - name: {{ include "rest.fullname" . }}-logs
                 mountPath: /var/log/idds/
+                {{- if .Values.persistentvolume.subPath }}
+                subPath: {{ .Values.persistentvolume.subPath }}
+                {{- end }}
               - name: {{ include "rest.fullname" . }}-configmap
                 mountPath: /opt/idds/configmap
               - name: {{ include "rest.fullname" . }}-certs
@@ -213,6 +216,10 @@ spec:
         - name: {{ include "rest.fullname" . }}-logs
           persistentVolumeClaim:
             claimName: {{ include "rest.fullname" . }}
+  {{- else if .Values.persistentvolume.sharedPvcName }}
+        - name: {{ include "rest.fullname" . }}-logs
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistentvolume.sharedPvcName }}
   {{- else }}
   volumeClaimTemplates:
     - metadata:

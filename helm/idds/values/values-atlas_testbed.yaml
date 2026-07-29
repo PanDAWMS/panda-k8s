@@ -15,10 +15,9 @@ rest:
       cpu: "4"
       memory: 6Gi
   persistentvolume:
-    create: true
-    class: manual
-    selector: true
-    size: 5Gi
+    create: false
+    sharedPvcName: panda-shared-logs
+    subPath: idds
   cvmfs:
     enabled: true
     repositories:
