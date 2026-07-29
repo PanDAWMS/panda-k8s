@@ -12,6 +12,9 @@ rest:
     create: false
     sharedPvcName: panda-shared-logs
     subPath: idds
+  persistentvolumerequests:
+    reuseLogsVolume: true
+    subPath: idds-requests
   resources:
     limits:
       cpu: 2000m
