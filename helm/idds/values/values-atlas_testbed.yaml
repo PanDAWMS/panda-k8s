@@ -26,9 +26,10 @@ rest:
       - name: atlas-condb
         repository: atlas-condb.cern.ch
   persistentvolumerequests:
-    create: false
-    sharedPvcName: panda-shared-logs
-    subPath: idds-requests
+    create: true
+    class: manual
+    selector: true
+    size: 10Gi
   serverConf:
     minWorkers: "4"
     maxWorkers: "8"
