@@ -26,10 +26,8 @@ rest:
       - name: atlas-condb
         repository: atlas-condb.cern.ch
   persistentvolumerequests:
-    create: true
-    class: manual
-    selector: true
-    size: 10Gi
+    reuseLogsVolume: true
+    subPath: idds-requests
   serverConf:
     minWorkers: "4"
     maxWorkers: "8"

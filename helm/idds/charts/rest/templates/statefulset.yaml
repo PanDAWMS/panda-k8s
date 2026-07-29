@@ -38,6 +38,7 @@ spec:
 ---
 {{- end }}
 # pv for idds requests
+{{- if not .Values.persistentvolumerequests.reuseLogsVolume }}
 {{- if .Values.persistentvolumerequests.create -}}
 # pv
 kind: PersistentVolume
@@ -77,6 +78,7 @@ spec:
       {{- include "rest.selectorLabels-requests" . | nindent 6 }}
   {{- end }}
 ---
+{{- end }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
@@ -168,8 +170,16 @@ spec:
                 mountPath: /opt/idds/configmap
               - name: {{ include "rest.fullname" . }}-certs
                 mountPath: /opt/idds/certs
+              {{- if .Values.persistentvolumerequests.reuseLogsVolume }}
+              - name: {{ include "rest.fullname" . }}-logs
+                mountPath: {{ .Values.persistentvolumerequests.path }}
+                {{- if .Values.persistentvolumerequests.subPath }}
+                subPath: {{ .Values.persistentvolumerequests.subPath }}
+                {{- end }}
+              {{- else }}
               - name: {{ include "rest.fullname" . }}-requests
                 mountPath: {{ .Values.persistentvolumerequests.path }}
+              {{- end }}
               {{- if .Values.cvmfs.enabled }}
               {{- range .Values.cvmfs.repositories }}
               - name: cvmfs-{{ .name }}
@@ -201,9 +211,11 @@ spec:
         - name: {{ include "rest.fullname" . }}-certs
           secret:
               secretName: {{ .Values.global.secret }}-idds-certs
+        {{- if not .Values.persistentvolumerequests.reuseLogsVolume }}
         - name: {{ include "rest.fullname" . }}-requests
           persistentVolumeClaim:
               claimName: {{ include "rest.fullname" . }}-requests
+        {{- end }}
         {{- if .Values.cvmfs.enabled }}
         {{- range .Values.cvmfs.repositories }}
         - name: cvmfs-{{ .name }}
