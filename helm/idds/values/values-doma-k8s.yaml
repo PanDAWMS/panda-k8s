@@ -8,6 +8,10 @@ rest:
     tag: "2.6.13"
   iddsServer: panda-idds-doma.cern.ch
 
+  persistentvolume:
+    create: false
+    sharedPvcName: panda-shared-logs
+    subPath: idds
   resources:
     limits:
       cpu: 2000m
