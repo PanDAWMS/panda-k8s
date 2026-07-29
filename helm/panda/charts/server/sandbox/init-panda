@@ -13,6 +13,16 @@ else
     ln -fs /opt/panda/config/hostkey.pem /etc/grid-security/hostkey.pem
 fi
 
+# fall back to self-referencing the host certificate as its own chain when no
+# chain.pem is mounted, so httpd does not fail to start on a dangling
+# /etc/grid-security/chain.pem symlink (baked in by the Dockerfile to point at
+# /opt/panda/etc/cert/chain.pem) whenever the certs secret only provides a host
+# certificate, e.g. via the self-signed fallback above.
+if [ ! -f /opt/panda/etc/cert/chain.pem ]; then
+    unlink /etc/grid-security/chain.pem
+    ln -fs /etc/grid-security/hostcert.pem /etc/grid-security/chain.pem
+fi
+
 # copy idds conf
 mkdir -p /home/atlpan/.idds
 cp /data/panda/idds.cfg /home/atlpan/.idds/idds_local.cfg
