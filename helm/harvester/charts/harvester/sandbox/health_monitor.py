@@ -99,11 +99,15 @@ def condor_q_availability():
     return process_avail
 
 
-def shared_volume_usage_check(path="/var/log/panda", warn_threshold_pct=80):
-    # /var/log/panda is the panda-shared-logs CephFS volume, shared across
-    # panda-server, jedi, bigmon, panda-ui, and idds-rest - a bug in any one
-    # of them filling it up affects all the others too, so it's worth an
-    # early warning here rather than only discovering it during an incident.
+def shared_volume_usage_check(path="/var/log/condor_logs", warn_threshold_pct=80):
+    # /var/log/condor_logs is harvester's mount of the panda-shared-logs
+    # CephFS volume, shared across panda-server, jedi, bigmon, panda-ui, and
+    # idds-rest - a bug in any one of them filling it up affects all the
+    # others too, so it's worth an early warning here rather than only
+    # discovering it during an incident. Note: /var/log/panda is NOT this
+    # volume on every cluster - on testbed it's harvester's own separate
+    # dedicated 50Gi volume, not the 200Gi shared one, so don't switch back
+    # to checking that path.
     try:
         usage = shutil.disk_usage(path)
         used_pct = 100 * usage.used / usage.total
