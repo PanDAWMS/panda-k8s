@@ -6,6 +6,7 @@ check harvester health
 
 import os
 import re
+import shutil
 import subprocess
 
 
@@ -98,6 +99,21 @@ def condor_q_availability():
     return process_avail
 
 
+def shared_volume_usage_check(path="/var/log/panda", warn_threshold_pct=80):
+    # /var/log/panda is the panda-shared-logs CephFS volume, shared across
+    # panda-server, jedi, bigmon, panda-ui, and idds-rest - a bug in any one
+    # of them filling it up affects all the others too, so it's worth an
+    # early warning here rather than only discovering it during an incident.
+    try:
+        usage = shutil.disk_usage(path)
+        used_pct = 100 * usage.used / usage.total
+        print(f"{path} usage: {used_pct:.0f}% ({usage.used // (1024 ** 3)}G / {usage.total // (1024 ** 3)}G)")
+        if used_pct >= warn_threshold_pct:
+            print(f"WARNING: {path} usage is {used_pct:.0f}%, at or above the {warn_threshold_pct}% warning threshold")
+    except Exception as ex:
+        print(f"failed to check {path} disk usage: {ex}")
+
+
 def main():
     uwsgi_avail, condor_avail, condor_q_avail = 0, 0, 0
     try:
@@ -106,6 +122,8 @@ def main():
         condor_q_avail = condor_q_availability()
     except Exception as ex:
         print(f"failed to check availability: {ex}")
+
+    shared_volume_usage_check()
 
     print(f"uwsgi_avail: {uwsgi_avail}, condor_avail: {condor_avail}, condor_q_avail: {condor_q_avail}")
 
