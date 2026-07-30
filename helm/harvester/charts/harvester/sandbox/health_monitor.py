@@ -99,7 +99,26 @@ def condor_q_availability():
     return process_avail
 
 
-def shared_volume_usage_check(path="/var/log/condor_logs", warn_threshold_pct=80):
+def send_mail(subject, body, recipient, sender="atlas-adc-panda-no-reply@cern.ch"):
+    try:
+        subprocess.run(
+            # explicit -r sender is required: cernmx.cern.ch rejects mail from
+            # an arbitrary local/hostname-based From address by policy, so the
+            # default (unset) sender bounces - use the same pre-authorized
+            # address panda-server's own MailUtils.py already sends from.
+            ["mail", "-r", sender, "-s", subject, recipient],
+            input=body, text=True, timeout=30, check=True,
+        )
+    except Exception as ex:
+        # mail isn't installed in every harvester image yet (HSF/harvester#312) -
+        # don't let a missing/broken mail command take down the rest of the
+        # health check, just note it and move on.
+        print(f"failed to send mail ({subject!r}): {ex}")
+
+
+def shared_volume_usage_check(path="/var/log/condor_logs", warn_threshold_pct=90,
+                               alert_recipient="atlas-adc-harvester-central-support@cern.ch",
+                               alert_marker="/var/log/panda/.shared_volume_alert_sent"):
     # /var/log/condor_logs is harvester's mount of the panda-shared-logs
     # CephFS volume, shared across panda-server, jedi, bigmon, panda-ui, and
     # idds-rest - a bug in any one of them filling it up affects all the
@@ -112,8 +131,24 @@ def shared_volume_usage_check(path="/var/log/condor_logs", warn_threshold_pct=80
         usage = shutil.disk_usage(path)
         used_pct = 100 * usage.used / usage.total
         print(f"{path} usage: {used_pct:.0f}% ({usage.used // (1024 ** 3)}G / {usage.total // (1024 ** 3)}G)")
+
+        hostname = os.uname().nodename
         if used_pct >= warn_threshold_pct:
-            print(f"WARNING: {path} usage is {used_pct:.0f}%, at or above the {warn_threshold_pct}% warning threshold")
+            message = f"WARNING: {path} usage is {used_pct:.0f}%, at or above the {warn_threshold_pct}% warning threshold"
+            print(message)
+            # only alert once per breach, not every 10-minute cron cycle -
+            # a marker file tracks whether we've already alerted this time
+            if not os.path.exists(alert_marker):
+                send_mail(f"[SHARED_LOGS] {path} at {used_pct:.0f}% on {hostname}", message, alert_recipient)
+                with open(alert_marker, "w") as f:
+                    f.write(message)
+        elif os.path.exists(alert_marker):
+            # usage dropped back below threshold - send a recovery notice and
+            # clear the marker so a future breach alerts again
+            message = f"RECOVERED: {path} usage is back down to {used_pct:.0f}%, below the {warn_threshold_pct}% warning threshold"
+            print(message)
+            send_mail(f"[SHARED_LOGS] RECOVERED: {path} at {used_pct:.0f}% on {hostname}", message, alert_recipient)
+            os.remove(alert_marker)
     except Exception as ex:
         print(f"failed to check {path} disk usage: {ex}")
 
