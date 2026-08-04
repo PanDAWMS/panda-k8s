@@ -5,7 +5,7 @@
 rest:
   replicaCount: 1
   image:
-    tag: "2.6.13"
+    tag: "2.6.14"
   iddsServer: panda-idds-tb.cern.ch
   resources:
     requests:
