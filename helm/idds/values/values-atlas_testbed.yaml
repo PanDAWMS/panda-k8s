@@ -28,6 +28,11 @@ rest:
   persistentvolumerequests:
     reuseLogsVolume: true
     subPath: idds-requests
+  # SYS_PTRACE lets py-spy attach to the running process for memory profiling
+  securityContext:
+    capabilities:
+      add:
+      - SYS_PTRACE
   serverConf:
     minWorkers: "4"
     maxWorkers: "8"
