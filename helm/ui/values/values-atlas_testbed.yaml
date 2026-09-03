@@ -9,7 +9,7 @@ global:
 
 backend:
   image:
-    tag: "latest"
+    tag: "next"
   tolerations:
     - key: "node.kubernetes.io/not-ready"
       operator: "Exists"
@@ -35,7 +35,7 @@ backend:
 
 frontend:
   image:
-    tag: "latest"
+    tag: "next"
   tolerations:
     - key: "node.kubernetes.io/not-ready"
       operator: "Exists"
