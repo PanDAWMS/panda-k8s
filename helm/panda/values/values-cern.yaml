@@ -4,7 +4,7 @@
 
 server:
   image:
-    tag: "1.0.2"
+    tag: "1.0.4"
   tolerations:
     - key: "node.kubernetes.io/not-ready"
       operator: "Exists"
@@ -74,7 +74,7 @@ server:
 
 jedi:
   image:
-    tag: "1.0.2"
+    tag: "1.0.4"
   tolerations:
     - key: "node.kubernetes.io/not-ready"
       operator: "Exists"
