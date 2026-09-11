@@ -28,7 +28,8 @@ spec:
         {{- else }}
         - {{ printf "%s.%s" $fullName .domain | quote }}
         {{- end }}
-      secretName: {{ $globalSecret }}-ui-tls-certs
+      #secretName: {{ $globalSecret }}-ui-tls-certs
+      secretName: {{ default (printf "%s-ui-tls-certs" $globalSecret) .secretName }}
     {{- end }}
   {{- end }}
   rules:
