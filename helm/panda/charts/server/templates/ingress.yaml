@@ -28,7 +28,8 @@ spec:
         {{- end }}
         {{- end }}
       # secretName: {{ .secretName }}
-      secretName: {{ $globalSecret }}-panda-tls-certs
+      # secretName: {{ $globalSecret }}-panda-tls-certs
+      secretName: {{ default (printf "%s-panda-tls-certs" $globalSecret) .secretName }}
     {{- end }}
   {{- end }}
   rules:

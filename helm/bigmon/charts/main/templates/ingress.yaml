@@ -28,7 +28,8 @@ spec:
         {{- end }}
         {{- end }}
       # secretName: {{ .secretName }}
-      secretName: {{ $globalSecret }}-bigmon-tls-certs
+      # secretName: {{ $globalSecret }}-bigmon-tls-certs
+      secretName: {{ default (printf "%s-bigmon-tls-certs" $globalSecret) .secretName }}
     {{- end }}
   {{- end }}
   rules:
