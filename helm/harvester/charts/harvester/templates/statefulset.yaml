@@ -46,14 +46,14 @@ metadata:
   labels:
       {{- include "harvester.labels-wdirs" . | nindent 4 }}
 spec:
-  storageClassName: {{ .Values.persistentvolume.class }}
+  storageClassName: {{ .Values.persistentvolumewdir.class }}
   capacity:
     storage: {{ .Values.persistentvolumewdir.size }}
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   hostPath:
-    path: {{ .Values.persistentvolume.path }}
+    path: {{ .Values.persistentvolumewdir.path }}
 ---
 {{- end }}
 {{- if not .Values.persistentvolumewdir.existingClaim }}
@@ -65,13 +65,13 @@ metadata:
   labels:
     {{- include "harvester.labels-wdirs" . | nindent 4 }}
 spec:
-  storageClassName: {{ .Values.persistentvolume.class }}
+  storageClassName: {{ .Values.persistentvolumewdir.class }}
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: {{ .Values.persistentvolumewdir.size }}
-  {{- if .Values.persistentvolume.selector }}
+  {{- if .Values.persistentvolumewdir.selector }}
   selector:
     matchLabels:
       {{- include "harvester.selectorLabels-wdirs" . | nindent 6 }}

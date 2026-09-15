@@ -115,6 +115,16 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      initContainers:
+        - name: mariadb-create-directory-structure
+          image: busybox
+          securityContext:
+            runAsUser: 0
+          command:
+            ["sh", "-c", "echo Running as $(id) && mkdir -p /bitnami/mariadb/data && chown -R 1001:1001 /bitnami"]
+          volumeMounts:
+            - name: {{ include "mariadb.fullname" . }}-data
+              mountPath: /bitnami
       volumes:
         - name: {{ include "mariadb.fullname" . }}-data
           persistentVolumeClaim:
