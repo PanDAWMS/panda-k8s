@@ -34,6 +34,19 @@ cat <<EOT >> ${tmpExe}
 /opt/panda/usr/bin/panda_server-schedconfig_json
 /opt/panda/usr/bin/panda_server-configurator
 EOT
+
+if [[ ! -z "${EXPERIMENT}" ]]; then
+    echo "init experiment ${EXPERIMENT} - CA hook"
+    CurrentDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    ca_hook_script=${CurrentDir}/${EXPERIMENT}.ca-hook
+    if [[ -f ${ca_hook_script} ]]; then
+        echo "Appending ${ca_hook_script} to ${tmpExe}"
+        cat ${ca_hook_script} >> ${tmpExe}
+    else
+        echo "No ${ca_hook_script} found, skipping"
+    fi
+fi
+
 chmod +x ${tmpExe}
 
 if [[ -z "${PANDA_NO_ROOT}" ]]; then
@@ -41,4 +54,17 @@ if [[ -z "${PANDA_NO_ROOT}" ]]; then
   runuser -u atlpan -g zp -- ${tmpExe}
 else
   ${tmpExe}
+fi
+
+# allow experiments to specify additional commands to run after the init-panda script, e.g. to define VOMS files
+if [[ ! -z "${EXPERIMENT}" ]]; then
+    echo "init experiment ${EXPERIMENT} - post-init hook"
+    CurrentDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    init_hook_script=${CurrentDir}/${EXPERIMENT}.post-init-hook
+    if [[ -f ${init_hook_script} ]]; then
+        echo "Appending ${init_hook_script} to ${tmpExe}"
+        cat ${init_hook_script} >> ${tmpExe}
+    else
+        echo "No ${init_hook_script} found, skipping"
+    fi
 fi

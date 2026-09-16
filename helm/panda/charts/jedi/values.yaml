@@ -15,6 +15,9 @@ autoStart: true
 # run panda with non-root account
 noRoot: false
 
+# experiment to select the appropriate ca-hook file, if present
+experiment: ""
+
 persistentvolume:
   create: true
   class: manual

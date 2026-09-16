@@ -14,6 +14,9 @@ jedi:
   # enable JEDI
   enabled: true
 
+  # experiment to select ca-hook file, if present, used by the init-jedi and run-jedi-crons scripts
+  experiment: ""
+
   # container image and tag
   image:
     tag: "1.0.0"
@@ -34,6 +37,9 @@ jedi:
 server:
   # enable the PanDA server
   enabled: true
+
+  # experiment to select ca-hook file, if present, used by the init-panda and run-panda-crons scripts
+  experiment: ""
 
   # container image and tag
   image:
