@@ -4,6 +4,15 @@
 
 global:
   secret: "panda-secrets"
+  # externally reachable URLs templated into configuration files that need them
+  # (must be overridden per-environment, e.g. in values/values-ds.yaml)
+  endpoints:
+    pandaHost: "" # e.g. panda-server-blabla.cern.ch, useful for e.g. harvester IamTokenCredManager target_list
+    pandaUrl: "" # e.g. https://panda-server-blabla.cern.ch
+    bigmonUrl: "" # e.g. https://bigmon-blabla.cern.ch
+    rucioUrl: "" # e.g. https://rucio-blabla.cern.ch:443
+    rucioAuthUrl: "" # e.g. https://rucio-blabla-auth.cern.ch:443
+    cricUrl: "" # e.g. https://datalake-cric.cern.ch
 
 harvester:
   # enable harvester
@@ -37,6 +46,10 @@ harvester:
       cpu: 4000m
       memory: 16Gi
       ephemeral-storage: "30Gi"
+
+  pilot:
+    url: "" # e.g. https://cern.ch/atlas-panda-pilot/pilot3-3.14.0.tar.gz
+    caPath: "" # e.g. /etc/grid-security/certificates or a CVMFS folder, if pilot needs to verify HTTPS connections
 
 mariadb:
   # enable database

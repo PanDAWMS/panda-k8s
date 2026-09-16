@@ -7,7 +7,7 @@ data:
   panda_harvester_configmap.json: |-
 {{- $expCfg := printf "configmap/%s.panda_harvester_configmap.json" (.Values.experiment | default "") }}
 {{- if and .Values.experiment (.Files.Get $expCfg) }}
-{{ .Files.Get $expCfg | indent 4 }}
+{{ tpl (.Files.Get $expCfg) . | indent 4 }}
 {{- else }}
 {{ .Files.Get "panda_harvester_configmap.json" | indent 4}}
 {{- end }}
@@ -18,7 +18,10 @@ kind: ConfigMap
 metadata:
   name: {{ include "harvester.fullname" . }}-queueconfig
 data:
-{{- (.Files.Glob "queueconfig/*").AsConfig | nindent 2 }}
+  {{- range $path, $_ := .Files.Glob "queueconfig/*" }}
+  {{ base $path }}: |-
+{{ tpl ($.Files.Get $path) $ | indent 4 }}
+  {{- end }}
 
 ---
 # env variables
@@ -60,6 +63,9 @@ metadata:
 binaryData:
   {{- range $path, $_ := .Files.Glob "sandbox/*" }}
   {{ base $path }}: |-
-    {{ $.Files.Get $path | b64enc }}
+    {{- if hasSuffix ".tar" $path }}
+      {{ $.Files.Get $path | b64enc }}
+    {{- else }}
+      {{ tpl ($.Files.Get $path) $ | b64enc }}
+    {{- end }}
   {{- end }}
-
