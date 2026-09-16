@@ -20,11 +20,7 @@ metadata:
 data:
   {{- range $path, $_ := .Files.Glob "queueconfig/*" }}
   {{ base $path }}: |-
-    {{- if hasPrefix "queueconfig/darkside." $path }}
 {{ tpl ($.Files.Get $path) $ | indent 4 }}
-    {{- else }}
-{{ $.Files.Get $path | indent 4 }}
-    {{- end }}
   {{- end }}
 
 ---
