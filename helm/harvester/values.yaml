@@ -7,6 +7,7 @@ global:
   # externally reachable URLs templated into configuration files that need them
   # (must be overridden per-environment, e.g. in values/values-ds.yaml)
   endpoints:
+    pandaHost: "" # e.g. panda-server-blabla.cern.ch, useful for e.g. harvester IamTokenCredManager target_list
     pandaUrl: "" # e.g. https://panda-server-blabla.cern.ch
     bigmonUrl: "" # e.g. https://bigmon-blabla.cern.ch
     rucioUrl: "" # e.g. https://rucio-blabla.cern.ch:443
