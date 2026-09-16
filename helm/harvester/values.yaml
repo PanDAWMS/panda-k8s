@@ -13,9 +13,6 @@ global:
     rucioUrl: "" # e.g. https://rucio-blabla.cern.ch:443
     rucioAuthUrl: "" # e.g. https://rucio-blabla-auth.cern.ch:443
     cricUrl: "" # e.g. https://datalake-cric.cern.ch
-  pilot:
-    url: "" # e.g. https://cern.ch/atlas-panda-pilot/pilot3-3.14.0.tar.gz
-    caPath: "" # e.g. /etc/grid-security/certificates or a CVMFS folder, if pilot needs to verify HTTPS connections
 
 harvester:
   # enable harvester
@@ -52,6 +49,7 @@ harvester:
 
   pilot:
     url: "" # e.g. https://cern.ch/atlas-panda-pilot/pilot3-3.14.0.tar.gz
+    caPath: "" # e.g. /etc/grid-security/certificates or a CVMFS folder, if pilot needs to verify HTTPS connections
 
 mariadb:
   # enable database
