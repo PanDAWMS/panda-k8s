@@ -19,6 +19,7 @@ if [[ ! -z "${EXPERIMENT}" ]]; then
     if [[ -f ${ca_hook_script} ]]; then
         echo "Appending ${ca_hook_script} to ${tmpExe}"
         cat ${ca_hook_script} >> ${tmpExe}
+        echo >> ${tmpExe} # in case the hook file doesn't end in a newline
     else
         echo "No ${ca_hook_script} found, skipping"
     fi
