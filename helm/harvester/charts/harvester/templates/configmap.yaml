@@ -67,9 +67,9 @@ metadata:
 binaryData:
   {{- range $path, $_ := .Files.Glob "sandbox/*" }}
   {{ base $path }}: |-
-    {{- if hasPrefix "sandbox/darkside." $path }}
-    {{ tpl ($.Files.Get $path) $ | b64enc }}
+    {{- if hasSuffix ".tar" $path }}
+      {{ $.Files.Get $path | b64enc }}
     {{- else }}
-    {{ $.Files.Get $path | b64enc }}
+      {{ tpl ($.Files.Get $path) $ | b64enc }}
     {{- end }}
   {{- end }}
