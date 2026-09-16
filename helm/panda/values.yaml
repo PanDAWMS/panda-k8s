@@ -7,8 +7,8 @@ global:
   # externally-reachable hostnames, templated into config files that need them
   # (must be overridden per-environment, e.g. in values/values-ds.yaml)
   endpoints:
-    pandaHost: ""
-    bigmonHost: ""
+    pandaHost: "" # e.g. panda-server-blabla.cern.ch
+    pandaUrl: "" # e.g. https://panda-server-blabla.cern.ch
 
 jedi:
   # enable JEDI
