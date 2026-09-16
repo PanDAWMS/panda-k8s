@@ -16,9 +16,10 @@ if [[ ! -z "${EXPERIMENT}" ]]; then
     else
         echo "No ${ca_hook_script} found, skipping"
     fi
-done &
+fi
 
 cat <<EOT >> ${tmpExe}
+done &
 while true; do /opt/cacheschedconfig/bin/cacheSC.sh >> /var/log/panda/cacheSC.out 2>&1; sleep 60; done &
 while true; do /usr/sbin/logrotate /data/panda/logrotate-panda >> /var/log/panda/logrotate.log 2>&1; sleep 86400; done &
 EOT
