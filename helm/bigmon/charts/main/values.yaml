@@ -12,6 +12,11 @@ image:
 # start the service when pod gets started
 autoStart: true
 
+# Keep this aligned with the ingress read timeout. mod_wsgi uses the Apache
+# timeout as its socket-timeout fallback while waiting for a daemon response.
+apache:
+  timeout: 60
+
 persistentvolume:
   create: false
   path: "/mnt/bigmon-main-logs"
@@ -19,6 +24,9 @@ persistentvolume:
   selector: true
   sharedPvcName: ""
   subPath: ""
+  # Use a directory named after the pod below subPath. This is required when
+  # multiple replicas share the same PVC and write rotating log files.
+  perPodSubPath: false
 
 # hostname for external access
 hostName: "FIXME"
@@ -119,6 +127,10 @@ autoscaling:
   maxReplicas: 100
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
+
+podDisruptionBudget:
+  enabled: false
+  minAvailable: 1
 
 nodeSelector: {}
 
