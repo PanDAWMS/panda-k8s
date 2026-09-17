@@ -1,0 +1,55 @@
+# mcp config json (consumed by pandaserver.config.config_utils.load_config_map,
+# which always reads a file literally named panda_server_config.json)
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mcp.fullname" . }}-configjson
+data:
+  panda_server_config.json: |-
+{{ .Files.Get .Values.configFile | indent 4}}
+
+---
+# list of API endpoints exposed as MCP tools
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mcp.fullname" . }}-endpoints
+data:
+  panda_mcp_endpoints.json: |-
+{{ .Files.Get .Values.endpointsFile | indent 4}}
+
+---
+# mcp env variables
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mcp.fullname" . }}-env
+data:
+  # PANDA_SERVER_CONF_PORT_MCP is read by pandaserver.pandamcp.mcp_main to pick the listen port
+  PANDA_SERVER_CONF_PORT_MCP: "{{ .Values.port }}"
+  # must be a concrete path: mcp_main.py / fastmcp choke if HOME resolves to "~"
+  HOME: "/home/atlpan"
+  {{- if .Values.httpProxy }}
+  http_proxy: "{{ .Values.httpProxy }}"
+  {{- if .Values.noProxy }}
+  no_proxy: "{{ .Values.noProxy }}"
+  {{- else }}
+  no_proxy: "localhost,{{ include "mcp.fullname" . }}"
+  {{- end }}
+  {{- if .Values.httpsProxy }}
+  https_proxy: "{{ .Values.httpProxy }}"
+  {{- end }}
+  {{- else if .Values.httpsProxy }}
+  https_proxy: "{{ .Values.httpsProxy }}"
+  {{- if .Values.noProxy }}
+  no_proxy: "{{ .Values.noProxy }}"
+  {{- else }}
+  no_proxy: "localhost,{{ include "mcp.fullname" . }}"
+  {{- end }}
+  {{- end }}
+  # pandaserver.api.v1.http_client reads this to know which PanDA server API to call;
+  # must be the externally-reachable URL since the server's cert/OIDC audience are for that hostname
+  PANDA_API_URL_SSL: "{{ .Values.global.endpoints.pandaUrl }}/api/v1"
+  {{- range $key, $value := .Values.extraEnv }}
+  {{ $key }}: "{{ $value }}"
+  {{- end }}

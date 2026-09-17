@@ -1,0 +1,8 @@
+{
+    "mcp": {
+        "transport": "streamable-http",
+        "endpoint_list_file": "/opt/panda/etc/panda/panda_mcp_endpoints.json",
+        "ssl_keyfile": "/etc/grid-security/hostkey.pem",
+        "ssl_certfile": "/etc/grid-security/hostcert.pem"
+    }
+}
