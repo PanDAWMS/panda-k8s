@@ -19,9 +19,6 @@ httpsProxy: ""
 # run with non-root PID
 noRoot: false
 
-# experiment to select hook files, if present, used by the init-panda and run-panda-crons scripts
-experiment: ""
-
 # shared cache space
 sharedCache: false
 
