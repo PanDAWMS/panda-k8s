@@ -1,0 +1,99 @@
+# Default values for mcp.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: ghcr.io/pandawms/panda-server
+  pullPolicy: Always
+  tag: "latest"
+
+# port the MCP (FastMCP/uvicorn) process listens on; also exported as
+# PANDA_SERVER_CONF_PORT_MCP so pandaserver.pandamcp.mcp_main picks it up
+port: 8443
+
+# config JSON bundled with this chart, rendered into the "mcp" section of
+# panda_server_config.json (pandaserver.config.config_utils hardcodes that filename)
+configFile: panda_mcp_config.json
+
+# list of PanDA REST API endpoints exposed as MCP tools
+endpointsFile: panda_mcp_endpoints.json
+
+# http/s proxy if the container needs it to reach external services
+httpProxy: ""
+httpsProxy: ""
+
+# extra env vars for the mcp container
+extraEnv: {}
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: false
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  type: ClusterIP
+  port: 8443
+
+ingress:
+  enabled: false
+
+  ### configuration for CERN k8s
+  className: ""
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    spec.ingressClassName: nginx
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+
+  hosts:
+    - domain: cern.ch
+      hostOverride: ""
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - secretName: ""
+      hosts:
+        - domain: cern.ch
+          hostOverride: ""
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 500m
+  #   memory: 1Gi
+  # requests:
+  #   cpu: 500m
+  #   memory: 1Gi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mcp.fullname" . }}
+  labels:
+    {{- include "mcp.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "mcp.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "mcp.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "mcp.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/opt/panda/bin/python", "-u", "-m", "pandaserver.pandamcp.mcp_main"]
+          ports:
+            - name: mcp
+              containerPort: {{ .Values.port }}
+              protocol: TCP
+          readinessProbe:
+            tcpSocket:
+              port: mcp
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: mcp
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            failureThreshold: 3
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: {{ include "mcp.fullname" . }}-configjson
+              mountPath: /opt/panda/etc/config_json
+            - name: {{ include "mcp.fullname" . }}-endpoints
+              mountPath: /opt/panda/etc/panda/panda_mcp_endpoints.json
+              subPath: panda_mcp_endpoints.json
+            - name: {{ include "mcp.fullname" . }}-certs
+              mountPath: /opt/panda/etc/cert
+          envFrom:
+            - configMapRef:
+                name: {{ include "mcp.fullname" . }}-env
+            - secretRef:
+                name: {{ .Values.global.secret }}-panda-envs
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: {{ include "mcp.fullname" . }}-configjson
+          configMap:
+            name: {{ include "mcp.fullname" . }}-configjson
+        - name: {{ include "mcp.fullname" . }}-endpoints
+          configMap:
+            name: {{ include "mcp.fullname" . }}-endpoints
+        - name: {{ include "mcp.fullname" . }}-certs
+          {{- if .Values.global.existingTlsSecret }}
+          secret:
+              secretName: {{ .Values.global.existingTlsSecret }}
+              items:
+                # Map the TLS keys to the filenames panda expects
+                - key: tls.crt
+                  path: hostcert.pem
+                - key: tls.key
+                  path: hostkey.pem
+                - key: tls.crt
+                  path: chain.pem
+          {{- else }}
+          secret:
+              secretName: {{ .Values.global.secret }}-panda-certs
+          {{- end }}

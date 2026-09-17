@@ -115,6 +115,38 @@ postgres:
       memory: 16Gi
 
 
+mcp:
+  # enable the PanDA MCP server
+  enabled: false
+
+  # container image and tag
+  image:
+    tag: "1.0.0"
+    # tag: "master"
+
+  # use Ingress class to expose the service
+  ingress:
+    enabled: false
+    hosts:
+      - domain: "FIXME"
+        hostOverride: ""
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: "FIXME"
+        hosts:
+          - domain: "FIXME"
+            hostOverride: "FIXME"
+
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 500m
+      memory: 1Gi
+
 nodeRecovery:
   enabled: false
   image: "bitnami/kubectl:latest"

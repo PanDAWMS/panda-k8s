@@ -151,6 +151,31 @@ jedi:
       - name: atlas-condb
         repository: atlas-condb.cern.ch
 
+mcp:
+  enabled: true
+  image:
+    tag: "latest"
+  tolerations:
+    - key: "node.kubernetes.io/not-ready"
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 30
+    - key: "node.kubernetes.io/unreachable"
+      operator: "Exists"
+      effect: "NoExecute"
+      tolerationSeconds: 30
+  resources:
+    requests:
+      cpu: "200m"
+      memory: 512Mi
+    limits:
+      cpu: "500m"
+      memory: 1Gi
+  # no hostname registered yet for the mcp endpoint; flip this on and add
+  # hosts/tls (ssl-passthrough, like server's) once one exists
+  ingress:
+    enabled: false
+
 nodeRecovery:
   enabled: true
 
