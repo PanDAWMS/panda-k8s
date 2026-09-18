@@ -12,6 +12,7 @@ harvester:
     selector: false
     size: 50Gi
   persistentvolumewdir:
+    class: manila-meyrin-cephfs
     selector: false
     size: 50Gi
   persistentvolumecondor:
