@@ -24,6 +24,17 @@ permissions:
   contents: read
   packages: write
 
+# Several PRs merging to main in quick succession each trigger their own run,
+# and the publish job pushes every chart every time regardless of whether it
+# actually changed - two overlapping runs racing to push the same immutable
+# OCI tag (e.g. an unchanged chart's version) has caused "Tag ... not found"
+# errors on the destination registry. Serialize by ref so overlapping runs on
+# the same branch queue instead of racing; still let separate branches/PRs
+# run in parallel.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build:
     name: Lint & package charts
