@@ -63,6 +63,8 @@ harvester:
       - name: atlas-condb
         repository: atlas-condb.cern.ch
   persistentvolumewdir:
+    class: manila-meyrin-cephfs
+    selector: false
     size: 50Gi
   persistentvolumecondor:
     create: false
