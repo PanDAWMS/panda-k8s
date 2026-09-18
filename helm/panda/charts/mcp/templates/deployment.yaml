@@ -11,10 +11,16 @@ spec:
       {{- include "mcp.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
+        # Bump this (and commit) after changing a value that only takes effect
+        # via env vars sourced from Secrets/ConfigMaps through envFrom -
+        # Kubernetes reads those once at container start and won't restart an
+        # already-running pod when the referenced Secret/ConfigMap content
+        # changes underneath it.
+        panda-k8s.io/config-version: {{ .Values.configVersion | default "1" | quote }}
+        {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       labels:
         {{- include "mcp.selectorLabels" . | nindent 8 }}
     spec:

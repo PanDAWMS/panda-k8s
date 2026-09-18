@@ -12,6 +12,10 @@ image:
 # start the service when pod gets started
 autoStart: true
 
+# bump to force a rollout after changing a Secret/ConfigMap-sourced value -
+# see the comment on the pod template's panda-k8s.io/config-version annotation
+configVersion: "1"
+
 # run panda with non-root account
 noRoot: false
 

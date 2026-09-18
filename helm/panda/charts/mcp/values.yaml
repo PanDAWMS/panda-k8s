@@ -9,6 +9,10 @@ image:
   pullPolicy: Always
   tag: "latest"
 
+# bump to force a rollout after changing a Secret/ConfigMap-sourced value -
+# see the comment on the pod template's panda-k8s.io/config-version annotation
+configVersion: "1"
+
 # port the MCP (FastMCP/uvicorn) process listens on; also exported as
 # PANDA_SERVER_CONF_PORT_MCP so pandaserver.pandamcp.mcp_main picks it up
 port: 8443
