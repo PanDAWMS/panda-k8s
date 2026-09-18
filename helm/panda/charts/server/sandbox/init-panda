@@ -37,6 +37,16 @@ if [[ ! -z "${EXPERIMENT}" ]]; then
     echo "init experiment ${EXPERIMENT}"
     CurrentDir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+    # root hook (executed as root, not appended to tmpExe): for steps that write
+    # to root-owned grid-security trust files
+    root_hook_script=${CurrentDir}/${EXPERIMENT}.root-init-hook
+    if [[ -f ${root_hook_script} ]]; then
+        echo "Executing ${root_hook_script} as root"
+        source ${root_hook_script}
+    else
+        echo "No ${root_hook_script} found, skipping"
+    fi
+
     # CA hook (executed also in run-panda-crons)) 
     ca_hook_script=${CurrentDir}/${EXPERIMENT}.ca-hook
     if [[ -f ${ca_hook_script} ]]; then
