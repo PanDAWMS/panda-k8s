@@ -11,5 +11,6 @@ data:
       "production": true,
       "apiUrl": "{{ if .Values.global.hostOverwrite }}https://{{ .Values.global.hostOverwrite }}/api/v1{{ else }}/api/v1{{ end }}",
       "logLevel": "{{ if .Values.global.logLevel }}{{ .Values.global.logLevel }}{{ else }}WARN{{ end }}",
-      "vo": "{{ if .Values.global.vo }}{{ .Values.global.vo }}{{ else }}TEST{{ end }}"
+      "vo": "{{ if .Values.global.vo }}{{ .Values.global.vo }}{{ else }}TEST{{ end }}",
+      "installedApps": ["{{ if .Values.global.installedApps }}{{ .Values.global.installedApps }}{{ else }}{{ end }}"]
     }

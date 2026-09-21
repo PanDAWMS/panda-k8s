@@ -5,6 +5,7 @@ global:
   hostOverwrite: ""
   vo: ""
   logLevel: ERROR
+  installedApps: all
 
 autoscaling:
   enabled: false
@@ -55,6 +56,8 @@ ingress:
     nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     nginx.ingress.kubernetes.io/auth-tls-pass-certificate-to-upstream: 'true'
     nginx.ingress.kubernetes.io/auth-tls-verify-client: 'optional'
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "86400"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "86400"
 
   hosts:
     - paths:
