@@ -127,7 +127,7 @@ spec:
               - name: {{ include "main.fullname" . }}-logs
                 mountPath: /data/bigmon/logs
                 {{- if .Values.persistentvolume.perPodSubPath }}
-                subPathExpr: "{{ .Values.persistentvolume.subPath }}/$(POD_NAME)"
+                subPathExpr: "{{ if .Values.persistentvolume.subPath }}{{ .Values.persistentvolume.subPath }}/{{ end }}$(POD_NAME)"
                 {{- else if .Values.persistentvolume.subPath }}
                 subPath: {{ .Values.persistentvolume.subPath }}
                 {{- end }}
