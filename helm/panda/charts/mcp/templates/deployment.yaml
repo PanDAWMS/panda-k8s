@@ -88,7 +88,10 @@ spec:
           configMap:
             name: {{ include "mcp.fullname" . }}-endpoints
         - name: {{ include "mcp.fullname" . }}-certs
-          {{- if .Values.global.existingTlsSecret }}
+          {{- if .Values.certSecretName }}
+          secret:
+              secretName: {{ .Values.certSecretName }}
+          {{- else if .Values.global.existingTlsSecret }}
           secret:
               secretName: {{ .Values.global.existingTlsSecret }}
               items:
