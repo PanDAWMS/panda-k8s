@@ -1,4 +1,5 @@
 /var/log/panda/*log {
+    su atlpan zp
     rotate 3
     daily
     compress
