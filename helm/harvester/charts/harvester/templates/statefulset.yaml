@@ -273,9 +273,9 @@ spec:
               {{- if .Values.noRoot }}
               /opt/harvester/etc/rc.d/init.d/run-harvester-services;
               {{- else }}
-              chmod -R 777 /var/log/panda;
-              chmod -R 777 /var/log/harvester_wdirs;
-              chmod -R 777 /var/log/condor_logs;
+              chmod 2775 /var/log/panda;
+              chmod 2775 /var/log/harvester_wdirs;
+              chmod 2775 /var/log/condor_logs;
               ln -s /var/log/condor_logs /var/www/html/;
               if [ -d ${SPECIAL_LOG_MOUNT_POINT} ]; then
                   ln -s ${SPECIAL_LOG_MOUNT_POINT} /var/www/html/condor_logs/;
