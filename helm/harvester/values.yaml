@@ -19,7 +19,8 @@ harvester:
   enabled: true
   # container image and tag
   image:
-    tag: "v0.6.5"
+    tag: "v0.7.6"
+    # tag: "v0.6.5"
     # tag: "v0.6.1"
     # tag: "master"
 
