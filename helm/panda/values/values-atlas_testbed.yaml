@@ -171,6 +171,8 @@ mcp:
     limits:
       cpu: "500m"
       memory: 1Gi
+  # dedicated cert for pandamcp-tb.cern.ch, distinct from server's own
+  certSecretName: panda-secrets-mcp-certs
   ingress:
     enabled: true
     hosts:
