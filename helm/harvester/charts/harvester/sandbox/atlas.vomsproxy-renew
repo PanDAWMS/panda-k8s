@@ -1,0 +1,16 @@
+#!/bin/bash
+
+# Unlike DOMA's EIC proxy or sphenix's, this one isn't something harvester can
+# renew itself with voms-proxy-fake - it's a real RFC proxy derived from the
+# ATLAS Pilot1 robot certificate, copied in at container start by
+# atlas.init-harvester from the harvester_auth secret. If it's close to
+# expiring, that has to be fixed by regenerating and updating the secret
+# externally - this script's only job is to notice and alert, not renew.
+proxy=/data/harvester/run/atlpilo1RFC.plain
+
+#check lifetime of certificate
+voms-proxy-info2 -exists -hours 11 -file $proxy
+
+if [ $? -ne 0 ]; then
+  echo $proxy expires in 11 hours on `hostname`, Please check| mail -S mta=smtp://cernmx.cern.ch:25 -r "atlas-adc-panda-no-reply@cern.ch" -s "[VOMS_PROXY]WARNING : ATLAS grid proxy on the ATLAS TESTBED cluster (NOT production) expires soon on `hostname`" atlas-adc-harvester-central-support@cern.ch
+fi
