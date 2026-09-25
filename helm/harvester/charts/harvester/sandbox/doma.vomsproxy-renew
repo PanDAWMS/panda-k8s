@@ -26,8 +26,8 @@ voms-proxy-fake -rfc -voms eic -out /data/harvester/run/x509up_u25606 -hours 96 
    -uri hcvoms.sdcc.bnl.gov:15001
 
 #check lifetime of certificate
+# no mail alert here on purpose - this EIC proxy is only used by DOMA's own
+# harvester-side job submission to BNL, it's not DOMA's job to notify anyone
+# about it. EIC proxy monitoring belongs on the actual EIC PanDA instance at
+# BNL, not here or on the ATLAS testbed.
 voms-proxy-info2 -exists -hours 11 -file $proxy
-
-if [ $? -ne 0 ]; then
-  echo $proxy expires in 11 hours on `hostname`, Please check| mail -S mta=smtp://cernmx.cern.ch:25 -r "atlas-adc-panda-no-reply@cern.ch" -s "[VOMS_PROXY]WARNING : Grid proxy for Rubin k8s expires soon on `hostname`" atlas-adc-idds-k8s@cern.ch
-fi
