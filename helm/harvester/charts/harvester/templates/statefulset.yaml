@@ -284,6 +284,9 @@ spec:
               chmod 2775 /var/log/panda;
               chmod 2775 /var/log/harvester_wdirs;
               chmod 2775 /var/log/condor_logs;
+              chown atlpan:zp /var/log/panda;
+              chown atlpan:zp /var/log/harvester_wdirs;
+              chown atlpan:zp /var/log/condor_logs;
               ln -s /var/log/condor_logs /var/www/html/;
               if [ -d ${SPECIAL_LOG_MOUNT_POINT} ]; then
                   ln -s ${SPECIAL_LOG_MOUNT_POINT} /var/www/html/condor_logs/;
