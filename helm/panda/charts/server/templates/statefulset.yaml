@@ -76,6 +76,24 @@ spec:
       serviceAccountName: {{ include "server.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{- if .Values.persistentvolume.perPodSubPath }}
+      initContainers:
+        - name: create-log-directory
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh", "-c"]
+          args:
+            - mkdir -p "/mnt/shared-logs/{{ .Values.persistentvolume.subPath }}/${POD_NAME}";
+              chmod 0777 "/mnt/shared-logs/{{ .Values.persistentvolume.subPath }}/${POD_NAME}"
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          volumeMounts:
+            - name: {{ include "server.fullname" . }}-logs
+              mountPath: /mnt/shared-logs
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -128,7 +146,9 @@ spec:
           volumeMounts:
              - name: {{ include "server.fullname" . }}-logs
                mountPath: /var/log/panda
-               {{- if .Values.persistentvolume.subPath }}
+               {{- if .Values.persistentvolume.perPodSubPath }}
+               subPathExpr: "{{ if .Values.persistentvolume.subPath }}{{ .Values.persistentvolume.subPath }}/{{ end }}$(POD_NAME)"
+               {{- else if .Values.persistentvolume.subPath }}
                subPath: {{ .Values.persistentvolume.subPath }}
                {{- end }}
              - name: {{ include "server.fullname" . }}-configjson
@@ -157,6 +177,10 @@ spec:
             - secretRef:
                 name: {{ .Values.global.secret }}-panda-envs
           env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
             - name: PANDA_SERVER_CONF_SERVERNAME
               value: {{ include "server.fullname" . }}
             # set no_proxy since $() is resolved not in envFrom section

@@ -27,6 +27,9 @@ persistentvolume:
   selector: true
   sharedPvcName: ""
   subPath: ""
+  # Use a directory named after the pod below subPath. This is required when
+  # multiple replicas share the same PVC and write rotating log files.
+  perPodSubPath: false
 
 
 server: {}
