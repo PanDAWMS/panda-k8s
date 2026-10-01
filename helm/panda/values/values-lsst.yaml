@@ -48,7 +48,7 @@ server:
           - path: /
             pathType: Prefix
     tls:
-      - secretName: default
+      - secretName: ""
         hosts:
           - domain: slac.stanford.edu
             hostOverride: rubin-panda-server-dev.slac.stanford.edu
@@ -61,7 +61,7 @@ server:
           - path: /
             pathType: Prefix
     tls:
-      - secretName: default
+      - secretName: ""
         hosts:
           - domain: slac.stanford.edu
             hostOverride: rubin-panda-server-big-dev.slac.stanford.edu

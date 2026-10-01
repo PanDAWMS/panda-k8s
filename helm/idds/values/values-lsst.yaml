@@ -50,7 +50,7 @@ rest:
           - path: /
             pathType: Prefix
     tls:
-      - secretName: "default"
+      - secretName: ""
         hosts:
           - domain: slac.stanford.edu
             hostOverride: rubin-panda-idds-dev.slac.stanford.edu

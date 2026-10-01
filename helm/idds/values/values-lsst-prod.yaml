@@ -51,7 +51,7 @@ rest:
           - path: /
             pathType: Prefix
     tls:
-      - secretName: "default"
+      - secretName: ""
         hosts:
           - domain: slac.stanford.edu
             hostOverride: usdf-panda-idds.slac.stanford.edu

@@ -10,7 +10,7 @@ rest:
   image:
     # tag: "2.4.7"
     # tag: "2.4.4"
-    tag: "2.6.10"
+    tag: "2.6.19"
     # tag: "2.2.52"
 
   resources:
