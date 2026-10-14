@@ -1,12 +1,24 @@
 # Placeholder for the future ATLAS production k8s cluster.
 # Copied from values-atlas_testbed.yaml as a starting point; not yet wired to any ArgoCD Application.
 # Before using: review/update hostnames (currently testbed's), resource sizing, and replica counts for production.
+#
+# Phase 1 (current plan): deploy mcp only, pointing at the existing production panda-server
+# (pandaserver.cern.ch) via global.endpoints below. server/jedi are disabled below and keep
+# their testbed-copied config as a starting point for Phase 2, once the production cluster
+# actually hosts its own server/jedi - flip both back to enabled: true at that point and
+# review their config (hostnames, configFile, sizing) before doing so.
 
 # Default values for panda.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+global:
+  endpoints:
+    pandaHost: "pandaserver.cern.ch"
+    pandaUrl: "https://pandaserver.cern.ch:25443"
+
 server:
+  enabled: false # Phase 1: mcp only, see note above
   image:
     tag: "latest"
   configFile: panda_server_config.atlas_testbed.json
@@ -99,6 +111,7 @@ server:
             hostOverride: pandaserver-tb.cern.ch
 
 jedi:
+  enabled: false # Phase 1: mcp only, see note at top of file
   image:
     tag: "latest"
   configFile: panda_jedi_config.atlas_testbed.json
@@ -175,13 +188,13 @@ mcp:
     limits:
       cpu: "500m"
       memory: 1Gi
-  # dedicated cert for pandamcp-tb.cern.ch, distinct from server's own
+  # dedicated cert for pandamcp.cern.ch, distinct from server's own
   certSecretName: panda-secrets-mcp-certs
   ingress:
     enabled: true
     hosts:
       - domain: cern.ch
-        hostOverride: pandamcp-tb.cern.ch
+        hostOverride: pandamcp.cern.ch
         paths:
           - path: /
             pathType: Prefix
@@ -189,7 +202,7 @@ mcp:
       - secretName: default
         hosts:
           - domain: cern.ch
-            hostOverride: pandamcp-tb.cern.ch
+            hostOverride: pandamcp.cern.ch
 
 nodeRecovery:
   enabled: true
