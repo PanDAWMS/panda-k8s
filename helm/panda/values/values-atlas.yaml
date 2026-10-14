@@ -81,6 +81,10 @@ server:
     limits:
       cpu: "8"
       memory: 28Gi
+  autoscaling:
+    enabled: true
+    minReplicas: 7
+    maxReplicas: 10
   persistentvolume:
     create: false
     sharedPvcName: panda-shared-logs
@@ -135,7 +139,7 @@ jedi:
               - key: node.kubernetes.io/instance-type
                 operator: In
                 values:
-                  - m4.xlarge
+                  - m4.large
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
         - weight: 100
@@ -150,15 +154,21 @@ jedi:
               matchLabels:
                 app.kubernetes.io/name: harvester
             topologyKey: kubernetes.io/hostname
-  # sized for a dedicated m4.xlarge node (8 vCPU / 29.3GB), leaving headroom for
-  # kubelet system-reserved memory and CNI/CSI DaemonSets sharing the node
+  # sized for a dedicated m4.large node (4 vCPU / 14.65GB), leaving headroom for
+  # kubelet system-reserved memory and CNI/CSI DaemonSets sharing the node.
+  # Fernando: no observed difference between m4.xlarge and m4.large for jedi in
+  # production, so going with the smaller/cheaper flavor here (unlike server).
   resources:
     requests:
-      cpu: "6"
-      memory: 24Gi
+      cpu: "3"
+      memory: 12Gi
     limits:
-      cpu: "8"
-      memory: 28Gi
+      cpu: "4"
+      memory: 14Gi
+  autoscaling:
+    enabled: true
+    minReplicas: 7
+    maxReplicas: 10
   persistentvolume:
     create: false
     sharedPvcName: panda-shared-logs
