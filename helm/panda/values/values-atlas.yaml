@@ -40,7 +40,7 @@ server:
               - key: node.kubernetes.io/instance-type
                 operator: In
                 values:
-                  - m4.large
+                  - m4.xlarge
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
         - weight: 100
@@ -72,13 +72,15 @@ server:
     PANDA_SERVER_CONF_MAX_WORKERS: "100"
     PANDA_SERVER_CONF_NUM_WSGI: "8"
     PANDA_SERVER_CONF_NUM_WSGI_THREAD: "2"
+  # sized for a dedicated m4.xlarge node (8 vCPU / 29.3GB), leaving headroom for
+  # kubelet system-reserved memory and CNI/CSI DaemonSets sharing the node
   resources:
     requests:
-      cpu: "2"
-      memory: 4Gi
+      cpu: "6"
+      memory: 24Gi
     limits:
-      cpu: "4"
-      memory: 10Gi
+      cpu: "8"
+      memory: 28Gi
   persistentvolume:
     create: false
     sharedPvcName: panda-shared-logs
@@ -133,7 +135,7 @@ jedi:
               - key: node.kubernetes.io/instance-type
                 operator: In
                 values:
-                  - m4.large
+                  - m4.xlarge
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
         - weight: 100
@@ -148,13 +150,15 @@ jedi:
               matchLabels:
                 app.kubernetes.io/name: harvester
             topologyKey: kubernetes.io/hostname
+  # sized for a dedicated m4.xlarge node (8 vCPU / 29.3GB), leaving headroom for
+  # kubelet system-reserved memory and CNI/CSI DaemonSets sharing the node
   resources:
     requests:
-      cpu: "2"
-      memory: 4Gi
+      cpu: "6"
+      memory: 24Gi
     limits:
-      cpu: "4"
-      memory: 10Gi
+      cpu: "8"
+      memory: 28Gi
   persistentvolume:
     create: false
     sharedPvcName: panda-shared-logs
