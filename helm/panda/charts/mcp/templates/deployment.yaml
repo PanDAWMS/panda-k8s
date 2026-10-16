@@ -37,7 +37,16 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command: ["/opt/panda/bin/python", "-u", "-m", "pandaserver.pandamcp.mcp_main"]
+          # install the IGTF CA bundle before starting - pandaserver.api.v1.http_client.HttpClient
+          # always points requests' TLS verification at /etc/grid-security/certificates whenever
+          # that directory exists, so an empty one (the default, unlike server/jedi which populate
+          # it via this same command in their own statefulsets) breaks verification for every
+          # outbound HTTPS call this pod makes, including to PANDA_API_URL_SSL itself
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              /opt/panda/bin/panda_common-install_igtf_ca;
+              exec /opt/panda/bin/python -u -m pandaserver.pandamcp.mcp_main
           ports:
             - name: mcp
               containerPort: {{ .Values.port }}
