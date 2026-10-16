@@ -127,7 +127,7 @@ kind: PersistentVolume
 metadata:
   name: {{ .Values.sharedLogs.name }}
 spec:
-  storageClassName: manila-meyrin-cephfs
+  storageClassName: {{ .Values.sharedLogs.storageClass | default "manila-meyrin-cephfs" }}
   capacity:
     storage: {{ .Values.sharedLogs.size }}
   accessModes:
@@ -159,7 +159,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Values.sharedLogs.name }}
 spec:
-  storageClassName: manila-meyrin-cephfs
+  storageClassName: {{ .Values.sharedLogs.storageClass | default "manila-meyrin-cephfs" }}
   accessModes:
     - ReadWriteMany
   resources:
