@@ -10,6 +10,8 @@ global:
 backend:
   image:
     tag: "next"
+  notificationEvaluator:
+    enabled: true
   tolerations:
     - key: "node.kubernetes.io/not-ready"
       operator: "Exists"
