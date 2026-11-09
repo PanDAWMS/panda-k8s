@@ -1,0 +1,62 @@
+# CronJob running the phase 1 task-notification evaluator (ATLASPANDA-1401) on a
+# schedule, against the same backend image/config as the StatefulSet.
+{{- if .Values.notificationEvaluator.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "backend.fullname" . }}-notification-evaluator
+  labels:
+    {{- include "backend.labels" . | nindent 4 }}
+spec:
+  schedule: {{ .Values.notificationEvaluator.schedule | quote }}
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            {{- include "backend.selectorLabels" . | nindent 12 }}
+        spec:
+          restartPolicy: OnFailure
+          {{- with .Values.imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          serviceAccountName: {{ include "backend.serviceAccountName" . }}
+          securityContext:
+            {{- toYaml .Values.podSecurityContext | nindent 12 }}
+          containers:
+            - name: notification-evaluator
+              securityContext:
+                {{- toYaml .Values.securityContext | nindent 16 }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              command: ["/bin/sh", "-c"]
+              args:
+                - cp {{ .Values.paths.sandbox }}/* {{ .Values.paths.config }}/;
+                  python manage.py evaluate_notifications
+              resources:
+                {{- toYaml .Values.notificationEvaluator.resources | nindent 16 }}
+              volumeMounts:
+                - name: {{ include "backend.fullname" . }}-sandbox
+                  mountPath: {{ .Values.paths.sandbox }}
+                - name: {{ include "backend.fullname" . }}-certs
+                  mountPath: {{ .Values.paths.certs }}
+              envFrom:
+                - secretRef:
+                    name: {{ .Values.global.secret }}-ui-envs
+              env:
+                - name: PANDAUI_VO
+                  value: {{ printf "%s" $.Values.global.vo | quote }}
+                - name: PANDAUI_LOG_LEVEL
+                  value: {{ printf "%s" .Values.global.logLevel | quote }}
+          volumes:
+            - name: {{ include "backend.fullname" . }}-sandbox
+              configMap:
+                name: {{ include "backend.fullname" . }}-sandbox
+            - name: {{ include "backend.fullname" . }}-certs
+              secret:
+                secretName: {{ .Values.global.secret }}-ui-certs
+{{- end }}

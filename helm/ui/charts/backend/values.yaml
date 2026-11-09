@@ -59,3 +59,9 @@ podAnnotations: {}
 podSecurityContext: {}
 imagePullSecrets: []
 securityContext: {}
+
+# Phase 1 task-notification evaluator (ATLASPANDA-1401), disabled by default.
+notificationEvaluator:
+  enabled: false
+  schedule: "*/5 * * * *"
+  resources: {}
