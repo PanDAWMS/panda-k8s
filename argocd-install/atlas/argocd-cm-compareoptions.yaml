@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+  namespace: argocd
+  labels:
+    app.kubernetes.io/name: argocd-cm
+    app.kubernetes.io/part-of: argocd
+data:
+  # ArgoCD v2.13.6's vendored Kubernetes API schema predates fields added in
+  # newer Kubernetes releases (e.g. Deployment's .status.terminatingReplicas,
+  # present on this cluster's k8s 1.36.2). Without this, ArgoCD's structured
+  # merge diff fails to even build a typed value from the live resource,
+  # leaving every Application permanently stuck at Sync: Unknown with a
+  # ComparisonError - not a real diff, just a schema parsing failure. Telling
+  # ArgoCD to skip status entirely (it only needs spec for GitOps sync) avoids
+  # the parse altogether. Needed here because this cluster's k8s is newer than
+  # ArgoCD's targeted version; revisit if ArgoCD itself is later upgraded.
+  resource.compareoptions: |
+    ignoreResourceStatusField: all
