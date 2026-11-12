@@ -11,7 +11,7 @@ backend:
   image:
     tag: "next"
   notificationEvaluator:
-    enabled: false  # TODO: flip back to true once panda-ui#43 merges and testbed's image is rebuilt with it
+    enabled: true
   tolerations:
     - key: "node.kubernetes.io/not-ready"
       operator: "Exists"
