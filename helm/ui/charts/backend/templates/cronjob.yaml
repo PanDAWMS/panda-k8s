@@ -36,7 +36,9 @@ spec:
               command: ["/bin/sh", "-c"]
               args:
                 - cp {{ .Values.paths.sandbox }}/* {{ .Values.paths.config }}/;
-                  python manage.py evaluate_notifications
+                  export PYTHONPATH=/opt/pandaui/backend;
+                  source /opt/pandaui/venv/bin/activate;
+                  python /opt/pandaui/backend/manage.py evaluate_notifications
               resources:
                 {{- toYaml .Values.notificationEvaluator.resources | nindent 16 }}
               volumeMounts:
