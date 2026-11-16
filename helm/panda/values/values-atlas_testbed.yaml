@@ -98,6 +98,9 @@ jedi:
   image:
     tag: "latest"
   configFile: panda_jedi_config.atlas_testbed.json
+  # verified live on 2026-11-16: ActiveMQ broker/secrets for jedi_jobtaskstatus work
+  # correctly here - see project_jedi_msgprocessor_crash memory
+  enableMsgProcessor: true
   tolerations:
     - key: "node.kubernetes.io/not-ready"
       operator: "Exists"
