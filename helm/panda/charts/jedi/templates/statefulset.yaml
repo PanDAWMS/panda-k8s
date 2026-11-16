@@ -110,6 +110,15 @@ spec:
               chmod +x /data/panda/run-jedi-crons;
               chmod +x /data/panda/run-jedi-services;              
               /opt/panda/bin/python /data/panda/process_template.py;
+              # panda_jedi.cfg ships with the msgprocessor/mq configFile lines commented
+              # out by default, and the configurator that used to merge the config_json
+              # overrides into it no longer exists in this image, so enable them here -
+              # the paths are the fixed symlinks the Dockerfile always creates and are the
+              # same across every environment (see panda_jedi_config.*.json).
+              sed -i \
+                -e 's|^#configFile = /etc/panda/jedi_msg_proc_config.json|configFile = /opt/panda/etc/panda/jedi_msg_proc_config.json|' \
+                -e 's|^#configFile = /etc/panda/jedi_mq_config.json|configFile = /opt/panda/etc/panda/jedi_mq_config.json|' \
+                /etc/panda/panda_jedi.cfg;
               /data/panda/run-jedi-services;
               sleep infinity & wait
           {{- end }}
