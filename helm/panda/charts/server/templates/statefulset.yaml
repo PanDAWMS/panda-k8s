@@ -118,6 +118,15 @@ spec:
                fi;
               /opt/panda/bin/python /data/panda/process_template.py;
               /opt/panda/bin/panda_common-install_igtf_ca;
+              # prime ProxyCache's /tmp/proxies cache (ephemeral, wiped every restart) with the
+              # atlpilo2/atlas delegated proxy pilots request for unified dispatch - myproxy-logon
+              # isn't in this image to renew it automatically, so this is a manually-refreshed
+              # snapshot (same staleness tradeoff as atlpilo1RFC.plain) rather than a real fix.
+              # Cache key is sha1("atlpilo2" + ".atlas"), per ProxyCache.get_proxy_path().
+              mkdir -p /tmp/proxies;
+              if [ -f /opt/panda/etc/cert/atlpilo2_latest_x509up.rfc.proxy ]; then
+                cp /opt/panda/etc/cert/atlpilo2_latest_x509up.rfc.proxy /tmp/proxies/f4171eb31fc73ee3581c32907efbce0e273c8a8a;
+              fi;
               /data/panda/run-panda-services;
               sleep infinity & wait
           {{- end }}
