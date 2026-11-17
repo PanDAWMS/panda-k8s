@@ -82,6 +82,8 @@ spec:
               value: {{ printf "%s" $.Values.global.vo | quote }}
             - name: PANDAUI_LOG_LEVEL
               value: {{ printf "%s" .Values.global.logLevel | quote }}
+            - name: PANDAUI_MQ_CONFIG_FILE
+              value: {{ printf "%s/panda_ui_mq_config.json" .Values.paths.config | quote }}
       volumes:
         - name: {{ include "backend.fullname" . }}-sandbox
           configMap:
