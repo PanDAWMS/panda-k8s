@@ -32,6 +32,10 @@
             "server": "iDDS_mb",
             "destination": "/topic/panda_idds"
         },
+        "panda_ui_task_status": {
+            "server": "internal_mb",
+            "destination": "/queue/panda_ui_task_status"
+        },
         "panda_jedi": {
             "server": "internal_mb",
             "destination": "/queue/panda_jedi"
@@ -62,8 +66,8 @@
         "push_task_status": {
             "module": "pandajedi.jedimsgprocessor.forwarding_msg_processor",
             "name": "ForwardingMsgProcPlugin",
-            "in_queue": "jedi_jobtaskstatus",
-            "out_queue": "to-idds",
+            "in_queue_list": ["jedi_jobtaskstatus"],
+            "out_queue_list": ["to-idds", "panda_ui_task_status"],
             "verbose": true
         },
         "proc_msg_from_panda": {
