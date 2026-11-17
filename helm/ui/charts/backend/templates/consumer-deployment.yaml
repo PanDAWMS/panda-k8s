@@ -42,6 +42,8 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - cp {{ .Values.paths.sandbox }}/* {{ .Values.paths.config }}/;
+              mkdir -p /etc/panda /tmp/panda-logs;
+              cp {{ .Values.paths.config }}/panda_common.cfg /etc/panda/panda_common.cfg;
               export PYTHONPATH=/opt/pandaui/backend;
               source /opt/pandaui/venv/bin/activate;
               python /opt/pandaui/backend/manage.py consume_task_status_events
