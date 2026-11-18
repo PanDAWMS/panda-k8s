@@ -45,6 +45,7 @@ fi
 
 echo "QUEUEDATA_SERVER_URL: ${QUEUEDATA_SERVER_URL}"
 echo "STORAGEDATA_SERVER_URL: ${STORAGEDATA_SERVER_URL}"
+echo "HOME: $HOME"
 # env
 
 echo
@@ -65,5 +66,90 @@ else
     # cmd="${pandaenvdir}/pilot/wrapper/rubin-wrapper.sh ${piloturl} --pandaenvtag v1.0.17 $@ --realtime-logging-server logserver='google-cloud-logging;https://google:80'"
     cmd="${pandaenvdir}/pilot/wrapper/rubin-wrapper.sh ${piloturl} $@ "
 fi
+
+# Not using container
+# echo $cmd
+# $cmd
+
+cat <<EOF > my_panda_run_script
+#!/bin/bash
+
+# Ensure SLURM_PROCID is available per task
+echo "Task started: pilot_\${SLURM_PROCID} on $(hostname)"
+
+pwd
+ls
+
+source $latest/setup_panda_idds_client.sh
+
+# curl https://s3.echo.stfc.ac.uk/lsst-drp-config/butler-repos-index.yaml
+
 echo $cmd
 $cmd
+
+EOF
+
+chmod +x my_panda_run_script
+
+echo "my_panda_run_script:"
+cat my_panda_run_script
+
+echo "LSST_LOCAL_PROLOG: ${LSST_LOCAL_PROLOG}"
+
+if [[ -n "${LSST_LOCAL_PROLOG}" && -f "${LSST_LOCAL_PROLOG}" ]]; then
+    echo "cat LSST_LOCAL_PROLOG:"
+    cat "${LSST_LOCAL_PROLOG}"
+    # source ${LSST_LOCAL_PROLOG}
+    echo "end LSST_LOCAL_PROLOG"
+else
+    echo "LSST_LOCAL_PROLOG is not set or file does not exist"
+fi
+
+# using container
+# IMAGE=/cvmfs/sw.lsst.eu/containers/apptainer/x86_64/almalinux/lsst_distrib/w_2026_28
+IMAGE=/cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-el9:latest
+
+BIND_OPTS=(
+    --bind /cvmfs
+    --bind /tmp
+    --bind "$HOME":"$HOME"
+    --bind "$PWD":"$PWD"
+)
+
+# Bind optional filesystems if they exist
+for dir in /sdf /pbs /sps /lscratch /etc/grid-security /etc/lsst /cephfs /pool_1 /pool_2; do
+    if [[ -d "$dir" ]]; then
+        BIND_OPTS+=(--bind "$dir")
+    fi
+done
+
+# OIDC_AUTH_DIR has called dirname
+ENV_OPTS=(
+    --env "PANDA_ENV_PILOT_DIR=$PANDA_ENV_PILOT_DIR"
+    --env "RUCIO_CONFIG=$RUCIO_CONFIG"
+    --env "HARVESTER_PILOT_CONFIG=$HARVESTER_PILOT_CONFIG"
+    --env "PILOT_ES_EXECUTOR_TYPE=$PILOT_ES_EXECUTOR_TYPE"
+    --env "QUEUEDATA_SERVER_URL=$QUEUEDATA_SERVER_URL"
+    --env "STORAGEDATA_SERVER_URL=$STORAGEDATA_SERVER_URL"
+    --env "LSST_LOCAL_PROLOG=$LSST_LOCAL_PROLOG"
+    --env "HOME=$HOME"
+    --env "OIDC_AUTH_DIR=$PWD/none"
+    --env "PANDA_AUTH_TOKEN=$PANDA_AUTH_TOKEN"
+    --env "PANDA_AUTH_ORIGIN=$PANDA_AUTH_ORIGIN"
+)
+
+CMD=(
+    /cvmfs/oasis.opensciencegrid.org/mis/apptainer/bin/apptainer
+    exec
+    "${BIND_OPTS[@]}"
+    "${ENV_OPTS[@]}"
+    --pwd "$PWD"
+    "${IMAGE}"
+    ./my_panda_run_script
+)
+
+echo "Running command:"
+printf '%q ' "${CMD[@]}"
+echo
+
+"${CMD[@]}"

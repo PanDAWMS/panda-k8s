@@ -103,6 +103,7 @@ spec:
         {{- include "rest.selectorLabels" . | nindent 8 }}
     spec:
       hostname:  {{ .Release.Name}}
+
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -124,7 +125,7 @@ spec:
               /opt/idds/bin/start-daemon.sh all
               {{- else }}
               chmod 777 /var/log/idds;
-              runuser -u atlpan -g zp -- /opt/idds/bin/start-daemon.sh all
+              runuser -u atlpan -- /opt/idds/bin/start-daemon.sh all
               {{- end}}
           {{ end -}}
           ports:
@@ -134,16 +135,19 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          startupProbe:
+            tcpSocket:
+              port: 8443
+            periodSeconds: 10
+            failureThreshold: 30
           readinessProbe:
             tcpSocket:
               port: 8443
-            initialDelaySeconds: 30
             periodSeconds: 10
             failureThreshold: 3
           livenessProbe:
             tcpSocket:
               port: 8443
-            initialDelaySeconds: 120
             periodSeconds: 30
             failureThreshold: 3
           envFrom:
@@ -158,6 +162,8 @@ spec:
               value: "{{ .Values.restHost }}"
             - name: PANDAMON_URL
               value: "{{ .Values.bigmonURL }}"
+            - name: POD_FQDN
+              value: "{{ include "rest.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local"
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           volumeMounts:
@@ -170,6 +176,11 @@ spec:
                 mountPath: /opt/idds/configmap
               - name: {{ include "rest.fullname" . }}-certs
                 mountPath: /opt/idds/certs
+              {{- if .Values.vomsProxyRenew.override }}
+              - name: {{ include "rest.fullname" . }}-vomsprox-renew
+                mountPath: /opt/idds/config_default/vomsprox-renew
+                subPath: vomsprox-renew
+              {{- end }}
               {{- if .Values.persistentvolumerequests.reuseLogsVolume }}
               - name: {{ include "rest.fullname" . }}-logs
                 mountPath: {{ .Values.persistentvolumerequests.path }}
@@ -177,6 +188,8 @@ spec:
                 subPath: {{ .Values.persistentvolumerequests.subPath }}
                 {{- end }}
               {{- else }}
+              - name: {{ include "rest.fullname" . }}-sandbox
+                mountPath: /opt/idds/sandbox
               - name: {{ include "rest.fullname" . }}-requests
                 mountPath: {{ .Values.persistentvolumerequests.path }}
               {{- end }}
@@ -208,9 +221,17 @@ spec:
                   name: {{ .Values.global.secret }}-idds-auth
               - configMap:
                   name: {{ .Release.Name }}-tnsnames
+        - name: {{ include "rest.fullname" . }}-sandbox
+          configMap:
+              name: {{ include "rest.fullname" . }}-sandbox
         - name: {{ include "rest.fullname" . }}-certs
           secret:
               secretName: {{ .Values.global.secret }}-idds-certs
+        {{- if .Values.vomsProxyRenew.override }}
+        - name: {{ include "rest.fullname" . }}-vomsprox-renew
+          configMap:
+            name: {{ include "rest.fullname" . }}-vomsprox-renew
+        {{- end }}
         {{- if not .Values.persistentvolumerequests.reuseLogsVolume }}
         - name: {{ include "rest.fullname" . }}-requests
           persistentVolumeClaim:

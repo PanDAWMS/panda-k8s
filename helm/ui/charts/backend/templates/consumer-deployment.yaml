@@ -1,0 +1,96 @@
+# Long-running consumer for JEDI's panda_ui_task_status ActiveMQ queue (see
+# panda-common#75 / the jedi_msg_proc_config.json push_task_status fan-out), driving
+# the notification evaluator event-by-event instead of the notificationEvaluator
+# CronJob's 5-minute poll. The CronJob stays on as a safety net (NotificationLog
+# already dedups, so it catching something this consumer already handled is a no-op).
+#
+# Uses a deliberately distinct selector (not backend.selectorLabels) so the backend
+# Service - which selects on exactly those labels - never routes HTTPS traffic to
+# these pods; they run no webserver.
+{{- if .Values.taskStatusConsumer.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "backend.fullname" . }}-task-status-consumer
+  labels:
+    {{- include "backend.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "backend.name" . }}-task-status-consumer
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "backend.name" . }}-task-status-consumer
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "backend.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: task-status-consumer
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: ["/bin/sh", "-c"]
+          args:
+            - cp {{ .Values.paths.sandbox }}/* {{ .Values.paths.config }}/;
+              mkdir -p /etc/panda /tmp/panda-logs;
+              cp {{ .Values.paths.config }}/panda_common.cfg /etc/panda/panda_common.cfg;
+              export PYTHONPATH=/opt/pandaui/backend;
+              source /opt/pandaui/venv/bin/activate;
+              python /opt/pandaui/backend/manage.py consume_task_status_events
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - "find /tmp/consumer-heartbeat -mmin -1 | grep -q ."
+            # consume_task_status_events touches /tmp/consumer-heartbeat on every
+            # loop iteration (including idle ones) - if it stops touching it, the
+            # consumer thread has died silently and k8s should restart the pod,
+            # exactly the failure mode project_jedi_msgprocessor_crash spent two
+            # days chasing without any visible signal at all.
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            failureThreshold: 3
+          resources:
+            {{- toYaml .Values.taskStatusConsumer.resources | nindent 12 }}
+          volumeMounts:
+            - name: {{ include "backend.fullname" . }}-sandbox
+              mountPath: {{ .Values.paths.sandbox }}
+            - name: {{ include "backend.fullname" . }}-certs
+              mountPath: {{ .Values.paths.certs }}
+          envFrom:
+            - secretRef:
+                name: {{ .Values.global.secret }}-ui-envs
+            - secretRef:
+                name: {{ .Values.global.secret }}-panda-envs
+          env:
+            - name: PANDAUI_FRONTEND_BASE_URL
+              value: {{ printf "https://%s" .Values.global.hostOverwrite | quote }}
+            - name: PANDAUI_ALLOWED_HOSTS
+              value: {{ printf "%s," .Values.global.hostOverwrite | quote }}
+            - name: CORS_ALLOWED_ORIGINS
+              value: {{ printf "https://%s" .Values.global.hostOverwrite | quote }}
+            - name: PANDAUI_VO
+              value: {{ printf "%s" $.Values.global.vo | quote }}
+            - name: PANDAUI_LOG_LEVEL
+              value: {{ printf "%s" .Values.global.logLevel | quote }}
+            - name: PANDAUI_MQ_CONFIG_FILE
+              value: {{ printf "%s/panda_ui_mq_config.json" .Values.paths.config | quote }}
+      volumes:
+        - name: {{ include "backend.fullname" . }}-sandbox
+          configMap:
+            name: {{ include "backend.fullname" . }}-sandbox
+        - name: {{ include "backend.fullname" . }}-certs
+          secret:
+            secretName: {{ .Values.global.secret }}-ui-certs
+{{- end }}

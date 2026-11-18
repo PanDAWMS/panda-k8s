@@ -26,7 +26,7 @@ main:
           - path: /
             pathType: Prefix
     tls:
-      - secretName: "default"
+      - secretName: ""
         hosts:
           - domain: slac.stanford.edu
             hostOverride: rubin-panda-bigmon-dev.slac.stanford.edu

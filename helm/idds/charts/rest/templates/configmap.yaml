@@ -60,3 +60,16 @@ binaryData:
   {{ base $path }}: |-
     {{ $.Files.Get $path | b64enc }}
   {{- end }}
+
+
+{{- if .Values.vomsProxyRenew.override }}
+---
+# overrides the image's own /opt/idds/config_default/vomsprox-renew, which is hardcoded for LSST
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "rest.fullname" . }}-vomsprox-renew
+data:
+  vomsprox-renew: |-
+{{ .Values.vomsProxyRenew.override | indent 4 }}
+{{- end }}

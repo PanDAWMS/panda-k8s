@@ -59,3 +59,17 @@ podAnnotations: {}
 podSecurityContext: {}
 imagePullSecrets: []
 securityContext: {}
+
+# Phase 1 task-notification evaluator (ATLASPANDA-1401), disabled by default.
+notificationEvaluator:
+  enabled: false
+  schedule: "*/5 * * * *"
+  resources: {}
+
+# Event-driven notification evaluator: consumes JEDI's panda_ui_task_status ActiveMQ
+# queue (see jedi.enableMsgProcessor / panda-common#75) instead of polling. Disabled
+# by default - only enable for a cluster where that queue has actually been verified
+# to receive real messages, same gating rationale as jedi.enableMsgProcessor.
+taskStatusConsumer:
+  enabled: false
+  resources: {}

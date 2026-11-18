@@ -3,6 +3,11 @@
 
 harvester:
   experiment: atlas
+
+  # bump to force a rollout after changing an atlas testbed-specific sandbox
+  # script (e.g. atlas.vomsproxy-renew) - see charts/harvester's own
+  # configVersion comment
+  configVersion: "2"
   tolerations:
     - key: "node.kubernetes.io/not-ready"
       operator: "Exists"

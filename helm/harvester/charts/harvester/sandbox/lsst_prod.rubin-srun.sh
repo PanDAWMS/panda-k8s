@@ -143,8 +143,60 @@ EOF
 
 chmod +x my_panda_run_script
 
+# Not using container
+# echo $cmd --export=ALL --ntasks=${ntasks_total} --cpu-bind=none ./my_panda_run_script
+# echo
 
-echo $cmd --export=ALL --ntasks=${ntasks_total} --cpu-bind=none ./my_panda_run_script
+# $cmd --export=ALL --ntasks=${ntasks_total} --cpu-bind=none ./my_panda_run_script
+
+# Using container
+# IMAGE=/cvmfs/sw.lsst.eu/containers/apptainer/x86_64/almalinux/lsst_distrib/w_2026_28
+IMAGE=/cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-el9:latest
+
+BIND_OPTS=(
+    --bind /cvmfs
+    --bind /tmp
+    --bind "$HOME":"$HOME"
+    --bind "$PWD":"$PWD"
+)
+
+# Bind optional filesystems if they exist
+for dir in /sdf /lscratch /pbs /sps /etc/grid-security /etc/lsst /cephfs /pool_1 /pool_2; do
+    if [[ -d "$dir" ]]; then
+        BIND_OPTS+=(--bind "$dir")
+    fi
+done
+
+ENV_OPTS=(
+    --env "PANDA_ENV_PILOT_DIR=$PANDA_ENV_PILOT_DIR"
+    --env "RUCIO_CONFIG=$RUCIO_CONFIG"
+    --env "HARVESTER_PILOT_CONFIG=$HARVESTER_PILOT_CONFIG"
+    --env "PILOT_ES_EXECUTOR_TYPE=$PILOT_ES_EXECUTOR_TYPE"
+    --env "QUEUEDATA_SERVER_URL=$QUEUEDATA_SERVER_URL"
+    --env "STORAGEDATA_SERVER_URL=$STORAGEDATA_SERVER_URL"
+    --env "LSST_LOCAL_PROLOG=$LSST_LOCAL_PROLOG"
+    --env "HOME=$HOME"
+    --env "OIDC_AUTH_DIR=$PWD/none"
+    --env "PANDA_AUTH_TOKEN=$PANDA_AUTH_TOKEN"
+    --env "PANDA_AUTH_ORIGIN=$PANDA_AUTH_ORIGIN"
+)
+
+CMD=(
+    $cmd
+    --export=ALL
+    --ntasks="${ntasks_total}"
+    --cpu-bind=none
+    /cvmfs/oasis.opensciencegrid.org/mis/apptainer/bin/apptainer
+    exec
+    "${BIND_OPTS[@]}"
+    "${ENV_OPTS[@]}"
+    --pwd "$PWD"
+    "$IMAGE"
+    ./my_panda_run_script
+)
+
+echo "Running command:"
+printf '%q ' "${CMD[@]}"
 echo
 
-$cmd --export=ALL --ntasks=${ntasks_total} --cpu-bind=none ./my_panda_run_script
+"${CMD[@]}"

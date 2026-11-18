@@ -106,7 +106,10 @@ def send_mail(subject, body, recipient, sender="atlas-adc-panda-no-reply@cern.ch
             # an arbitrary local/hostname-based From address by policy, so the
             # default (unset) sender bounces - use the same pre-authorized
             # address panda-server's own MailUtils.py already sends from.
-            ["mail", "-r", sender, "-s", subject, recipient],
+            # -S mta=... is required too: this image has s-nail but no local
+            # sendmail, so s-nail must relay directly over SMTP instead of
+            # trying to exec a nonexistent /usr/sbin/sendmail.
+            ["mail", "-S", "mta=smtp://cernmx.cern.ch:25", "-r", sender, "-s", subject, recipient],
             input=body, text=True, timeout=30, check=True,
         )
     except Exception as ex:

@@ -13,6 +13,7 @@ main:
 
   image:
     tag: "v1.1.7"
+    # tag: "v1.1.4"
 
   autoStart: true
 

@@ -19,6 +19,14 @@ configVersion: "1"
 # run panda with non-root account
 noRoot: false
 
+# enable the ActiveMQ message-processor agent (jedi_jobtaskstatus consumer forwarding
+# task-status events on to iDDS). Off by default - only turn on for a cluster once its
+# ActiveMQ broker/secrets have actually been verified to work for this queue, since a
+# misconfigured broker can make the agent retry in an unthrottled loop that pins a CPU
+# core and floods logs (the same failure mode commit 408cfd8 fixed for the iDDS
+# conductor/receiver brokers).
+enableMsgProcessor: false
+
 persistentvolume:
   create: true
   class: manual
@@ -27,6 +35,9 @@ persistentvolume:
   selector: true
   sharedPvcName: ""
   subPath: ""
+  # Use a directory named after the pod below subPath. This is required when
+  # multiple replicas share the same PVC and write rotating log files.
+  perPodSubPath: false
 
 
 server: {}

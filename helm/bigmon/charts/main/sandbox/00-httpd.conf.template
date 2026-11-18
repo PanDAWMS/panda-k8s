@@ -1,1 +1,2 @@
 ServerName ${BIGMON_HOST}
+Timeout ${BIGMON_APACHE_TIMEOUT}

@@ -4,6 +4,10 @@
 harvester:
   experiment: doma
 
+  # bump to force a rollout after changing a DOMA-specific sandbox script
+  # (e.g. doma.vomsproxy-renew) - see charts/harvester's own configVersion comment
+  configVersion: "2"
+
   persistentvolume:
     create: false
     class: manila-meyrin-cephfs

@@ -5,7 +5,7 @@
 
 main:
   image:
-    tag: "v1.1.7"
+    tag: "v1.2.3"
   tolerations:
     - key: "node.kubernetes.io/not-ready"
       operator: "Exists"

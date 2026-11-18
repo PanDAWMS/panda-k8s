@@ -127,7 +127,7 @@ kind: PersistentVolume
 metadata:
   name: {{ .Values.sharedLogs.name }}
 spec:
-  storageClassName: manila-meyrin-cephfs
+  storageClassName: {{ .Values.sharedLogs.storageClass | default "manila-meyrin-cephfs" }}
   capacity:
     storage: {{ .Values.sharedLogs.size }}
   accessModes:
@@ -159,7 +159,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: {{ .Values.sharedLogs.name }}
 spec:
-  storageClassName: manila-meyrin-cephfs
+  storageClassName: {{ .Values.sharedLogs.storageClass | default "manila-meyrin-cephfs" }}
   accessModes:
     - ReadWriteMany
   resources:
@@ -220,10 +220,18 @@ spec:
       {{- include "harvester.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
       annotations:
+        # Bump this (and commit) after changing a value that only takes effect
+        # via env vars sourced from Secrets/ConfigMaps through envFrom, or via
+        # files copied out of the sandbox ConfigMap at container start (e.g.
+        # health_monitor.py, the vomsproxy-renew scripts) - Kubernetes reads/
+        # copies those once at container start and won't restart an
+        # already-running pod when the referenced Secret/ConfigMap content
+        # changes underneath it.
+        panda-k8s.io/config-version: {{ .Values.configVersion | default "1" | quote }}
+        {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       labels:
         {{- include "harvester.selectorLabels" . | nindent 8 }}
     spec:
@@ -249,6 +257,7 @@ spec:
             {{- end }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          {{- if .Values.enableProbe }}
           livenessProbe:
             exec:
               command:
@@ -256,6 +265,7 @@ spec:
                 - /var/log/panda/harvester_healthy
             initialDelaySeconds: 1800
             periodSeconds: 600
+          {{- end }}
           {{- if .Values.autoStart }}
           command: ["/bin/sh", "-c"]
           args:
@@ -273,9 +283,12 @@ spec:
               {{- if .Values.noRoot }}
               /opt/harvester/etc/rc.d/init.d/run-harvester-services;
               {{- else }}
-              chmod -R 777 /var/log/panda;
-              chmod -R 777 /var/log/harvester_wdirs;
-              chmod -R 777 /var/log/condor_logs;
+              chmod 2775 /var/log/panda;
+              chmod 2775 /var/log/harvester_wdirs;
+              chmod 2775 /var/log/condor_logs;
+              chown atlpan:zp /var/log/panda;
+              chown atlpan:zp /var/log/harvester_wdirs;
+              chown atlpan:zp /var/log/condor_logs;
               ln -s /var/log/condor_logs /var/www/html/;
               if [ -d ${SPECIAL_LOG_MOUNT_POINT} ]; then
                   ln -s ${SPECIAL_LOG_MOUNT_POINT} /var/www/html/condor_logs/;
