@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 jedi:
-  replicaCount: 2
+  replicaCount: 1
   persistentvolume:
     class: wekafs--sdf-k8s01
     create: false
@@ -19,7 +19,7 @@ jedi:
       memory: 32Gi
 
 server:
-  replicaCount: 2
+  replicaCount: 1
   persistentvolume:
     class: wekafs--sdf-k8s01
     create: false
@@ -48,7 +48,7 @@ server:
           - path: /
             pathType: Prefix
     tls:
-      - secretName: default
+      - secretName: ""
         hosts:
           - domain: slac.stanford.edu
             hostOverride: rubin-panda-server-dev.slac.stanford.edu
@@ -61,7 +61,7 @@ server:
           - path: /
             pathType: Prefix
     tls:
-      - secretName: default
+      - secretName: ""
         hosts:
           - domain: slac.stanford.edu
             hostOverride: rubin-panda-server-big-dev.slac.stanford.edu

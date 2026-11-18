@@ -25,6 +25,9 @@ kind: ConfigMap
 metadata:
   name: {{ include "mcp.fullname" . }}-env
 data:
+  # required for pandaserver.config.config_utils.load_config_map to find and
+  # apply the JSON configmap mounted below; must match its mountPath in deployment.yaml
+  PANDA_HOME: "/opt/panda"
   # PANDA_SERVER_CONF_PORT_MCP is read by pandaserver.pandamcp.mcp_main to pick the listen port
   PANDA_SERVER_CONF_PORT_MCP: "{{ .Values.port }}"
   # must be a concrete path: mcp_main.py / fastmcp choke if HOME resolves to "~"

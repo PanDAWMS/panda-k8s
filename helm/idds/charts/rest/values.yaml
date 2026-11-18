@@ -16,6 +16,14 @@ autoStart: true
 # run with non-root pid
 noRoot: false
 
+# The image's own /opt/idds/config_default/vomsprox-renew is hardcoded for
+# LSST (voms-proxy-init3 -voms lsst:/lsst/Role=drp), which fails on every
+# other VO ("VOMS server for VO lsst is not known!"). Set this to override
+# it with a script appropriate for this deployment's VO - leave empty (the
+# default) to keep using the image's own LSST-only script unchanged.
+vomsProxyRenew:
+  override: ""
+
 persistentvolume:
   create: true
   class: manual

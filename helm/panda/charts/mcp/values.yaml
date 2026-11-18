@@ -17,6 +17,12 @@ configVersion: "1"
 # PANDA_SERVER_CONF_PORT_MCP so pandaserver.pandamcp.mcp_main picks it up
 port: 8443
 
+# name of an Opaque Secret (keys hostcert.pem/hostkey.pem/chain.pem) holding
+# this service's own TLS cert - set when mcp serves a hostname distinct from
+# server's shared cert. Falls back to global.existingTlsSecret / global.secret
+# (the shared panda-certs secret) when unset.
+certSecretName: ""
+
 # config JSON bundled with this chart, rendered into the "mcp" section of
 # panda_server_config.json (pandaserver.config.config_utils hardcodes that filename)
 configFile: panda_mcp_config.json

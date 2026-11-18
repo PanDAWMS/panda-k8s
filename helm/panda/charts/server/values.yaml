@@ -23,7 +23,11 @@ httpsProxy: ""
 # run with non-root PID
 noRoot: false
 
-# shared cache space
+# shared cache space for /var/log/panda/pandacache (sandbox storage). This is
+# always given its own genuinely-shared PVC mount when perPodSubPath is set
+# below, since pandacache must stay visible to every replica regardless of
+# how the rest of /var/log/panda is split up per pod - you don't need to set
+# this explicitly just to enable perPodSubPath.
 sharedCache: false
 
 persistentvolume:
@@ -36,6 +40,9 @@ persistentvolume:
   selector: true
   sharedPvcName: ""
   subPath: ""
+  # Use a directory named after the pod below subPath. This is required when
+  # multiple replicas share the same PVC and write rotating log files.
+  perPodSubPath: false
 
 imagePullSecrets: []
 nameOverride: ""

@@ -1,0 +1,23 @@
+{
+    "mb_servers": {
+        "internal_mb": {
+            "host_port_list": ["${PANDA_ACTIVEMQ_LIST}"],
+            "use_ssl": false,
+            "cert_file": null,
+            "key_file": null,
+            "username": "jedi",
+            "passcode": "${PANDA_ACTIVEMQ_PASSWD_jedi}",
+            "verbose": true
+        }
+    },
+    "queues": {
+        "panda_ui_task_status": {
+            "server": "internal_mb",
+            "destination": "/queue/panda_ui_task_status"
+        },
+        "panda_jobstatus_feed": {
+            "server": "internal_mb",
+            "destination": "/topic/panda_idds"
+        }
+    }
+}

@@ -100,6 +100,7 @@ echo "STORAGEDATA_SERVER_URL: ${STORAGEDATA_SERVER_URL}"
 
 echo
 
+
 piloturl=""
 local_pilot=/sdf/data/rubin/panda_jobs/panda_env_pilot/pilot3.tar.gz
 if [[ -f ${local_pilot} ]]; then
@@ -116,8 +117,8 @@ else
     # pilot_wrapper_cmd="${pandaenvdir}/pilot/wrapper/rubin-wrapper.sh ${piloturl} --pandaenvtag v1.0.17 $@ --realtime-logging-server logserver='google-cloud-logging;https://google:80'"
     pilot_wrapper_cmd="${pandaenvdir}/pilot/wrapper/rubin-wrapper.sh ${piloturl} $@ "
 fi
-echo $cmd
-echo $pilot_wrapper_cmd
+# echo $cmd
+# echo $pilot_wrapper_cmd
 echo 
 
 # ntasks=${ntasks_total}
@@ -134,7 +135,18 @@ cat <<EOF > my_panda_run_script
 # Ensure SLURM_PROCID is available per task
 echo "Task started: pilot_\${SLURM_PROCID} on $(hostname)"
 
-echo ${pilot_wrapper_cmd} | sed -e "s/^/pilot_\${SLURM_PROCID}: /"
+pwd
+ls
+
+source $latest/setup_panda_idds_client.sh
+
+# curl https://s3.echo.stfc.ac.uk/lsst-drp-config/butler-repos-index.yaml
+
+if ! command -v python3 >/dev/null 2>&1; then
+    alias python3=python
+fi
+
+# echo ${pilot_wrapper_cmd} | sed -e "s/^/pilot_\${SLURM_PROCID}: /"
 echo
 
 ${pilot_wrapper_cmd} | sed -e "s/^/pilot_\${SLURM_PROCID}: /"
@@ -144,8 +156,74 @@ EOF
 
 chmod +x my_panda_run_script
 
+echo "my_panda_run_script:"
+cat my_panda_run_script
 
-echo $cmd --export=ALL --ntasks=${ntasks_total} --cpu-bind=none ./my_panda_run_script
+# echo $cmd --export=ALL --ntasks=${ntasks_total} --cpu-bind=none ./my_panda_run_script
+# echo
+
+echo "LSST_LOCAL_PROLOG: ${LSST_LOCAL_PROLOG}"
+
+if [[ -n "${LSST_LOCAL_PROLOG}" && -f "${LSST_LOCAL_PROLOG}" ]]; then
+    echo "cat LSST_LOCAL_PROLOG:"
+    cat "${LSST_LOCAL_PROLOG}"
+    # source ${LSST_LOCAL_PROLOG}
+    echo "end LSST_LOCAL_PROLOG"
+else
+    echo "LSST_LOCAL_PROLOG is not set or file does not exist"
+fi
+
+# Not using container
+# $cmd --export=ALL --ntasks=${ntasks_total} --cpu-bind=none ./my_panda_run_script
+
+# Using container
+# IMAGE=/cvmfs/sw.lsst.eu/containers/apptainer/x86_64/almalinux/lsst_distrib/w_2026_28
+IMAGE=/cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-el9:latest
+
+BIND_OPTS=(
+    --bind /cvmfs
+    --bind /tmp
+    --bind "$HOME":"$HOME"
+    --bind "$PWD":"$PWD"
+)
+
+# Bind optional filesystems if they exist
+for dir in /sdf /lscratch /pbs /sps /etc/grid-security /etc/lsst /cephfs /pool_1 /pool_2; do
+    if [[ -d "$dir" ]]; then
+        BIND_OPTS+=(--bind "$dir")
+    fi
+done
+
+ENV_OPTS=(
+    --env "PANDA_ENV_PILOT_DIR=$PANDA_ENV_PILOT_DIR"
+    --env "RUCIO_CONFIG=$RUCIO_CONFIG"
+    --env "HARVESTER_PILOT_CONFIG=$HARVESTER_PILOT_CONFIG"
+    --env "PILOT_ES_EXECUTOR_TYPE=$PILOT_ES_EXECUTOR_TYPE"
+    --env "QUEUEDATA_SERVER_URL=$QUEUEDATA_SERVER_URL"
+    --env "STORAGEDATA_SERVER_URL=$STORAGEDATA_SERVER_URL"
+    --env "LSST_LOCAL_PROLOG=$LSST_LOCAL_PROLOG"
+    --env "HOME=$HOME"
+    --env "OIDC_AUTH_DIR=$PWD/none"
+    --env "PANDA_AUTH_TOKEN=$PANDA_AUTH_TOKEN"
+    --env "PANDA_AUTH_ORIGIN=$PANDA_AUTH_ORIGIN"
+)
+
+CMD=(
+    $cmd
+    --export=ALL
+    --ntasks="${ntasks_total}"
+    --cpu-bind=none
+    /cvmfs/oasis.opensciencegrid.org/mis/apptainer/bin/apptainer
+    exec
+    "${BIND_OPTS[@]}"
+    "${ENV_OPTS[@]}"
+    --pwd "$PWD"
+    "$IMAGE"
+    ./my_panda_run_script
+)
+
+echo "Running command:"
+printf '%q ' "${CMD[@]}"
 echo
 
-$cmd --export=ALL --ntasks=${ntasks_total} --cpu-bind=none ./my_panda_run_script
+"${CMD[@]}"

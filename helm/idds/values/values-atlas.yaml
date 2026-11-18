@@ -1,0 +1,62 @@
+# Placeholder for the future ATLAS production k8s cluster.
+# Copied from values-atlas_testbed.yaml as a starting point; not yet wired to any ArgoCD Application.
+# Before using: review/update hostnames (currently testbed's), resource sizing, and replica counts for production.
+
+# Default values for idds.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+rest:
+  replicaCount: 1
+  image:
+    tag: "2.6.21"
+  iddsServer: panda-idds-tb.cern.ch
+  resources:
+    requests:
+      cpu: "1"
+      memory: 3Gi
+    limits:
+      cpu: "4"
+      memory: 6Gi
+  persistentvolume:
+    create: false
+    sharedPvcName: panda-shared-logs
+    subPath: idds
+  cvmfs:
+    enabled: true
+    repositories:
+      - name: atlas
+        repository: atlas.cern.ch
+      - name: atlas-condb
+        repository: atlas-condb.cern.ch
+  persistentvolumerequests:
+    reuseLogsVolume: true
+    subPath: idds-requests
+  # SYS_PTRACE lets py-spy attach to the running process for memory profiling
+  securityContext:
+    capabilities:
+      add:
+      - SYS_PTRACE
+  serverConf:
+    minWorkers: "4"
+    maxWorkers: "8"
+    numWsgi: "2"
+    numWsgiThread: "4"
+    maxBacklog: "50"
+
+  ingress:
+    enabled: true
+    hosts:
+      - domain: cern.ch
+        hostOverride: panda-idds-tb.cern.ch
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - secretName: "default"
+        hosts:
+          - domain: cern.ch
+            hostOverride: panda-idds-tb.cern.ch
+
+postgres:
+  enabled: false
