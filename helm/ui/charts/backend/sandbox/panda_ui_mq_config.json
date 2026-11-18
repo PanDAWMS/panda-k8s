@@ -14,6 +14,10 @@
         "panda_ui_task_status": {
             "server": "internal_mb",
             "destination": "/queue/panda_ui_task_status"
+        },
+        "panda_jobstatus_feed": {
+            "server": "internal_mb",
+            "destination": "/topic/panda_idds"
         }
     }
 }
