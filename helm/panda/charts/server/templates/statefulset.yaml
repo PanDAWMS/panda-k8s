@@ -118,15 +118,36 @@ spec:
                fi;
               /opt/panda/bin/python /data/panda/process_template.py;
               /opt/panda/bin/panda_common-install_igtf_ca;
-              # prime ProxyCache's /tmp/proxies cache (ephemeral, wiped every restart) with the
-              # atlpilo2/atlas delegated proxy pilots request for unified dispatch - myproxy-logon
-              # isn't in this image to renew it automatically, so this is a manually-refreshed
-              # snapshot (same staleness tradeoff as atlpilo1RFC.plain) rather than a real fix.
+              # Keep ProxyCache's /tmp/proxies cache (ephemeral, wiped every restart) stocked with a
+              # VOMS atlas/Role=pilot proxy for atlpilo2, which pilots request for unified dispatch.
+              # The mounted secret (atlpilo2_latest_x509up.rfc.proxy) is a long-lived (~1y) identity
+              # proxy with no VOMS extension by itself - voms-atlas-auth.cern.ch caps the VOMS
+              # attribute's own validity at 192h regardless of what's requested, so this mints a
+              # fresh short-lived VOMS proxy from that long-lived identity proxy on a loop instead
+              # of relying on a one-off copy going stale every 8 days. Needs voms-proxy-init (in
+              # this image) plus the atlas vomses/vomsdir config, only available via CVMFS - skips
+              # silently if either isn't there (e.g. cvmfs.enabled=false on a cluster without
+              # atlpilo2 pilots). The cert/key split is required because this image's VOMS client
+              # (voms-clients-java) refuses a combined cert+key PEM file like the mounted one.
               # Cache key is sha1("atlpilo2" + ".atlas"), per ProxyCache.get_proxy_path().
               mkdir -p /tmp/proxies;
-              if [ -f /opt/panda/etc/cert/atlpilo2_latest_x509up.rfc.proxy ]; then
-                cp /opt/panda/etc/cert/atlpilo2_latest_x509up.rfc.proxy /tmp/proxies/f4171eb31fc73ee3581c32907efbce0e273c8a8a;
-              fi;
+              VOMSES_DIR=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/etc/vomses;
+              VOMSDIR=/cvmfs/atlas.cern.ch/repo/ATLASLocalRootBase/etc/grid-security-emi/vomsdir;
+              ATLPILO2_SRC=/opt/panda/etc/cert/atlpilo2_latest_x509up.rfc.proxy;
+              (
+                while true; do
+                  if [ -f "$ATLPILO2_SRC" ] && [ -d "$VOMSES_DIR" ] && [ -d "$VOMSDIR" ]; then
+                    awk '/BEGIN CERTIFICATE/,/END CERTIFICATE/' "$ATLPILO2_SRC" > /tmp/atlpilo2_certs.pem;
+                    awk '/BEGIN PRIVATE KEY/,/END PRIVATE KEY/' "$ATLPILO2_SRC" > /tmp/atlpilo2_key.pem;
+                    chmod 600 /tmp/atlpilo2_certs.pem /tmp/atlpilo2_key.pem;
+                    voms-proxy-init -q -valid 192:00 -cert /tmp/atlpilo2_certs.pem -key /tmp/atlpilo2_key.pem \
+                      -voms atlas:/atlas/Role=pilot -rfc -vomses "$VOMSES_DIR" -vomsdir "$VOMSDIR" \
+                      -out /tmp/proxies/f4171eb31fc73ee3581c32907efbce0e273c8a8a;
+                    rm -f /tmp/atlpilo2_certs.pem /tmp/atlpilo2_key.pem;
+                  fi;
+                  sleep 86400;
+                done
+              ) &
               /data/panda/run-panda-services;
               sleep infinity & wait
           {{- end }}
