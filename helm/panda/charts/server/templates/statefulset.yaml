@@ -143,6 +143,11 @@ spec:
                     voms-proxy-init -q -valid 192:00 -cert /tmp/atlpilo2_certs.pem -key /tmp/atlpilo2_key.pem \
                       -voms atlas:/atlas/Role=pilot -rfc -vomses "$VOMSES_DIR" -vomsdir "$VOMSDIR" \
                       -out /tmp/proxies/f4171eb31fc73ee3581c32907efbce0e273c8a8a;
+                    # voms-proxy-init defaults to 600, but this script runs as root while
+                    # Apache/ProxyCache's HTTP serving runs as atlpan - without this, every
+                    # get_proxy request fails to even open() the file and crashes its WSGI
+                    # worker (not a caught exception - the worker process dies and restarts).
+                    chmod 644 /tmp/proxies/f4171eb31fc73ee3581c32907efbce0e273c8a8a;
                     rm -f /tmp/atlpilo2_certs.pem /tmp/atlpilo2_key.pem;
                   fi;
                   sleep 86400;
