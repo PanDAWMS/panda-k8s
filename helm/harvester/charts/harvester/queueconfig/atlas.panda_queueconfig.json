@@ -487,6 +487,15 @@
         "runMode": "slave",
         "prodSourceLabelRandomWeightsPermille": {"rc_test":10, "rc_test2":10, "rc_alrb":10},
         "maxWorkers": 250
+  },
+
+"CERN-GPU": {
+        "templateQueueName": "production.pull_ups",
+        "queueStatus": "online",
+        "prodSourceLabel": "managed",
+        "runMode": "slave",
+        "prodSourceLabelRandomWeightsPermille": {"rc_test":10, "rc_test2":10, "rc_alrb":10},
+        "maxWorkers": 10
   }
 
 }
