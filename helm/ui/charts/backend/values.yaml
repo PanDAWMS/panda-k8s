@@ -61,9 +61,12 @@ imagePullSecrets: []
 securityContext: {}
 
 # Phase 1 task-notification evaluator (ATLASPANDA-1401), disabled by default.
+# 30 min now that the event-driven consumer (task_status queue + job_status
+# topic) is live-verified - this is a pure safety net, not the primary path,
+# so it doesn't need to poll every 5 min anymore.
 notificationEvaluator:
   enabled: false
-  schedule: "*/5 * * * *"
+  schedule: "*/30 * * * *"
   resources: {}
 
 # Event-driven notification evaluator: consumes JEDI's panda_ui_task_status ActiveMQ
